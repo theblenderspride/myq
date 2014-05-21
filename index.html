@@ -1,0 +1,48 @@
+<!Doctype html>
+<html>
+<head>
+	<title> my qs </title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+	<div id="search">
+		<input type="text" id="txtSearch" />
+	</div>
+	
+    <article class="question">
+        <h3>
+			<a name="why-spa" class="anchor" href="#why-spa-"><span class="link"></span></a>Why 'spa' ?
+		</h3>
+		
+		<p>Single page applications are more capable of decreasing load time of pages by storing the functionality once it is loaded the first time, allowing easier data transfer between pages and a more complex user interface instead of trying to control so much from the server. This allows for more interference from an end user, but proper checks on the server eliminate pretty much all of that risk. Most end users won't attempt this, so that does not warrant much if any worry. Also, the processing of data can be moved into generic service handlers which could result in an architecture utilizing the following layers:</p>
+			<ul class="list">
+				<li>Database</li>
+				<li>BL
+
+					<ul class="list">
+						<li>Transport Service</li>
+						<li>Processing Service</li>
+					</ul>
+				</li>
+				<li>User Interface The ajax functionality used allows for a smoother and more controlled user experience (my favorite perk)</li>
+			</ul>
+        
+		<p>And as for handling large components, the benefit is that you have the option to deffer the load time to an ajax process and do so whenever you like, making the initial load faster.</p>
+
+        <p>The process for coding it is a bit different in that using services is pretty much a requirement, but it is very similar to using a master page and controlling what content is loaded from the client.</p>
+
+        <p>As for best practices, there are quite a few optimizations that could and should be made to a design implementation, such as storing information as it comes, loading in script, html and js files through ajax only when needed, and using data loaded on one page in another if it can be instead of reloading for each new "page".</p>
+
+        <p>There is all sorts of information on this, and all sorts of libraries to use, but I would suggest using your own code as much as possible for the basic functionality(including the libraries you would typically use) and enhance from there.</p>
+
+        <p>As a side note, I would suggest looking up concepts for designing for one web, such as media queries for adjusting content..</p>
+
+        <p>I believe that this is the direction most websites should be moving in considering the number of devices that users utilize today, and the abilities and limitations of each.</p>
+
+	</article>
+
+</body>
+</html>
