@@ -3,7 +3,11 @@
 <head>
 	<title> my qs </title>
 	<link rel="stylesheet" href="css/style.css">
-	<script src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
 </head>
 <body>
 	
@@ -12,6 +16,74 @@
 		<div id="search">
 			<input type="text" id="txtSearch" />
 		</div>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#jquery-utilities" data-toggle="collapse" class="accordion-toggle">jQuery Utilities?</a>
+			 </div>
+			
+			 <div class="accordion-body collapse" id="jquery-utilities">
+				<div class="accordion-inner">
+					<div>
+						<h1>Type testing functions - </h1>
+						<h4>
+							These are very helpful in optional parameters and also when validating the parameters  
+						</h4>
+						
+						<ul>
+							<li>isArray(array) - <p>Objet is javascript array or not</p></li>
+							<li>isFunction(fun) - <p>- tells if function or not</p></li>
+							<li>isEmptyObject(obj) - <p>tells if empt y or not</p></li>
+							<li>isXmlDoc(doc)  - <p></p></li>
+							<li>isNumeric(num)  - 
+								<p>avilable in jQuery 1.7+</p>
+								<p>The $.isNumeric() method checks whether its argument represents a numeric value. If so, it returns true. Otherwise it returns false. The argument can be of any type.</p>
+							</li>
+							<li>isWindow(obj)   - <p>window or frame</p></li>
+						</ul>									
+					</div>   
+
+					<div>
+						<h1>Collection functions - </h1>
+						<h4>
+							These are very helpful in optional parameters and also when validating the parameters  
+						</h4>
+						
+						<ul>
+							<li>makeArray - <p> Convert an array-like object into a true JavaScript array.</p>
+							<pre class="brush: js;">
+								var obj = $( "li" );
+							    var arr = $.makeArray( obj );
+							</pre>
+							</li>
+							<li>inArray - <p>- returns index of the elment</p></li>
+							<li>unique - <p>filters duplicates</p></li>
+							<li>merge  - <p>merge two arrays</p></li>
+							<li>map - 
+								<p>Translate all items in an array or object to new array of items.</p>
+								<p> $(selector).map</p>
+								<p> $.map</p>
+							</li>
+							<li>grep   - 
+<p>Finds the elements of an array which satisfy a filter function. The original array is not affected.</p>
+								<p>
+							 	only receives the dom object								
+								invert parameter - which performs inverse</p>
+								<pre class="brush: js;">
+									var arr = [ 1, 9, 3, 8, 6, 1, 5, 9, 4, 7, 3, 8, 6, 9, 1 ];
+									arr = jQuery.grep(arr, function( item, index ) {
+									  return ( item !== 5 && index > 4 );
+									});
+									// 1, 9, 4, 7, 3, 8, 6, 9, 1									
+								</pre>
+
+							</li>
+						</ul>									
+					</div> 
+
+				</div>
+			</div>			
+		</article>
 				
 		<article class="accordion-group">
 			 <div class="accordion-heading">      		
@@ -37,7 +109,7 @@
 			 <div class="accordion-body collapse in" id="oop-javascript">
 				<div class="accordion-inner">            
 					<p>The two important principles with OOP in JavaScript are Object Creation patterns (Encapsulation) and Code Reuse patterns (Inheritance). When building applications, you create many objects, and there are many ways of creating these objects: you can use the very basic object literal pattern, for example:</p>
-					<pre>
+					<pre class="brush: js;">
 						<code data-language="javascript" class="rainbow"><span class="keyword">var</span> myObj <span class="keyword operator">=</span> {name:<span 	class="string">"Richard"</span>, profession:<span class="string">"Developer"</span>}; </code>
 				</pre>
 				</div>
