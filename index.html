@@ -10,7 +10,7 @@
 	<script type="text/javascript">SyntaxHighlighter.all();</script>
 </head>
 <body>
-	
+	<!-- <pre class="brush: js;"> -->
 
 	<div id="container">
 		<div id="search">
@@ -50,11 +50,12 @@
 						</h4>
 						
 						<ul>
-							<li>makeArray - <p> Convert an array-like object into a true JavaScript array.</p>
-							<pre class="brush: js;">
-								var obj = $( "li" );
-							    var arr = $.makeArray( obj );
-							</pre>
+							<li>makeArray - 
+								<p> Convert an array-like object into a true JavaScript array.</p>
+								<pre class="brush: js;">
+									var obj = $( "li" );
+								    var arr = $.makeArray( obj );
+								</pre>
 							</li>
 							<li>inArray - <p>- returns index of the elment</p></li>
 							<li>unique - <p>filters duplicates</p></li>
@@ -65,7 +66,7 @@
 								<p> $.map</p>
 							</li>
 							<li>grep   - 
-<p>Finds the elements of an array which satisfy a filter function. The original array is not affected.</p>
+								<p>Finds the elements of an array which satisfy a filter function. The original array is not affected.</p>
 								<p>
 							 	only receives the dom object								
 								invert parameter - which performs inverse</p>
@@ -79,7 +80,134 @@
 
 							</li>
 						</ul>									
-					</div> 
+					
+					<div>
+						<ul>
+							<li>
+								<h4>extend Function</h4> 
+								<p>
+									copy members from source object to target object - 
+									Conflicts will cause members to be overwritten
+								</p>
+								<pre class="brush: js;">
+									
+								</pre>
+							</li>
+							<li>
+								<h4>parseJSON Function</h4> 
+								<p>
+									Turns a JSON String into javascript objects, no need to do as jquery ajax functions will convert the result into JSON automatically, but in special cases this is needed.
+								</p>
+								<pre class="brush: js;">
+									var json = '{"fname": "john", "lname": "smith", "age":24}';
+									var jsObj = $.parseJSON(json);
+									console.log( jsObj.fname, jsObj.lname );
+									// output
+									// john smith
+								</pre>
+							</li>
+
+							<li>
+								<h4>each Function</h4> 
+								<p>
+									array - $(selector) - object
+								</p>
+								<pre class="brush: js;"> 
+																	
+								</pre>
+							</li>
+
+							<li>
+								<h4>pushStack</h4> 
+								<p>Adds new array of DOM elements onto the jQuery stack.</p>
+								<pre class="brush: js;"> 
+									jQuery([])
+									  .pushStack( document.getElementsByTagName( "div" ) )
+									  .remove()
+									  .end();									
+								</pre>
+							</li>
+							<li>
+								<h4>holdReady</h4> 
+									<p>
+									holds the ready function until we tell it can fire it ( Holds or releases the execution of jQuery's ready event.)
+								</p>
+								<p>
+									<strong>Uses:</strong>
+									waiting for a specific asset to load
+								</p>
+								<p>
+									The $.holdReady() method allows the caller to delay jQuery's ready event. This advanced feature would typically be used by dynamic script loaders that want to load additional JavaScript such as jQuery plugins before allowing the ready event to occur, even though the DOM may be ready. This method must be called early in the document, such as in the <head> immediately after the jQuery script tag. Calling this method after the ready event has already fired will have no effect.
+								</p> 
+								<p>
+								To delay the ready event, first call $.holdReady( true ). When the ready event should be released to execute, call $.holdReady( false ). Note that multiple holds can be put on the ready event, one for each $.holdReady( true ) call. The ready event will not actually fire until all holds have been released with a corresponding number of $.holdReady( false ) calls and the normal document ready conditions are met. (See ready for more information.)
+								</p> 
+								<p>
+								Example:
+								Delay the ready event until a custom plugin has loaded.
+								</p>
+								<pre class="brush: js;"> 
+									$.holdReady( true );
+									$.getScript( "myplugin.js", function() {
+									  $.holdReady( false );
+									});
+								</pre>								
+							</li>
+							<li>
+								<h4>getScript</h4> 
+								<p>wrapper for $.ajax so non blocking (Load a JavaScript file from the server using a GET HTTP request, then execute it.)</p>
+								<p>Executes retrieved javascript immediately</p>
+
+								 <pre class="brush: js;"> 
+									$.getScript("script.js", function(data, textStatus) {
+										console.log(textStatus); // success
+									})									;
+								</pre>
+							</li>
+							
+							<li>
+								<h4>jQuery.noConflict</h4> 
+								<p>Relinquish jQuery's control of the $ variable.</p>
+								<p>Many JavaScript libraries use $ as a function or variable name, just as jQuery does. In jQuery's case, $ is just an alias for jQuery, so all functionality is available without using $. If you need to use another JavaScript library alongside jQuery, return control of $ back to the other library with a call to $.noConflict(). Old references of $ are saved during jQuery initialization; noConflict() simply restores them.</p>
+								<p>
+								If for some reason two versions of jQuery are loaded (which is not recommended), calling $.noConflict( true ) from the second version will return the globally scoped jQuery variables to those of the first version.
+								</p>
+								<p><strong>Example: </strong> Load two versions of jQuery (not recommended). Then, restore jQuery's globally scoped variables to the first loaded jQuery.</p>
+								 <pre class="brush: js;"> 
+									&lt;!doctype html&gt;
+									&lt;html lang="en"&gt;
+									&lt;head&gt;
+									 &lt;meta charset="utf-8"&gt;
+									  &lt;title&gt;jQuery.noConflict demo&lt;/title &gt;
+									  &lt;script src="//code.jquery.com/jquery-1.10.2.js"&gt; &lt;/script&gt;
+									</head>
+									&lt;body&gt;
+									 
+									&lt;div id="log"&gt;
+									  <h3>Before $.noConflict(true)</h3>
+									&lt;/div&gt;
+									&lt;script src="//code.jquery.com/jquery-1.6.2.js"&gt; &lt;/script&gt;
+									 
+									&lt;script>
+									var $log = $( "#log" );
+									 
+									$log.append( "2nd loaded jQuery version ($): " + $.fn.jquery + "<br>" );
+									 
+									// Restore globally scoped jQuery variables to the first version loaded
+									// (the newer version)
+									 
+									jq162 = jQuery.noConflict( true );
+									 
+									$log.append( "<h3>After $.noConflict(true)</h3>" );
+									$log.append( "1st loaded jQuery version ($): " + $.fn.jquery + "<br>" );
+									$log.append( "2nd loaded jQuery version (jq162): " + jq162.fn.jquery + "<br>" );
+									&lt;/script&gt;
+									&lt;/body&gt;
+									&lt;/html&gt;
+								</pre>
+							</li>
+						</ul>
+					</div>
 
 				</div>
 			</div>			
