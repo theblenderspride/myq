@@ -18,13 +18,139 @@
 		</div>
 		
 		<div id="searchgap"></div>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#jquery-miscellaneous" data-toggle="collapse" class="accordion-toggle">jQuery Miscellaneous?</a>
+			 </div>
+			
+			 <div class="accordion-body collapse" id="jquery-miscellaneous">
+				<div class="accordion-inner">
+					<ul>
+						<li>
+							<strong>jQuery scrollTop (Smoothly scroll to an element with jquery)</strong>
+						
+							<p>	 Get the current vertical position of the scroll bar for the first element in the set of matched elements or set the vertical position of the scroll bar for every matched element.
+                            </p>							
+							<pre class="brush: js;">
+								var container = $('div'),
+									scrollTo = $('#row_8');
+
+								container.scrollTop(
+									scrollTo.offset().top - container.offset().top + container.scrollTop()
+								);
+
+								// Or you can animate the scrolling:
+								container.animate({
+									scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop()
+								});​							
+							</pre>
+							
+						</li>
+						<li>
+							<strong>How to get the current URL in javascript?</strong>
+							<p>								
+								<pre class="brush: js;">
+									window.location.pathname;								
+								</pre>
+							</p>
+						</li>
+						<li>
+							<strong>Get selected text from drop down list (select box) using jQuery</strong>
+							<p>								
+								<pre class="brush: js; highlight: [2, 4, 6]">
+									// Using plain javascript
+									dropdownid.options[dropdownid.selectedIndex].innerHTML
+									
+									$("#dropdownid option:selected").text();
+									// the fastest using jquery is
+                                    $("#dropdownid").children("option").filter(":selected").text()								
+								</pre>
+							</p>
+						</li>
+						<li>
+							<strong>jQuery multiple class selector?</strong>
+							<p>
+								To select a &lt;div class="a b"&gt;&lt;/div&gt;
+								<pre class="brush: js;">
+	                                // Use									
+									$('.a.b')					
+								</pre>
+								and we don't need that ".length > 0" part.
+							</p>
+						</li>
+						<li>
+							<strong>check the existence of an element in jQuery?</strong>
+							<p>
+								In JavaScript, everything is truthy or falsy and for numbers, 0 means false, everything else true. So you could write:
+								<pre class="brush: js;">
+									if ($(selector).length)							
+								</pre>
+								and we don't need that ".length > 0" part.
+							</p>
+						</li>
+						<li>
+							<strong>which radio is selected via jQuery?</strong>
+							<pre class="brush: js;">
+								$("#myform input[type='radio']:checked").val();
+								( or )
+								$('input[name=radioName]:checked', '#myForm').val()								
+							</pre>
+						</li>
+						<li>
+							<strong>event.preventDefault() vs. return false</strong>
+							<p>
+								<em>return false</em> from within a jQuery event handler is effectively the same as calling both  <em>e.preventDefault</em> and <em>e.stopPropagation</em> on the passed jQuery.Event object.
+							</p>
+							<p>
+								<em>e.preventDefault()</em> will prevent the default event from occuring, <em>e.stopPropagation()</em> will prevent the event from bubbling up and return false will do both. Note that this behaviour differs from normal (non-jQuery) event handlers, in which, notably, return false does not stop the event from bubbling up.	
+							</p>
+						</li>
+						<li>
+							<strong>How do I check a checkbox with jQuery?</strong>
+							<p> In jQuery 1.6+, Use the new .prop() function:								
+							</p>
+							<pre class="brush: js;">
+								$('.myCheckbox').prop('checked', true);
+								$('.myCheckbox').prop('checked', false);
+							</pre>
+							<p>
+							in jQuery 1.5 and below, the .prop() function is not available, so you need to use .attr().
+							</p>
+							<p>
+							To check the checkbox (by setting the value of the checked attribute) do
+							<pre class="brush: js;">$('.myCheckbox').attr('checked','checked');</pre>
+							</p>
+							<p>							
+								and for un-checking (by removing the attribute entirely) do
+							</p>
+							<pre class="brush: js;">
+							$('.myCheckbox').removeAttr('checked');
+							</pre>
+							<p>
+								<strong>If you want to check if a checkbox is checked or not:</strong>
+								<pre class="brush: js;">
+								$('.myCheckbox').is(':checked');
+								</pre>
+							</p>
+							<p>
+								<strong>NOTE: Using only javascript</strong>
+								<pre class="brush: js;">
+									DOMElement.checked  = true; //  to set in javascript
+								</pre>
+							</p>						
+						</li>
+					</ul>
+				</div>
+			<div>
+		</article>
 
 		<article class="accordion-group">
 			 <div class="accordion-heading">      		
 				<a href="#jquery-utilities" data-toggle="collapse" class="accordion-toggle">jQuery Utilities?</a>
 			 </div>
 			
-			 <div class="accordion-body collapse" id="jquery-utilities">
+			 <div class="accordion-body collapse in" id="jquery-utilities">
 				<div class="accordion-inner">
 					<div>
 						<h2>Type testing functions - </h2>
@@ -116,6 +242,17 @@
 								<p>Translate all items in an array or object to new array of items.</p>
 								<p> $(selector).map</p>
 								<p> $.map</p>
+								<p>
+									<strong>Example: 								
+									</strong>
+									To simply flatten the array [1, 2, [3, 4], [5, 6], 7] to [1, 2, 3, 4, 5, 6, 7]
+								</p>
+								<pre class="brush: js;">
+									$.map( [1, 2, [3, 4], [5, 6], 7], function(n){
+									   return n;
+									});										
+									// returns [1, 2, 3, 4, 5, 6, 7]
+								</pre>
 							</li>
 							<li><strong>grep</strong>  - 
 								<p>Finds the elements of an array which satisfy a filter function. The original array is not affected.</p>
@@ -129,9 +266,8 @@
 									});
 									// 1, 9, 4, 7, 3, 8, 6, 9, 1									
 								</pre>
-
 							</li>
-						</ul>									
+						</ul>						
 					
 					<div>
 						<ul>
