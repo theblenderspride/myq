@@ -32,6 +32,8 @@
 							<em>These are very helpful in optional parameters and also when validating the parameters for functions.</em>
 						</h5>
 						
+						<a class="source-url"  href="http://api.jquery.com/category/utilities/">Utility functions source</a>
+						
 						<ul>
 							<li><strong>isArray(array)</strong> - 
 								<p>$.isArray() returns a Boolean indicating whether the object is a JavaScript array (not an array-like object, such as a jQuery object).
@@ -58,8 +60,22 @@
 								</pre>								
 							</li>
 							<li><strong>isFunction(fun)</strong> - <p>- Determine if the argument passed is a Javascript function object.</p></li>
-							<li><strong>isEmptyObject(obj)</strong> - <p>Checks to see if an object is empty (contains no enumerable properties).</p></li>
+							<li>
+								<strong>isEmptyObject(obj)</strong> - <p>Checks to see if an object is empty (contains no enumerable properties).</p>	
+							</li>
 							<li><strong>jQuery.isPlainObject(obj)</strong> - 
+								<p>
+									<strong>Note:</strong> Host objects (or objects used by browser host environments to complete the execution environment of ECMAScript) have a number of inconsistencies which are difficult to robustly feature detect cross-platform. As a result of this, $.isPlainObject() may evaluate inconsistently across browsers in certain instances.
+								</p>
+								<p>
+									An example of this is a test against document.location using $.isPlainObject() as follows:
+								</p>
+								<pre class="brush: js;">
+									console.log( $.isPlainObject( document.location ) );
+								</pre>
+								<p>
+									which throws an invalid pointer exception in IE8. With this in mind, it's important to be aware of any of the gotchas involved in using $.isPlainObject() against older browsers. A couple basic examples that do function correctly cross-browser can be found below.
+								</p>
 								<p>Check to see if an object is a plain object (created using "{}" or "new Object").</p>
 								<pre class="brush: js;">
 									jQuery.isPlainObject({}) // true
@@ -68,10 +84,10 @@
 							</li>
 							<li><strong>isXmlDoc(doc)</strong>  - <p></p></li>
 							<li><strong>isNumeric(num)</strong>  - 
-								<p>avilable in jQuery 1.7+</p>
+								<p>available in jQuery 1.7+</p>
 								<p>The $.isNumeric() method checks whether its argument represents a numeric value. If so, it returns true. Otherwise it returns false. The argument can be of any type.</p>
 							</li>
-							<li><strong>isWindow(obj)</strong>   - <p>window or frame</p></li>
+							<li><strong>isWindow(obj)</strong> - <p>Determine whether the argument is a window.</p></li>
 						</ul>									
 					</div>   
 
@@ -79,25 +95,29 @@
 						<h1>Collection functions - </h1>
 						<h4>
 							These are very helpful in optional parameters and also when validating the parameters  
-						</h4>
-						
+						</h4>						
 						<ul>
-							<li>makeArray - 
+							<li><strong>makeArray</strong> - 
 								<p> Convert an array-like object into a true JavaScript array.</p>
 								<pre class="brush: js;">
 									var obj = $( "li" );
 								    var arr = $.makeArray( obj );
 								</pre>
 							</li>
-							<li>inArray - <p>- returns index of the elment</p></li>
-							<li>unique - <p>filters duplicates</p></li>
-							<li>merge  - <p>merge two arrays</p></li>
-							<li>map - 
+							<li><strong>inArray</strong> - 
+								<p>- returns index of the element (Search for a specified value within an array and return its index (or -1 if not found))</p>
+								<p>
+									The $.inArray() method is similar to JavaScript's native .indexOf() method in that it returns -1 when it doesn't find a match. If the first element within the array matches value, $.inArray() returns 0.
+								</p>
+							</li>
+							<li><strong>unique</strong> - <p>filters duplicates</p></li>
+							<li><strong>merge</strong>  - <p>merge two arrays</p></li>
+							<li><strong>map</strong> - 
 								<p>Translate all items in an array or object to new array of items.</p>
 								<p> $(selector).map</p>
 								<p> $.map</p>
 							</li>
-							<li>grep   - 
+							<li><strong>grep</strong>  - 
 								<p>Finds the elements of an array which satisfy a filter function. The original array is not affected.</p>
 								<p>
 							 	only receives the dom object								

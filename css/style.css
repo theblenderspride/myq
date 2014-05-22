@@ -82,12 +82,19 @@ ul  li {
 	list-style: number;
 }
 
+a {
+	font-size: 14px;
+	text-decoration: none;
+color: #428bca;
+}
 
 @media print {
 	#search , 
-	#searchgap {
+	#searchgap ,
+	.source-url{
 		display: none;
 	}	
+	
 	body {
 		font-size: 13px;
 	}
