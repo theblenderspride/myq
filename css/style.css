@@ -24,11 +24,26 @@ p {
 	margin:7px 0;
 }
 #container {
-	margin: 20px;
+	margin: 0 20px;
+	width: 100%;	
 }
 
-#search {
-	margin-bottom: 20px;
+#search {	
+	width: 100%;
+	top: 0;
+	height: 100px;
+	position: fixed;
+	background: #FFF;	
+	z-index: 2;
+}
+
+#searchgap {
+	margin-top: 100px;
+}
+
+#txtSearch {
+	margin-top: 30px;
+	height: 30px;
 }
 
 .accordion-group {
@@ -65,4 +80,18 @@ ul , ol{
 
 ul  li {
 	list-style: number;
+}
+
+
+@media print {
+	#search , 
+	#searchgap {
+		display: none;
+	}	
+	body {
+		font-size: 13px;
+	}
+    h3 {
+		font-size: 20px;
+	}
 }

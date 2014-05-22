@@ -16,6 +16,8 @@
 		<div id="search">
 			<input type="text" id="txtSearch" />
 		</div>
+		
+		<div id="searchgap"></div>
 
 		<article class="accordion-group">
 			 <div class="accordion-heading">      		
@@ -110,21 +112,57 @@
 							<li>
 								<h4>each Function</h4> 
 								<p>
-									array - $(selector) - object
+									
+									Iterate over a jQuery object, executing a function for each matched element.									
 								</p>
+								<div>
+									<strong>Uses:</strong>
+									<ul>
+										<li>Can be used to iterate over json object.</li>
+										<li>Can be used to iterate over array.</li>
+									</ul>
+								</div>
 								<pre class="brush: js;"> 
-																	
+									<strong>Example</strong>
+									var arr = [ "one", "two", "three", "four", "five" ];
+									var obj = { one:1, two:2, three:3, four:4, five:5 };
+									
+									// iterating over array
+									jQuery.each(arr, function() {
+									  $("#" + this).text("My id is " + this + ".");
+									  return (this != "four"); // will stop running to skip "five"
+									});
+									
+									// iterating over object
+									jQuery.each(obj, function(i, val) {
+									  $("#" + i).append(document.createTextNode(" - " + val));
+									});
 								</pre>
 							</li>
 
 							<li>
 								<h4>pushStack</h4> 
-								<p>Adds new array of DOM elements onto the jQuery stack.</p>
-								<pre class="brush: js;"> 
-									jQuery([])
-									  .pushStack( document.getElementsByTagName( "div" ) )
-									  .remove()
-									  .end();									
+								<p>
+									Adds new array of DOM elements onto the jQuery stack. <strong>(or)</strong> pushStack() creates a new jQuery object that inherits state from a previous jQuery object.</p>
+								<p>								
+									This inherited state allows methods like .end() and .self() to work properly.
+								</p>
+								<p>									
+									When working with jQuery objects, it's important to know that most operations that change what DOM objects are in a jQuery object return a new jQuery object with the change in it rather than modifying the existing jQuery object. It is this design characteristic that allows them to maintain this stack of previously modified jQuery objects.
+								</p>																
+								<p>
+									The main use of pushStack is, in jQuery methods that return a new jQuery object. In that case, you create the new list of elements you want in the new jQuery object and then rather than just turning that into a regular jQuery object and returning it, you call <strong>return this.pushStack(elems)</strong>. This ends up creating a new jQuery object and returning it, but it also links that new object to the previous object so that special commands like <strong>.end()</strong> can work when used in chaining.
+								</p>
+								<p>
+									The jQuery .add() method is a classic example. In pseudo-code, what it does is this:
+								</p>
+								<pre class="brush: js;">
+									add: function(selector, context) {
+										// get the DOM elements that correspond to the new selector (the ones to be added)
+										// get the DOM elements from the current jQuery object with this.get()
+										// merge the two arrays of elements together into one array
+										return this.pushStack(combinedElems);
+									}
 								</pre>
 							</li>
 							<li>
@@ -238,7 +276,7 @@
 				<div class="accordion-inner">            
 					<p>The two important principles with OOP in JavaScript are Object Creation patterns (Encapsulation) and Code Reuse patterns (Inheritance). When building applications, you create many objects, and there are many ways of creating these objects: you can use the very basic object literal pattern, for example:</p>
 					<pre class="brush: js;">
-						<code data-language="javascript" class="rainbow"><span class="keyword">var</span> myObj <span class="keyword operator">=</span> {name:<span 	class="string">"Richard"</span>, profession:<span class="string">"Developer"</span>}; </code>
+						var myObj = {name: "Richard", profession: "Developer"};
 				</pre>
 				</div>
 			</div>			

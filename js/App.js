@@ -2,6 +2,8 @@
 
     $.fn.accordion = function() {
         $(".collapse").not(".in").show();
+		
+		//$(".collapse").show();
 
         this.on("click", ".accordion-heading a", function(e) {
             e.preventDefault();
