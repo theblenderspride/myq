@@ -1,0 +1,544 @@
+<!Doctype html>
+<html>
+<head>
+	<title> jquery qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		<div id="search">
+			<input type="text" id="txtSearch" />
+		</div>
+		
+		<div id="searchgap"></div>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#jquery-miscellaneous" data-toggle="collapse" class="accordion-toggle">jQuery Miscellaneous?</a>
+			 </div>
+			
+			 <div class="accordion-body collapse" id="jquery-miscellaneous">
+				<div class="accordion-inner">
+					<ul>
+						<li>
+							<strong>$(document).ready equivalent without jQuery?</strong>
+							<p>We have three options:</p>
+							<ul>
+								<li>If script is the last tag of the body, DOM would be ready before script tag executes</li>
+								<li>When DOM is ready, "readyState" will change to "complete"</li>
+								<li>Put everything under 'DOMContentLoaded' event listener</li>
+							</ul>							
+							<p><strong>onreadystatechange</strong></p>
+							<pre class="brush: js;">
+								 document.onreadystatechange = function () {
+									 if (document.readyState == "complete") {
+									 	//document is ready. Do your stuff here
+								     }
+								 }
+							</pre>
+							<p><strong>DOMContentLoaded</strong></p>								
+							<pre class="brush: js;">
+								document.addEventListener('DOMContentLoaded', function(){
+								   console.log('document is ready. I can sleep now'); 
+								 });				
+							</pre>
+						</li>
+						
+						<li>
+							<strong>Preloading images with jQuery?</strong>
+							<pre class="brush: js;">
+								$.fn.preload = function() {
+									this.each(function(){
+										$('<img/>')[0].src = this;
+									});
+								}
+								// Usage:
+								$(['img1.jpg','img2.jpg','img3.jpg']).preload();					
+							</pre>
+						</li>
+
+						<li>
+							<strong>How to change the href for a hyperlink using jQuery?</strong>
+							<pre class="brush: js;">
+								$("a").attr("href", "http://www.google.com/")							
+							</pre>
+						</li>
+						<li>
+							<strong>Scroll to bottom of div?</strong>
+							<pre class="brush: js;">
+								$("#mydiv").scrollTop($("#mydiv")[0].scrollHeight);								
+							</pre>
+						</li>
+						<li>
+							<strong>Using jQuery to center a DIV on the screen</strong>
+							<pre class="brush: js; highlight: [10, 12]">
+								jQuery.fn.center = function () {
+									this.css("position","absolute");
+									this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) + 
+																				$(window).scrollTop()) + "px");
+									this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + 
+																				$(window).scrollLeft()) + "px");
+									return this;
+								}	
+								//Now call								
+								$(element).center();		
+
+								//With CSS only								
+								.center {
+								  position: absolute;
+								  left: 50%;
+								  top: 50%;
+								  transform: translate(-50%, -50%); /* Yep! */
+								  width: 48%;
+								  height: 59%;
+								}								
+							</pre>
+						</li>
+						<li>
+							<strong>jQuery scrollTop (Smoothly scroll to an element with jquery)</strong>
+						
+							<p>	 Get the current vertical position of the scroll bar for the first element in the set of matched elements or set the vertical position of the scroll bar for every matched element.
+                            </p>							
+							<pre class="brush: js;">
+								var container = $('div'),
+									scrollTo = $('#row_8');
+
+								container.scrollTop(
+									scrollTo.offset().top - container.offset().top + container.scrollTop()
+								);
+
+								// Or you can animate the scrolling:
+								container.animate({
+									scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop()
+								});
+							</pre>
+							
+						</li>
+						<li>
+							<strong>How to get the current URL in javascript?</strong>
+							<p>								
+								<pre class="brush: js;">
+									window.location.pathname;								
+								</pre>
+							</p>
+						</li>
+						<li>
+							<strong>Get selected text from drop down list (select box) using jQuery</strong>
+							<p>								
+								<pre class="brush: js; highlight: [2, 4, 6]">
+									// Using plain javascript
+									dropdownid.options[dropdownid.selectedIndex].innerHTML
+									
+									$("#dropdownid option:selected").text();
+									// the fastest using jquery is
+                                    $("#dropdownid").children("option").filter(":selected").text()								
+								</pre>
+							</p>
+						</li>
+						<li>
+							<strong>jQuery multiple class selector?</strong>
+							<p>
+								To select a &lt;div class="a b"&gt;&lt;/div&gt;
+								<pre class="brush: js;">
+	                                // Use									
+									$('.a.b')					
+								</pre>
+								and we don't need that ".length > 0" part.
+							</p>
+						</li>
+						<li>
+							<strong>check the existence of an element in jQuery?</strong>
+							<p>
+								In JavaScript, everything is truthy or falsy and for numbers, 0 means false, everything else true. So you could write:
+								<pre class="brush: js;">
+									if ($(selector).length)							
+								</pre>
+								and we don't need that ".length > 0" part.
+							</p>
+						</li>
+						<li>
+							<strong>which radio is selected via jQuery?</strong>
+							<pre class="brush: js;">
+								$("#myform input[type='radio']:checked").val();
+								( or )
+								$('input[name=radioName]:checked', '#myForm').val()								
+							</pre>
+						</li>
+						<li>
+							<strong>event.preventDefault() vs. return false</strong>
+							<p>
+								<em>return false</em> from within a jQuery event handler is effectively the same as calling both  <em>e.preventDefault</em> and <em>e.stopPropagation</em> on the passed jQuery.Event object.
+							</p>
+							<p>
+								<em>e.preventDefault()</em> will prevent the default event from occuring, <em>e.stopPropagation()</em> will prevent the event from bubbling up and return false will do both. Note that this behaviour differs from normal (non-jQuery) event handlers, in which, notably, return false does not stop the event from bubbling up.	
+							</p>
+						</li>
+						<li>
+							<strong>How do I check a checkbox with jQuery?</strong>
+							<p> In jQuery 1.6+, Use the new .prop() function:								
+							</p>
+							<pre class="brush: js;">
+								$('.myCheckbox').prop('checked', true);
+								$('.myCheckbox').prop('checked', false);
+							</pre>
+							<p>
+							in jQuery 1.5 and below, the .prop() function is not available, so you need to use .attr().
+							</p>
+							<p>
+							To check the checkbox (by setting the value of the checked attribute) do
+							<pre class="brush: js;">$('.myCheckbox').attr('checked','checked');</pre>
+							</p>
+							<p>							
+								and for un-checking (by removing the attribute entirely) do
+							</p>
+							<pre class="brush: js;">
+							$('.myCheckbox').removeAttr('checked');
+							</pre>
+							<p>
+								<strong>If you want to check if a checkbox is checked or not:</strong>
+								<pre class="brush: js;">
+								$('.myCheckbox').is(':checked');
+								</pre>
+							</p>
+							<p>
+								<strong>NOTE: Using only javascript</strong>
+								<pre class="brush: js;">
+									DOMElement.checked  = true; //  to set in javascript
+								</pre>
+							</p>						
+						</li>
+					</ul>
+				</div>
+			<div>
+		</article>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#jquery-utilities" data-toggle="collapse" class="accordion-toggle">jQuery Utilities?</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="jquery-utilities">
+				<div class="accordion-inner">
+					<div>
+						<h2>Type testing functions - </h2>
+						<h5>
+							<em>These are very helpful in optional parameters and also when validating the parameters for functions.</em>
+						</h5>
+						
+						<a class="source-url"  href="http://api.jquery.com/category/utilities/">Utility functions source</a>
+						
+						<ul>
+							<li><strong>isArray(array)</strong> - 
+								<p>$.isArray() returns a Boolean indicating whether the object is a JavaScript array (not an array-like object, such as a jQuery object).
+								</p>
+								<p> Array.isArray works fast, but it isn't supported by all versions of browsers. So you could make an exception for others and use universal method:
+								</p>
+								<pre class="brush: js;">
+									var a = ["A", "AA", "AAA"];
+                                    
+									// javascript version
+									if(Array.isArray){
+										Array.isArray(a) ? alert("a is an array") : alert("a is not an array");
+									} else {
+										(Object.prototype.toString.call(a) === '[object Array]') 
+											? alert("a is an array") : alert("a is not an array");
+									}
+									
+								    // jquery version							
+									if($.isArray(a)) {
+										alert("a is an array!");
+									} else {
+										alert("a is not an array!");
+									}
+								</pre>								
+							</li>
+							<li><strong>isFunction(fun)</strong> - <p>- Determine if the argument passed is a Javascript function object.</p></li>
+							<li>
+								<strong>isEmptyObject(obj)</strong> - <p>Checks to see if an object is empty (contains no enumerable properties).</p>	
+							</li>
+							<li><strong>jQuery.isPlainObject(obj)</strong> - 
+								<p>
+									<strong>Note:</strong> Host objects (or objects used by browser host environments to complete the execution environment of ECMAScript) have a number of inconsistencies which are difficult to robustly feature detect cross-platform. As a result of this, $.isPlainObject() may evaluate inconsistently across browsers in certain instances.
+								</p>
+								<p>
+									An example of this is a test against document.location using $.isPlainObject() as follows:
+								</p>
+								<pre class="brush: js;">
+									console.log( $.isPlainObject( document.location ) );
+								</pre>
+								<p>
+									which throws an invalid pointer exception in IE8. With this in mind, it's important to be aware of any of the gotchas involved in using $.isPlainObject() against older browsers. A couple basic examples that do function correctly cross-browser can be found below.
+								</p>
+								<p>Check to see if an object is a plain object (created using "{}" or "new Object").</p>
+								<pre class="brush: js;">
+									jQuery.isPlainObject({}) // true
+									jQuery.isPlainObject( "test" ) // false
+								</pre>
+							</li>
+							<li><strong>isXmlDoc(doc)</strong>  - <p></p></li>
+							<li><strong>isNumeric(num)</strong>  - 
+								<p>available in jQuery 1.7+</p>
+								<p>The $.isNumeric() method checks whether its argument represents a numeric value. If so, it returns true. Otherwise it returns false. The argument can be of any type.</p>
+							</li>
+							<li><strong>isWindow(obj)</strong> - <p>Determine whether the argument is a window.</p></li>
+						</ul>									
+					</div>   
+
+					<div>
+						<h1>Collection functions - </h1>
+						<h4>
+							These are very helpful in optional parameters and also when validating the parameters  
+						</h4>						
+						<ul>
+							<li><strong>makeArray</strong> - 
+								<p> Convert an array-like object into a true JavaScript array.</p>
+								<pre class="brush: js;">
+									var obj = $( "li" );
+								    var arr = $.makeArray( obj );
+								</pre>
+							</li>
+							<li><strong>inArray</strong> - 
+								<p>- returns index of the element (Search for a specified value within an array and return its index (or -1 if not found))</p>
+								<p>
+									The $.inArray() method is similar to JavaScript's native .indexOf() method in that it returns -1 when it doesn't find a match. If the first element within the array matches value, $.inArray() returns 0.
+								</p>
+							</li>
+							<li><strong>unique</strong> - <p>filters duplicates</p></li>
+							<li><strong>merge</strong>  - <p>merge two arrays</p></li>
+							<li><strong>map</strong> - 
+								<p>Translate all items in an array or object to new array of items.</p>
+								<p> $(selector).map</p>
+								<p> $.map</p>
+								<p>
+									<strong>Example: 								
+									</strong>
+									To simply flatten the array [1, 2, [3, 4], [5, 6], 7] to [1, 2, 3, 4, 5, 6, 7]
+								</p>
+								<pre class="brush: js;">
+									$.map( [1, 2, [3, 4], [5, 6], 7], function(n){
+									   return n;
+									});										
+									// returns [1, 2, 3, 4, 5, 6, 7]
+								</pre>
+							</li>
+							<li><strong>grep</strong>  - 
+								<p>Finds the elements of an array which satisfy a filter function. The original array is not affected.</p>
+								<p>
+							 	only receives the dom object								
+								invert parameter - which performs inverse</p>
+								<pre class="brush: js;">
+									var arr = [ 1, 9, 3, 8, 6, 1, 5, 9, 4, 7, 3, 8, 6, 9, 1 ];
+									arr = jQuery.grep(arr, function( item, index ) {
+									  return ( item !== 5 && index > 4 );
+									});
+									// 1, 9, 4, 7, 3, 8, 6, 9, 1									
+								</pre>
+							</li>
+						</ul>						
+					
+					<div>
+						<ul>
+							<li>
+								<h4>extend Function</h4> 
+								<p>
+									copy members from source object to target object - 
+									Conflicts will cause members to be overwritten
+								</p>
+								<pre class="brush: js;">
+									
+								</pre>
+							</li>
+							<li>
+								<h4>parseJSON Function</h4> 
+								<p>
+									Turns a JSON String into javascript objects, no need to do as jquery ajax functions will convert the result into JSON automatically, but in special cases this is needed.
+								</p>
+								<pre class="brush: js;">
+									var json = '{"fname": "john", "lname": "smith", "age":24}';
+									var jsObj = $.parseJSON(json);
+									console.log( jsObj.fname, jsObj.lname );
+									// output
+									// john smith
+								</pre>
+							</li>
+
+							<li>	
+								<h4>each Function <strong>( $.each() and  $(selector).each())</strong></h4> 
+								<p>									
+									Iterate over a jQuery object, executing a function for each matched.																	
+								</p>
+								<div>
+									<strong>Uses:</strong>
+									<ul>
+										<li>Can be used to iterate over json object.</li>
+										<li>Can be used to iterate over array.</li>
+									</ul>
+								</div>
+								
+								<h5><em>The $.each() function is not the same as $(selector).each(), which is used to iterate, exclusively, over a jQuery object.</em></h5>
+								
+								<pre class="brush: js;"> $.each(".indent", function(index){ </pre>
+		                        <p>
+									doesn't iterate over the elements of $('.indent') but over the ".indent" string whose length is 7 chars.
+								</p>
+
+                                <p>See reference,
+
+								A more detailed explanation based on jQuery source code :
+
+								jQuery first checks if the first parameter, obj (here your string), has a length :
+								</p>
+								<pre class="brush: js;">
+									var ...
+											length = obj.length,
+											isObj = length === undefined || jQuery.isFunction( obj );
+									Your string having a length (and not being a function), isObj is false.
+								</pre>
+								<p>In this case, the following code is executed :</p>
+								<pre class="brush: js;">
+									for ( ; i < length; ) {
+										if ( callback.call( obj[ i ], i, obj[ i++ ] ) === false ) {
+											break;
+										}
+									}
+								</pre>
+								<p>So, given the function f, the following code</p>
+								<pre class="brush: js;">
+									$.each(".indent", f);
+								</pre>
+								<p>is equivalent to</p>
+								<pre class="brush: js;">
+									for (var i=0; i<".indent".length; i++) {
+										var letter = ".indent"[i];
+										f.call(letter, i, letter);
+									}
+								</pre>
+								<p>
+									(you can log the letters using var f = function(i,v){console.log(v)}; or be reminded one of the subtleties of call using var f = function(){console.log(this)};)
+								</p>
+								
+							</li>
+
+							<li>
+								<h4>pushStack</h4> 
+								<p>
+									Adds new array of DOM elements onto the jQuery stack. <strong>(or)</strong> pushStack() creates a new jQuery object that inherits state from a previous jQuery object.</p>
+								<p>								
+									This inherited state allows methods like .end() and .self() to work properly.
+								</p>
+								<p>									
+									When working with jQuery objects, it's important to know that most operations that change what DOM objects are in a jQuery object return a new jQuery object with the change in it rather than modifying the existing jQuery object. It is this design characteristic that allows them to maintain this stack of previously modified jQuery objects.
+								</p>																
+								<p>
+									The main use of pushStack is, in jQuery methods that return a new jQuery object. In that case, you create the new list of elements you want in the new jQuery object and then rather than just turning that into a regular jQuery object and returning it, you call <strong>return this.pushStack(elems)</strong>. This ends up creating a new jQuery object and returning it, but it also links that new object to the previous object so that special commands like <strong>.end()</strong> can work when used in chaining.
+								</p>
+								<p>
+									The jQuery .add() method is a classic example. In pseudo-code, what it does is this:
+								</p>
+								<pre class="brush: js;">
+									add: function(selector, context) {
+										// get the DOM elements that correspond to the new selector (the ones to be added)
+										// get the DOM elements from the current jQuery object with this.get()
+										// merge the two arrays of elements together into one array
+										return this.pushStack(combinedElems);
+									}
+								</pre>
+							</li>
+							<li>
+								<h4>holdReady</h4> 
+									<p>
+									holds the ready function until we tell it can fire it ( Holds or releases the execution of jQuery's ready event.)
+								</p>
+								<p>
+									<strong>Uses:</strong>
+									waiting for a specific asset to load
+								</p>
+								<p>
+									The $.holdReady() method allows the caller to delay jQuery's ready event. This advanced feature would typically be used by dynamic script loaders that want to load additional JavaScript such as jQuery plugins before allowing the ready event to occur, even though the DOM may be ready. This method must be called early in the document, such as in the <head> immediately after the jQuery script tag. Calling this method after the ready event has already fired will have no effect.
+								</p> 
+								<p>
+								To delay the ready event, first call $.holdReady( true ). When the ready event should be released to execute, call $.holdReady( false ). Note that multiple holds can be put on the ready event, one for each $.holdReady( true ) call. The ready event will not actually fire until all holds have been released with a corresponding number of $.holdReady( false ) calls and the normal document ready conditions are met. (See ready for more information.)
+								</p> 
+								<p>
+								Example:
+								Delay the ready event until a custom plugin has loaded.
+								</p>
+								<pre class="brush: js;"> 
+									$.holdReady( true );
+									$.getScript( "myplugin.js", function() {
+									  $.holdReady( false );
+									});
+								</pre>								
+							</li>
+							<li>
+								<h4>getScript</h4> 
+								<p>wrapper for $.ajax so non blocking (Load a JavaScript file from the server using a GET HTTP request, then execute it.)</p>
+								<p>Executes retrieved javascript immediately</p>
+
+								 <pre class="brush: js;"> 
+									$.getScript("script.js", function(data, textStatus) {
+										console.log(textStatus); // success
+									})									;
+								</pre>
+							</li>
+							
+							<li>
+								<h4>jQuery.noConflict</h4> 
+								<p>Releases (Relinquish) jQuery's control of the $ variable.</p>
+								<p>Many JavaScript libraries use $ as a function or variable name, just as jQuery does. In jQuery's case, $ is just an alias for jQuery, so all functionality is available without using $. If you need to use another JavaScript library alongside jQuery, return control of $ back to the other library with a call to $.noConflict(). Old references of $ are saved during jQuery initialization; noConflict() simply restores them.</p>
+								<p>
+								If for some reason two versions of jQuery are loaded (which is not recommended), calling $.noConflict( true ) from the second version will return the globally scoped jQuery variables to those of the first version.
+								</p>
+								<p><strong>Example: </strong> Load two versions of jQuery (not recommended). Then, restore jQuery's globally scoped variables to the first loaded jQuery.</p>
+								 <pre class="brush: js;"> 
+									&lt;!doctype html&gt;
+									&lt;html lang="en"&gt;
+									&lt;head&gt;
+									 &lt;meta charset="utf-8"&gt;
+									  &lt;title&gt;jQuery.noConflict demo&lt;/title &gt;
+									  &lt;script src="//code.jquery.com/jquery-1.10.2.js"&gt; &lt;/script&gt;
+									</head>
+									&lt;body&gt;
+									 
+									&lt;div id="log"&gt;
+									  <h3>Before $.noConflict(true)</h3>
+									&lt;/div&gt;
+									&lt;script src="//code.jquery.com/jquery-1.6.2.js"&gt; &lt;/script&gt;
+									 
+									&lt;script>
+									var $log = $( "#log" );
+									 
+									$log.append( "2nd loaded jQuery version ($): " + $.fn.jquery + "<br>" );
+									 
+									// Restore globally scoped jQuery variables to the first version loaded
+									// (the newer version)
+									 
+									jq162 = jQuery.noConflict( true );
+									 
+									$log.append( "<h3>After $.noConflict(true)</h3>" );
+									$log.append( "1st loaded jQuery version ($): " + $.fn.jquery + "<br>" );
+									$log.append( "2nd loaded jQuery version (jq162): " + jq162.fn.jquery + "<br>" );
+									&lt;/script&gt;
+									&lt;/body&gt;
+									&lt;/html&gt;
+								</pre>
+							</li>
+						</ul>
+					</div>
+
+				</div>
+			</div>			
+		</article>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+</body>
+</html>
+				

@@ -1,9 +1,9 @@
 (function($) {
 
     $.fn.accordion = function() {
-        $(".collapse").not(".in").show();
-		
-		//$(".collapse").show();
+        //$(".collapse").not(".in").show();
+
+        $(".collapse").show();
 
         this.on("click", ".accordion-heading a", function(e) {
             e.preventDefault();
