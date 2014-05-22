@@ -1,12 +1,12 @@
 <!Doctype html>
 <html>
 <head>
-	<title> my qs </title>
-	<link rel="stylesheet" href="css/style.css">
+	<title> my qs </title>	
 	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="vendor/shCore.js"></script>
 	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
 	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
 	<script type="text/javascript">SyntaxHighlighter.all();</script>
 </head>
 <body>
@@ -26,7 +26,61 @@
 			
 			 <div class="accordion-body collapse" id="jquery-miscellaneous">
 				<div class="accordion-inner">
-					<ul>
+					<ul>						
+						
+						
+						<li>
+							<strong>$(document).ready equivalent without jQuery?</strong>
+							<p>We have three options:</p>
+							<ul>
+								<li>If script is the last tag of the body, DOM would be ready before script tag executes</li>
+								<li>When DOM is ready, "readyState" will change to "complete"</li>
+								<li>Put everything under 'DOMContentLoaded' event listener</li>
+							</ul>							
+								
+							<pre class="brush: js;">
+								
+								onreadystatechange
+
+								  document.onreadystatechange = function () {
+									 if (document.readyState == "complete") {
+									 //document is ready. Do your stuff here
+								   }
+								 }
+
+								DOMContentLoaded
+
+								document.addEventListener('DOMContentLoaded', function(){
+								   console.log('document is ready. I can sleep now'); 
+								 });				
+							</pre>
+						</li>
+						
+						<li>
+							<strong>Preloading images with jQuery?</strong>
+							<pre class="brush: js;">
+								$.fn.preload = function() {
+									this.each(function(){
+										$('<img/>')[0].src = this;
+									});
+								}
+								// Usage:
+								$(['img1.jpg','img2.jpg','img3.jpg']).preload();					
+							</pre>
+						</li>
+
+						<li>
+							<strong>How to change the href for a hyperlink using jQuery?</strong>
+							<pre class="brush: js;">
+								$("a").attr("href", "http://www.google.com/")							
+							</pre>
+						</li>
+						<li>
+							<strong>Scroll to bottom of div?</strong>
+							<pre class="brush: js;">
+								$("#mydiv").scrollTop($("#mydiv")[0].scrollHeight);								
+							</pre>
+						</li>
 						<li>
 							<strong>Using jQuery to center a DIV on the screen</strong>
 							<pre class="brush: js; highlight: [10, 12]">
