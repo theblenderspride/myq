@@ -1,0 +1,195 @@
+<!Doctype html>
+<html>
+<head>
+	<title> backbone qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		<div id="search">
+			<input type="text" id="txtSearch" />
+		</div>
+		
+		<div id="searchgap"></div>
+
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					different REST methods used in backbone?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">
+					<p>
+						<strong>The HTTP Protocol</strong>
+					</p>
+					<p>
+I like examples, so here is an HTTP request to get the HTML for this page:
+</p>
+<pre class="brush: js;">
+GET /questions/18504235/understand-backbone-js-rest-calls HTTP/1.1
+Host: stackoverflow.com
+</pre>
+<p>
+[Optional] If you have ever played with command line or terminal, try running the command telnet stackoverflow.com 80 and pasting in the above, followed by pressing enter a couple of times. Voila! HTML in all of it's glory.
+</p>
+<p>
+In this example...
+</p>
+<ul>
+	<li>GET is the method.</li>
+	<li>/questions/18504235/understand-backbone-js-rest-calls is the path.</li>
+	<li>HTTP/1.1 is the protocol.</li>
+	<li>Host: stackoverflow.com is an example of a header.</li>
+</ul>
+<p>
+Your browser does approximately the same, just with more headers, in order to get the HTML for this page. Cool, huh?
+</p>
+<p>
+Since you work in front end, you've probably seen the form tag many times. Here's an example of one:
+</p>
+
+<pre class="brush: js;">
+<form action="/login" method="post">
+    <input type="text" name="username" />
+    <input type="password" name="password" />
+    <input type="submit" name="submit" value="Log In" />
+</form>
+</pre>
+
+<p>
+When you submit this form along with appropriate data, your browser sends a request that looks something like this:
+</p>
+
+<pre class="brush: js;">
+POST /login HTTP/1.1
+Host: stackoverflow.com
+
+username=testndtv&password=zachrabbitisawesome123&submit=Log%20In
+</pre>
+
+<p>
+There are three differences between the previous example and this one.
+</p>
+<ul>
+	<li>The method is now POST.</li>
+	<li>The path is now /login.</li>
+	<li>There is an extra line, called the body.</li>
+</ul>
+
+<p>
+While there are a bunch of other methods, the ones used in RESTful applications are POST, GET, PUT, and DELETE. This tells the server what type of action it's supposed to take with the data, without having to have different paths for everything.
+</p>
+<p>
+	<strong>Back to Backbone</strong>
+</p>
+</p>
+<p>
+So hopefully now you understand a bit more about how HTTP works. But how does this relate to Backbone? Let's find out!
+</p>
+<p>
+Here's a small chunk of code you might find in a Backbone application.
+</p>
+<pre class="brush: js;">
+var BookModel = Backbone.Model.extend({
+    urlRoot: '/books'
+});
+var BookCollection = Backbone.Collection.extend({
+    model: BookModel
+    , url: '/books'
+});
+</pre>
+
+<p>
+	<strong>
+		Create (POST)		
+	</strong>
+</p>
+
+<p>
+Since we're using a RESTful API, that's all the information Backbone needs to be able to create, read, update, and delete all of our book information! Let's start by making a new book. The following code should suffice:
+</p>
+
+<pre class="brush: js;">
+var brandNewBook = new BookModel({ title: '1984', author: 'George Orwel' });
+brandNewBook.save();
+</pre>
+
+Backbone realizes you're trying to create a new book, and knows from the information it's been given to make the following request:
+
+POST /books HTTP/1.1
+Host: example.com
+
+{"title":"1984","author":"George Orwel"}
+Read (GET)
+
+See how easy that was? But we want to get that information back at some point. Let's say we ran new BookCollection().fetch(). Backbone would understand that you're trying to read a collection of books, and it would make the following request:
+
+GET /books HTTP/1.1
+Host: example.com
+BAM. That easy. But say we only wanted the information for one book. Let's say book #42. Say we ran new BookModel({ id: 42 }).fetch(). Backbone sees you're trying to read a single book:
+
+GET /books/42 HTTP/1.1
+Host: example.com
+Update (PUT)
+
+Oh darn, I just realized I spelled Mr. Orwell's name wrong. Easy to fix!
+
+brandNewBook.set('author', 'George Orwell');
+brandNewBook.save();
+Backbone is smart enough to know that despite being called brandNewBook, it's already been saved. So it updates the book:
+
+PUT /books/84 HTTP/1.1
+Host: example.com
+
+{"title":"1984","author":"George Orwell"}
+Delete (DELETE)
+
+Finally, you realize that the government is tracking your every move, and you need to bury the fact that you have read 1984. It's probably too late, but it never hurts to try. So you run brandNewBook.destroy(), and Backbone becomes sentient and realizes your danger deletes the book with the following request:
+
+DELETE /books/84 HTTP/1.1
+Host: example.com
+And it's gone.
+
+Other Useful Tidbits
+
+While we've talked a lot about what we're sending TO the server, we should probably also take a look at what we're getting back. Let's return to our collection of books. If you remember, we made a GET request to /books. In theory, we should get back something like this:
+
+[
+    {"id":42,"author":"Douglas Adams","title":"The Hitchhiker's Guide to the Galaxy"}
+    , {"id":3,"author":"J. R. R. Tolkien","title":"The Lord of the Rings: The Fellowship of the Ring"}
+]
+Nothing too scary. And even better, Backbone knows how to handle this out of the box. But what if we changed it a bit? Instead of id being the identifying field, it was bookId?
+
+[
+    {"bookId":42,"author":"Douglas Adams","title":"The Hitchhiker's Guide to the Galaxy"}
+    , {"bookId":3,"author":"J. R. R. Tolkien","title":"The Lord of the Rings: The Fellowship of the Ring"}
+]
+Backbone gets that every API is a bit different, and it's okay with that. All you have to do is let it know the idAttribute, like so:
+
+var BookModel = Backbone.Model.extend({
+    urlRoot: '/books'
+    , idAttribute: 'bookId'
+});
+You only have to add that information to the model, since the collection checks the model anyway. So just like that, Backbone understands your API! Even if I don't...
+
+The downside of this is that you have to remember to use bookId in certain cases. For example, where we previously used new BookModel({ id: 42 }).fetch() to load the data about a single book, we would now have to use new BookModel({ bookId: 42 }).fetch().
+				</div>
+			</div>			
+		</article>
+
+		</div>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>
