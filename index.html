@@ -28,6 +28,31 @@
 				<div class="accordion-inner">
 					<ul>
 						<li>
+							<strong>Using jQuery to center a DIV on the screen</strong>
+							<pre class="brush: js; highlight: [10, 12]">
+								jQuery.fn.center = function () {
+									this.css("position","absolute");
+									this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) + 
+																				$(window).scrollTop()) + "px");
+									this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + 
+																				$(window).scrollLeft()) + "px");
+									return this;
+								}	
+								//Now call								
+								$(element).center();		
+
+								//With CSS only								
+								.center {
+								  position: absolute;
+								  left: 50%;
+								  top: 50%;
+								  transform: translate(-50%, -50%); /* Yep! */
+								  width: 48%;
+								  height: 59%;
+								}								
+							</pre>
+						</li>
+						<li>
 							<strong>jQuery scrollTop (Smoothly scroll to an element with jquery)</strong>
 						
 							<p>	 Get the current vertical position of the scroll bar for the first element in the set of matched elements or set the vertical position of the scroll bar for every matched element.
@@ -43,7 +68,7 @@
 								// Or you can animate the scrolling:
 								container.animate({
 									scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop()
-								});​							
+								});
 							</pre>
 							
 						</li>
