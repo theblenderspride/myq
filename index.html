@@ -27,21 +27,51 @@
 			 <div class="accordion-body collapse" id="jquery-utilities">
 				<div class="accordion-inner">
 					<div>
-						<h1>Type testing functions - </h1>
-						<h4>
-							These are very helpful in optional parameters and also when validating the parameters  
-						</h4>
+						<h2>Type testing functions - </h2>
+						<h5>
+							<em>These are very helpful in optional parameters and also when validating the parameters for functions.</em>
+						</h5>
 						
 						<ul>
-							<li>isArray(array) - <p>Objet is javascript array or not</p></li>
-							<li>isFunction(fun) - <p>- tells if function or not</p></li>
-							<li>isEmptyObject(obj) - <p>tells if empt y or not</p></li>
-							<li>isXmlDoc(doc)  - <p></p></li>
-							<li>isNumeric(num)  - 
+							<li><strong>isArray(array)</strong> - 
+								<p>$.isArray() returns a Boolean indicating whether the object is a JavaScript array (not an array-like object, such as a jQuery object).
+								</p>
+								<p> Array.isArray works fast, but it isn't supported by all versions of browsers. So you could make an exception for others and use universal method:
+								</p>
+								<pre class="brush: js;">
+									var a = ["A", "AA", "AAA"];
+                                    
+									// javascript version
+									if(Array.isArray){
+										Array.isArray(a) ? alert("a is an array") : alert("a is not an array");
+									} else {
+										(Object.prototype.toString.call(a) === '[object Array]') 
+											? alert("a is an array") : alert("a is not an array");
+									}
+									
+								    // jquery version							
+									if($.isArray(a)) {
+										alert("a is an array!");
+									} else {
+										alert("a is not an array!");
+									}
+								</pre>								
+							</li>
+							<li><strong>isFunction(fun)</strong> - <p>- Determine if the argument passed is a Javascript function object.</p></li>
+							<li><strong>isEmptyObject(obj)</strong> - <p>Checks to see if an object is empty (contains no enumerable properties).</p></li>
+							<li><strong>jQuery.isPlainObject(obj)</strong> - 
+								<p>Check to see if an object is a plain object (created using "{}" or "new Object").</p>
+								<pre class="brush: js;">
+									jQuery.isPlainObject({}) // true
+									jQuery.isPlainObject( "test" ) // false
+								</pre>
+							</li>
+							<li><strong>isXmlDoc(doc)</strong>  - <p></p></li>
+							<li><strong>isNumeric(num)</strong>  - 
 								<p>avilable in jQuery 1.7+</p>
 								<p>The $.isNumeric() method checks whether its argument represents a numeric value. If so, it returns true. Otherwise it returns false. The argument can be of any type.</p>
 							</li>
-							<li>isWindow(obj)   - <p>window or frame</p></li>
+							<li><strong>isWindow(obj)</strong>   - <p>window or frame</p></li>
 						</ul>									
 					</div>   
 
@@ -109,11 +139,10 @@
 								</pre>
 							</li>
 
-							<li>
-								<h4>each Function</h4> 
-								<p>
-									
-									Iterate over a jQuery object, executing a function for each matched element.									
+							<li>	
+								<h4>each Function <strong>( $.each() and  $(selector).each())</strong></h4> 
+								<p>									
+									Iterate over a jQuery object, executing a function for each matched.																	
 								</p>
 								<div>
 									<strong>Uses:</strong>
@@ -122,22 +151,49 @@
 										<li>Can be used to iterate over array.</li>
 									</ul>
 								</div>
-								<pre class="brush: js;"> 
-									<strong>Example</strong>
-									var arr = [ "one", "two", "three", "four", "five" ];
-									var obj = { one:1, two:2, three:3, four:4, five:5 };
-									
-									// iterating over array
-									jQuery.each(arr, function() {
-									  $("#" + this).text("My id is " + this + ".");
-									  return (this != "four"); // will stop running to skip "five"
-									});
-									
-									// iterating over object
-									jQuery.each(obj, function(i, val) {
-									  $("#" + i).append(document.createTextNode(" - " + val));
-									});
+								
+								<h5><em>The $.each() function is not the same as $(selector).each(), which is used to iterate, exclusively, over a jQuery object.</em></h5>
+								
+								<pre class="brush: js;"> $.each(".indent", function(index){ </pre>
+		                        <p>
+									doesn't iterate over the elements of $('.indent') but over the ".indent" string whose length is 7 chars.
+								</p>
+
+                                <p>See reference,
+
+								A more detailed explanation based on jQuery source code :
+
+								jQuery first checks if the first parameter, obj (here your string), has a length :
+								</p>
+								<pre class="brush: js;">
+									var ...
+											length = obj.length,
+											isObj = length === undefined || jQuery.isFunction( obj );
+									Your string having a length (and not being a function), isObj is false.
 								</pre>
+								<p>In this case, the following code is executed :</p>
+								<pre class="brush: js;">
+									for ( ; i < length; ) {
+										if ( callback.call( obj[ i ], i, obj[ i++ ] ) === false ) {
+											break;
+										}
+									}
+								</pre>
+								<p>So, given the function f, the following code</p>
+								<pre class="brush: js;">
+									$.each(".indent", f);
+								</pre>
+								<p>is equivalent to</p>
+								<pre class="brush: js;">
+									for (var i=0; i<".indent".length; i++) {
+										var letter = ".indent"[i];
+										f.call(letter, i, letter);
+									}
+								</pre>
+								<p>
+									(you can log the letters using var f = function(i,v){console.log(v)}; or be reminded one of the subtleties of call using var f = function(){console.log(this)};)
+								</p>
+								
 							</li>
 
 							<li>
@@ -205,7 +261,7 @@
 							
 							<li>
 								<h4>jQuery.noConflict</h4> 
-								<p>Relinquish jQuery's control of the $ variable.</p>
+								<p>Releases (Relinquish) jQuery's control of the $ variable.</p>
 								<p>Many JavaScript libraries use $ as a function or variable name, just as jQuery does. In jQuery's case, $ is just an alias for jQuery, so all functionality is available without using $. If you need to use another JavaScript library alongside jQuery, return control of $ back to the other library with a call to $.noConflict(). Old references of $ are saved during jQuery initialization; noConflict() simply restores them.</p>
 								<p>
 								If for some reason two versions of jQuery are loaded (which is not recommended), calling $.noConflict( true ) from the second version will return the globally scoped jQuery variables to those of the first version.

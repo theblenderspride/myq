@@ -94,4 +94,16 @@ ul  li {
     h3 {
 		font-size: 20px;
 	}
+	.syntaxhighlighter a,
+	.syntaxhighlighter div,
+	.syntaxhighlighter code,
+	.syntaxhighlighter table,
+	.syntaxhighlighter table td,
+	.syntaxhighlighter table tr,
+	.syntaxhighlighter table tbody,
+	.syntaxhighlighter table thead,
+	.syntaxhighlighter table caption,
+	.syntaxhighlighter textarea {
+		font-size: 0.8em;
+	}
 }
