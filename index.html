@@ -21,6 +21,45 @@
 
 		<article class="accordion-group">
 			 <div class="accordion-heading">      		
+				<a href="#pub-sub-pattern" data-toggle="collapse" class="accordion-toggle">
+					Publish/Subscribe pattern (in JS/jQuery)?
+				</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="namespacing">
+				<div class="pub-sub-pattern">            
+					<p>
+						It's all about loose coupling and single responsibility, which goes hand to hand with MV* (MVC/MVP/MVVM) patterns in JavaScript which are very modern in the last few years.
+					</p>										
+					<p>
+						So that you don't have to hardcode method / function calls, you just publish the event without caring who listens. This makes the publisher independent from subscriber, reducing dependency (or coupling, whatever term you prefer) between 2 different parts of the application.
+					</p>					
+					<p>
+						Here are some disadvantages of coupling as mentioned by wikipedia
+					</p>					
+					<p>
+						Tightly coupled systems tend to exhibit the following developmental characteristics, which are often seen as disadvantages:
+					</p>					
+					<ul>
+						<li>
+							A change in one module usually forces a ripple effect of changes in other modules.		
+						</li>
+						<li>
+							Assembly of modules might require more effort and/or time due to the increased inter-module dependency.
+						</li>
+						<li>
+							A particular module might be harder to reuse and/or test because dependent modules must be included.
+						</li>
+					</ul>
+					<p>
+						<strong>NOTE: Loose coupling</strong> is an <em>Object-oriented principle</em> in which each component of the system knows it's responsibility and don't care about the other components (or at least tries to not care about them as much as possible). Loosing coupling is a good thing because you can easily reuse the different modules. You're not coupled with the interfaces of other modules. Using publish/subscribe you're only coupled with the publish/subscribe interface which is not a big deal – just two methods. So if you decide to reuse a module in different project you can just copy and paste it and it'll probably work or at least you won't need much effort to make it work.
+					</p>
+				</div>
+			</div>			
+		</article>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
 				<a href="#namespacing" data-toggle="collapse" class="accordion-toggle">
 					method vs function?
 				</a>
