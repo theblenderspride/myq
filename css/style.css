@@ -24,16 +24,17 @@ p {
 	margin:7px 0;
 }
 #container {
-	margin: 0 20px;
-	width: 100%;	
+	margin: 0 auto;
+	width: 97%;	
 }
 
 #search {	
-	width: 100%;
+	margin: 0 auto;
+	width: 97%;
 	top: 0;
 	height: 100px;
 	position: fixed;
-	background: #FFF;	
+	background: #FFF;
 	z-index: 2;
 }
 
