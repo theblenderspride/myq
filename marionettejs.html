@@ -1,0 +1,165 @@
+<!Doctype html>
+<html>
+<head>
+	<title> MarionetteJS qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		<div id="search">
+			<input type="text" id="txtSearch" />
+		</div>
+		
+		<div id="searchgap"></div>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#why-marionette" data-toggle="collapse" class="accordion-toggle">
+					Why Backbone.Marionette JS?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="why-marionette">
+				<div class="accordion-inner">
+					<p class="bold">Marionette has a few very distinct goals:</p>					
+					<ul>
+						<li>
+							Composite application architecture
+						</li>
+						<li>
+							Enterprise messaging pattern influence
+						</li>
+						<li>
+							Modularization options
+						</li>
+						<li>
+							Incremental use (no all-or-nothing requirement)
+						</li>
+						<li>
+							No server dependency
+						</li>
+						<li>
+							Make it easy to change those defaults
+						</li>
+						<li>
+							Code as configuration / over configuration
+						</li>
+					</ul>
+					
+					<p class="bold">Composite Application Architecture</p>
+					<p>
+						The basic idea is to <strong>"compose"</strong> your application's runtime experience and process out of many smaller, individual pieces that don't necessarily know about each other. They register themselves with the overall composite application system and then they communicate through various means of decoupled messages and calls.
+					</p>
+					<p class="bold">Message Queues / Patterns</p>
+					<p>
+						The same large scale, distributed systems also took advantage of message queuing, enterprise integration patterns (messaging patterns), and service buses to handle the messages. This, more than anything else, had a tremendous influence on my approach to decoupled software development. I began to see single-process, in-memory WinForms applications from this perspective, and soon my server side and web application development took influence from this.
+					</p>
+					<p>
+						This has directly translated itself in to how I look at Backbone application design. I provide an event aggregator in Marionette, for both the high level Application object, and for each module that you create within the application.
+					</p>
+					<p>
+						I think about messages that I can send between my modules: command messages, event messages, and more. I also think about the server side communication as messages with these same patterns. Some of the patterns have made their way in to Marionette already, but some haven't yet.
+					</p>
+					
+					<p class="bold">Modularization</p>
+					<p>
+						Modularization of code is tremendously important. Creating small, well encapsulated packages that have a singular focus with well defined entry and exit points is a must for any system of any significant size and complexity.
+						Marionette provides modularization directly through it's 'module' definitions. But I also recognize that some people like RequireJS and want to use that. So I provide both a standard build and a RequireJS compatible build.
+					</p>
+					<pre class="brush: js;">
+					MyApp = new Backbone.Marionette.Application();
+					MyApp.module("MyModule", function(MyModule, MyApp, Backbone, Marionette, $, _){
+					  // your module code goes here
+					});
+					</pre>
+					
+					<p class="bold">Incremental Use</p>
+					<p>
+						This is one of the core philosophies that I bake in to every part of Marionette that I can: no “all-or-nothing” requirement for use of Marionette.
+						Backbone itself takes a very incremental and modular approach with all of it's building block objects. You are free to choose which ones you want to use, when. I strongly believe in this principle and strive to make sure Marionette works the same way.
+						To that end, the majority of the pieces that I have built in to Marionette are built to stand alone, to work with the core pieces of Backbone, and to work together even better.
+					</p>
+					<p>
+						For example, nearly every Backbone application needs to dynamically show a Backbone view in a particular place on the screen. The apps also need to handle closing old views and cleaning up memory when a new one is put in place. This is where Marionette's 'Region' comes in to play. A region handles the boilerplate code of taking a view, calling render on it, and stuffing the result in to the DOM for you. Then will close that view and clean it up for you, provided your view has a “close” method on it.
+					</p>
+					<pre class="brush: js;">
+						MyApp.addRegions({
+						  someRegion: "#some-div"
+						});
+						MyApp.someRegion.show(new MyView());
+					</pre>
+					<p>
+						But you're not required to use Marionette's views in order to use a region. The only requirement is that you are extending from Backbone.View at some point in the object's prototype chain. If you choose to provide a 'close' method, a 'onShow' method, or others, Marionette's Region will call it for you at the right time.
+					</p>
+
+					<p class="bold">No Server dependency</p>
+					<p>Backbone / Marionette apps can be build on top of a wide variety of server technologies, for example:</p>
+					<ul>
+						<li>
+						ASP.NET MVC
+						</li>
+						<li>
+						Ruby on Rails
+						</li>
+						<li>
+						Ruby / Sinatra
+						</li>
+						<li>
+						NodeJS / ExpressJS
+						</li>
+						<li>
+						PHP / Slim
+						</li>
+						<li>
+						Java
+						</li>
+					</ul>
+					<p>
+						JavaScript is JavaScript, when it comes to running in a browser. Server side JavaScript is awesome, too, but it has zero affect or influence on how I write my browser based JavaScript.
+					</p>
+					<p>
+						Because of the diversity in projects that I built and back-end technologies that my clients use, I cannot and will not lock Marionette in to a single server side technology stack for any reason. I won't provide a boilerplate project. I won't provide a ruby gem or an npm package. I want people to understand that Marionette doesn't require a specific back-end server. It's browser based JavaScript, and the back-end doesn't matter.
+					</p>
+					<p>
+						Of course, I fully support other people providing packages for their language and framework. I list those packages in the Wiki and hope that people continue to build more packages as they see a need. But that is community support, not direct support from Marionette.
+					</p>
+					
+					<p class="bold">Easily Change The Defaults</p>
+					<p>
+						In my effort to reduce boilerplate code and provide sensible defaults (which is an idea that I directly “borrowed” from Tim Branyen's LayoutManager), I recognize the need for other developers to use slightly different implementations than I do.
+					</p>
+					<p>
+						I provide rendering based on inline &lt;script&gt; tags for templates, using Underscore.js templating by default. But you can replace this by changing the <span class="bold">'Renderer'</span> and/or <span class="bold">'TempalteCache'</span> objects in Marionette. These two objects provide the core of the rendering capabilities, and there are wiki pages that show how to change this out for specific templating engines and different ways of loading templates.
+					</p>
+					<p>
+						With v0.9 of Marionette, it gets even easier. For example, if you want to replace the use of in-line template script blocks with pre-compiled templates, you only have to replace one method on the Renderer:
+					</p>
+					<pre class="brush: js;">
+						// use pre-compiled template functions
+						Backbone.Marionette.Renderer.render = function(template, data){
+						  return template(data);
+						};
+					</pre>
+					<p>
+						and now the entire application will use pre-compiled templates that you attach to your view's 'template' attribute.
+						There is a Marionette.Async add-on with v0.9 that allows you to support asynchronously rendering views. I continuously strive to make it as easy as possible to replace the default behaviours in Marionette.
+					</p>					
+				</div>
+			</div>
+		</article>
+		
+	
+		
+	</div>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>
