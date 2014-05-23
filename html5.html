@@ -21,6 +21,32 @@
 		
 		<article class="accordion-group">
 			 <div class="accordion-heading">      		
+				<a href="#article-vs-section-vs-div" data-toggle="collapse" class="accordion-toggle">
+					article vs section vs div
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="article-vs-section-vs-div">
+				<div class="accordion-inner">
+					<p class="bold">
+						The difference between &lt;article&gt; and &lt;section&gt;
+					</p>
+					<p>
+						There's been a lot of confusion over the difference (or perceived lack of a difference) between the <span class="bold">&lt;article&gt;</span> and <span class="bold">&lt;section&gt;</span> elements in HTML5. The &lt;article&gt; element is a specialised kind of &lt;section&gt;; it has a more specific semantic meaning than &lt;section> in that it is an independent, self-contained block of related content. We could use &lt;section&gt;, but using &lt;article&gt; gives more semantic meaning to the content.
+					</p>
+					<p>
+						By contrast &lt;section&gt; is only a block of related content, and &lt;div&gt; is only a block of content. Also as mentioned above the pubdate attribute doesn't apply to &lt;section>. To decide which of these three elements is appropriate, choose the first suitable option:
+					</pre>
+					<ul>
+						<li>Would the content would make sense on its own in a feed reader? If so use &lt;article&gt;</li>
+						<li>Is the content related? If so use &lt;section&gt;</li>
+						<li>Finally if there's no semantic relationship use &lt;div&gt;</li>
+					</ul>
+				</div>
+			</div>
+		</article>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
 				<a href="#div-not-dead" data-toggle="collapse" class="accordion-toggle">
 					You can still use div
 				</a>
@@ -43,7 +69,8 @@
 				</div>
 			</div>
 		</article>
-		</div>
+		
+	</div>
 	<!-- end of container-->
 	
 	<script type="text/javascript" src="js/App.js"></script>

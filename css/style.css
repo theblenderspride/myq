@@ -92,6 +92,10 @@ a {
 	overflow: hidden !important;
 }
 
+.bold {
+	font-weight: bold;
+}
+
 @media print {
 	#search , 
 	#searchgap ,
