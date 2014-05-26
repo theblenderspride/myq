@@ -1,0 +1,79 @@
+<!Doctype html>
+<html>
+<head>
+	<title> scroll qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		<div id="search">
+			<input type="text" id="txtSearch" />
+		</div>
+		
+		<div id="searchgap"></div>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					How to disable scrolling temporarily?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+					<p>
+						The scroll event cannot be canceled. You can cancel 2 things however: <strong>mouse scroll</strong> and <strong>buttons</strong> associated with scrolling.
+					</p>
+					<pre class="brush: js;">
+						function preventDefault(e) {
+						  e = e || window.event;
+						  if (e.preventDefault)
+							  e.preventDefault();
+						  e.returnValue = false;  
+						}
+
+						function keydown(e) {
+							for (var i = keys.length; i--;) {
+								if (e.keyCode === keys[i]) {
+									preventDefault(e);
+									return;
+								}
+							}
+						}
+
+						function wheel(e) {
+						  preventDefault(e);
+						}
+
+						function disable_scroll() {
+						  if (window.addEventListener) {
+							  window.addEventListener('DOMMouseScroll', wheel, false);
+						  }
+						  window.onmousewheel = document.onmousewheel = wheel;
+						  document.onkeydown = keydown;
+						}
+
+						function enable_scroll() {
+							if (window.removeEventListener) {
+								window.removeEventListener('DOMMouseScroll', wheel, false);
+							}
+							window.onmousewheel = document.onmousewheel = document.onkeydown = null;  
+						}
+					</pre>				
+				</div>
+			</div>
+		</article>
+
+	</div>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>
