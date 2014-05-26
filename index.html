@@ -18,6 +18,104 @@
 		</div>
 		
 		<div id="searchgap"></div>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#disadvantages-of-spa" data-toggle="collapse" class="accordion-toggle">
+					What are the differences between Deferred, Promise and Future in Javascript?
+				</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="disadvantages-of-spa">
+				<div class="accordion-inner">            
+					<blockquote>
+					Rather than directly passing callbacks to functions, something which can lead to tightly coupled interfaces, using promises allows one to separate concerns for code that is synchronous or asynchronous.
+					</blockquote>
+					
+					<p>
+					Personally, I've found deferred especially useful when dealing with e.g. templates that're populated by asynchronous requests, loading scripts that have networks of dependencies, and providing user feedback to form data in a non-blocking manner.
+					</p>
+					
+					<p>Indeed, compare the pure callback form of doing something after loading CodeMirror in JS mode asynchronously (apologies, I've not used jQuery in a while):
+					</p>
+					
+					<pre class="brush: js;">
+						/* assume getScript has signature like: function (path, callback, context) and listens to onload && onreadystatechange */
+						$(function () {
+						   getScript('path/to/CodeMirror', getJSMode);
+
+						   // onreadystate is not reliable for callback args.
+						   function getJSMode() {
+							   getScript('path/to/CodeMirror/mode/javascript/javascript.js', 
+								   ourAwesomeScript);
+						   };
+
+						   function ourAwesomeScript() {
+							   console.log("CodeMirror is awesome, but I'm too impatient.");
+						   };
+						});	
+					</pre>
+					
+					<p>To the promises formulated version (again, apologies, I'm not up to date on jQuery):</p>
+					
+					<pre class="brush: js;">
+						/* Assume getScript returns a promise object */
+						$(function () {
+						   $.when(
+							   getScript('path/to/CodeMirror'),
+							   getScript('path/to/CodeMirror/mode/javascript/javascript.js')
+						   ).then(function () {
+							   console.log("CodeMirror is awesome, but I'm too impatient.");
+						   });
+						});
+					</pre>
+					<blockquote>
+					The point of promises is to give us back functional composition and error bubbling in the async world.
+					</blockquote>
+					<p>In other word, promises are a way that lets us write asynchronous code that is almost as easy to write as if it was synchronous.
+					</p>
+					<p>Consider this example, with promises:
+					</p>
+
+					<pre class="brush: js;">
+						getTweetsFor("domenic") // promise-returning async function
+							.then(function (tweets) {
+								var shortUrls = parseTweetsForUrls(tweets);
+								var mostRecentShortUrl = shortUrls[0];
+								return expandUrlUsingTwitterApi(mostRecentShortUrl); // promise-returning async function
+							})
+							.then(doHttpRequest) // promise-returning async function
+							.then(
+								function (responseBody) {
+									console.log("Most recent link text:", responseBody);
+								},
+								function (error) {
+									console.error("Error with the twitterverse:", error);
+								}
+							);
+					</pre>
+					<p>
+					It works as if you were writing this synchronous code:
+					</p>
+					<pre class="brush: js;">
+						try {
+							var tweets = getTweetsFor("domenic"); // blocking
+							var shortUrls = parseTweetsForUrls(tweets);
+							var mostRecentShortUrl = shortUrls[0];
+							var responseBody = doHttpRequest(expandUrlUsingTwitterApi(mostRecentShortUrl)); // blocking x 2
+							console.log("Most recent link text:", responseBody);
+						} catch (error) {
+							console.error("Error with the twitterverse: ", error);
+						}
+					</pre>
+
+					<blockquote>
+					Regarding Deferred, it's a way to .resolve() or .reject() promises. In the Promises/B spec, it is called .defer(). In jQuery, it's $.Deferred().
+					</blockquote>
+
+				</div>
+			</div>			
+		</article>
 
 
 		<article class="accordion-group">
