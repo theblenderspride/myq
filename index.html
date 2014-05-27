@@ -22,6 +22,137 @@
 		<article class="accordion-group">
 			 <div class="accordion-heading">      		
 				<a href="#disadvantages-of-spa" data-toggle="collapse" class="accordion-toggle">
+					JavaScript Closures?
+				</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="disadvantages-of-spa">
+				<div class="accordion-inner">   
+					<p>
+						Whenever you see the function keyword within another function, the inner function has access to variables in the outer function.
+					</p>
+					<pre class="brush: js;">
+						function foo(x) {
+						  var tmp = 3;
+						  function bar(y) {
+							alert(x + y + (++tmp));
+						  }
+						  bar(10);
+						}
+						foo(2);
+					</pre>
+					<p>
+					This will always alert 16, because bar can access the x which was defined as an argument to foo, and it can also access tmp from foo.
+					</p>
+					<blockquote>
+					That is a closure. A function doesn't have to return in order to be called a closure. Simply accessing variables outside of your immediate lexical scope creates a closure.
+					</blockquote>
+					<p></p>
+					<h4>Common uses of closures</h4>
+					<ul>
+						<li>
+							<p>The most common use is when someone wants to "delay" use of a variable that is increased upon each loop, but because the variable is scoped then each reference to the variable would be after the loop has ended, resulting in the end state of the variable
+							</p>
+							<pre class="brush: js;">
+								for (var i = 0; i < someVar.length; i++) {
+									window.setTimeout(function () { 
+										alert("Value of i was "+i+" when this timer was set" )
+									}, 10000);
+								}
+							</pre>
+							<p>
+							This would result in every alert showing the same value of i, the value it was increased to when the loop ended. The solution is to create a new closure, a separate scope for the variable. This can be done using an instantly executed anonymous function, which receives the variable and stores its state as an argument:
+							</p>
+							<pre class="brush: js;">
+								for (var i = 0; i < someVar.length; i++)
+								(function (i) {
+									window.setTimeout(function () { 
+										alert("Value of i was "+i+" when this timer was set" )
+									}, 10000);
+								})(i); 
+							</pre>
+						</li>
+						<li>
+							<h4>Emulating private methods with closures: </h4>	
+							<pre class="brush: js;">	
+							a = (function () {
+								var privatefunction = function () {
+									alert('hello');
+								}
+
+								return {
+									publicfunction : function () {
+										privatefunction();
+									}
+								}
+							})();
+							</pre>						
+						</li>					
+					</ul>	
+					<h4>Performance considerations</h4>
+					<p>
+					It is unwise to unnecessarily create functions within other functions if closures are not needed for a particular task, as it will negatively affect script performance both in terms of processing speed and memory consumption.
+					</p>
+					<p>
+					For instance, when creating a new object/class, methods should normally be associated to the object's prototype rather than defined into the object constructor. The reason is that whenever the constructor is called, the methods would get reassigned (that is, for every object creation).
+					</p>
+					<p>
+					Consider the following impractical but demonstrative case:
+					</p>
+					<pre class="brush: js;">
+					function MyObject(name, message) {
+					  this.name = name.toString();
+					  this.message = message.toString();
+					  this.getName = function() {
+						return this.name;
+					  };
+
+					  this.getMessage = function() {
+						return this.message;
+					  };
+					}
+					</pre>
+					<p>
+					The previous code does not take advantage of the benefits of closures and thus could instead be formulated:
+					</p>
+					<pre class="brush: js;">
+					function MyObject(name, message) {
+					  this.name = name.toString();
+					  this.message = message.toString();
+					}
+					MyObject.prototype = {
+					  getName: function() {
+						return this.name;
+					  },
+					  getMessage: function() {
+						return this.message;
+					  }
+					};
+					</pre>
+					<p>
+					However, redefining the prototype is not recommended, so the following example is even better because it appends to the existing prototype:
+					</p>
+					<pre class="brush: js;">
+
+					function MyObject(name, message) {
+					  this.name = name.toString();
+					  this.message = message.toString();
+					}
+					MyObject.prototype.getName = function() {
+					  return this.name;
+					};
+					MyObject.prototype.getMessage = function() {
+					  return this.message;
+					};
+					</pre>
+
+				</div>
+			</div>
+		</article>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#disadvantages-of-spa" data-toggle="collapse" class="accordion-toggle">
 					What are the differences between Deferred, Promise and Future in Javascript?
 				</a>
 			 </div>
