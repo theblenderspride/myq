@@ -1,0 +1,258 @@
+<!Doctype html>
+<html>
+<head>
+	<title> arrays qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		<div id="search">
+			<input type="text" id="txtSearch" />
+		</div>
+		
+		<div id="searchgap"></div>
+				
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					How to empty an array in JavaScript?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">				
+					<p class="bold">Method 1</p>
+					<p>If you need to keep the original array because you have other references to it that should be updated too, you can clear it without creating a new array by setting its length to zero:
+					</p>
+					
+					<pre class="brush: js;"> 
+						A.length = 0;
+					</pre>
+					<p class="bold">Method 2</p>
+					<p>This solution is not very succinct but it is by far the fastest solution (apart from setting the array to a new array). If you care about performance, consider using this method to clear an array. Benchmarks show that this is at least 10 times faster than setting the length to 0 or using splice().
+					</p>
+					<pre class="brush: js;"> 
+						while(A.length > 0) {
+							A.pop();
+						}
+					</pre>					
+				</div>
+			</div>
+		</article>
+		
+		
+		
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					What is the difference between using the delete operator on the array element as opposed to using the Array.splice method?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">				
+					<p>delete does remove the element, but does not reindex the array or update its length. The deleted element will shown as undefined.
+					</p>					
+					<pre class="brush: js;"> 
+						myArray = ['a', 'b', 'c', 'd']
+					    // ["a", "b", "c", "d"]
+						delete myArray[0]
+					    // true
+					    myArray
+						// [undefined, "b", "c", "d"]
+					    myArray.splice(0, 2)
+					    // [undefined, "b"]
+					    myArray
+					    // ["c", "d"]
+					</pre>									
+				</div>
+			</div>
+		</article>
+		
+		
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					Loop through array in JavaScript?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">				
+					<p class="bold">Use a sequential for loop:</p>
+					<pre class="brush: js;"> 
+						var myStringArray = ["Hello","World"];
+						var arrayLength = myStringArray.length;
+						for (var i = 0; i < arrayLength; i++) {
+							alert(myStringArray[i]);							
+						}
+					</pre>
+					
+					<p><strong>the for...in statement</strong> should be avoided, this is meant to enumerate object properties.</p>
+					<p><strong>It shouldn't be used for array-like objects because:</strong></p>
+					
+					<ul>					
+						<li>The order of iteration is not guaranteed, the array indexes may not visited in the numeric order.</li>
+						<li>Inherited properties are also enumerated.</li>
+					</ul>
+					<p>The for-in statement as I said before is there to enumerate object properties, for example:</p>
+					<pre class="brush: js;"> 
+						var obj = {
+						  "a": 1,
+						  "b": 2,
+						  "c": 3
+						};
+
+						for (var prop in obj) {
+						  if (obj.hasOwnProperty(prop)) { 
+						  // or if (Object.prototype.hasOwnProperty.call(obj,prop)) for safety...
+							alert("prop: " + prop + " value: " + obj[prop])
+						  }
+						}
+					</pre>					
+				</div>
+			</div>
+		</article>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					Remove specific element from an array?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">
+					<p>The splice() method changes the content of an array, removing/adding new elements while removing old elements.
+					</p>				
+					<p>
+					<strong>index</strong> -
+					Index at which to start changing the array. If greater than the length of the array, actual starting index will be set to the length of the array. If negative, will begin that many elements from the end.
+					</p>
+					<p>	
+					<strong>howMany</strong> -
+					An integer indicating the number of old array elements to remove. If howMany is 0, no elements are removed. In this case, you should specify at least one new element. If howMany is greater than the number of elements left in the array starting at index, then all of the elements through the end of the array will be deleted. If no howMany parameter is specified (second syntax above, which is a SpiderMonkey extension), all elements after index are removed.
+					</p>
+					<p>	
+					<strong>element1, ..., elementN</strong> -
+					The elements to add to the array. If you don't specify any elements, splice simply removes elements from the array.
+					</p>
+					<p>	
+					<strong>Returns</strong> -
+					An array containing the removed elements. If only one element is removed, an array of one element is returned. If no elements are removed, an empty array is returned.
+					</p>
+					<pre class="brush: js; highlight: [0]"> 
+						var myFish = ["angel", "clown", "mandarin", "surgeon"];
+						//removes 0 elements from index 2, and inserts "drum"
+						var removed = myFish.splice(2, 0, "drum");
+						//myFish is ["angel", "clown", "drum", "mandarin", "surgeon"]
+						//removed is [], no elements removed
+
+						//removes 1 element from index 3
+						removed = myFish.splice(3, 1);
+						//myFish is ["angel", "clown", "drum", "surgeon"]
+						//removed is ["mandarin"]
+
+						//removes 1 element from index 2, and inserts "trumpet"
+						removed = myFish.splice(2, 1, "trumpet");
+						//myFish is ["angel", "clown", "trumpet", "surgeon"]
+						//removed is ["drum"]
+
+						//removes 2 elements from index 0, and inserts "parrot", "anemone" and "blue"
+						removed = myFish.splice(0, 2, "parrot", "anemone", "blue");
+						//myFish is ["parrot", "anemone", "blue", "trumpet", "surgeon"]
+						//removed is ["angel", "clown"]
+
+						//removes 2 elements from index 3
+						removed = myFish.splice(3, Number.MAX_VALUE);
+						//myFish is ["parrot", "anemone", "blue"]
+						//removed is ["trumpet", "surgeon"]
+					</pre>						
+				</div>
+			</div>
+		</article>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					Appending to array?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">
+					<p>Use push method</p>				
+					<pre class="brush: js; highlight: [8, 11, 14]"> 
+						var arr = [
+							"Hi",
+							"Hello",
+							"Bonjour"
+						];
+						
+						// append new value to the array
+						arr.push("Hola");
+						
+						// To push specified number of arguments			
+						arr.push('second', 'third'); 
+						
+						// To push entire array	
+						Array.prototype.push.apply( arr, ["Hola", "Hask"]);
+					</pre>	
+					<p>Use concat method</p>
+					<pre class="brush: js; highlight: [3]"> 
+						var ar1 = [1, 2, 3];
+						var ar2 = [4, 5, 6];
+						var ar3 = ar1.concat(ar2);
+					</pre>
+				</div>
+			</div>
+		</article>
+			
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					Why does [1,2] + [3,4] = "1,23,4" in JavaScript?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">				
+					<p>JavaScript's + operator has two purposes: adding two numbers, or joining two strings. It doesn't have a specific behaviour for arrays, so it's converting them to strings and then joining them.
+					</p>
+					<p>
+					If you want to join two arrays to produce a new one, use the .concat method instead:
+					</p>
+					<pre class="brush: js;"> 
+					[1, 2].concat([3, 4]) // [1, 2, 3, 4]
+					</pre>
+				</div>
+			</div>
+		</article>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					fastest way to add all the elements of the array?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">				
+					<pre class="brush: js;">
+					var arr = [11,5,7,9];
+					eval( arr.join("+") );
+					</pre>				
+				</div>
+			</div>
+		</article>
+		
+	</div>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>
