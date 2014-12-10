@@ -1,0 +1,134 @@
+* { 
+	margin:0;
+	padding: 0; 
+}
+
+input, button, select, textarea {
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+
+body {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	line-height: 1.42857143;
+	color: #333;
+	font-size: 17px;
+}
+
+h3 {
+	font-size: 28px;
+}
+p {
+	text-align: justify;
+	margin:7px 0;
+}
+#container {
+	margin: 0 auto;
+	width: 97%;	
+}
+
+#search {	
+	margin: 0 auto;
+	width: 97%;
+	top: 0;
+	height: 100px;
+	position: fixed;
+	background: #FFF;
+	z-index: 2;
+}
+
+#searchgap {
+	margin-top: 100px;
+}
+
+#txtSearch {
+	margin-top: 30px;
+	height: 30px;
+}
+
+.accordion-group {
+	background: #FFF;
+	border: 1px solid #EEE;
+	padding: 3px;
+	margin-top: 15px;
+}
+
+.accordion-body {
+	display: none;
+}
+
+.accordion-inner {
+	padding: 20px;
+}
+
+.accordion-heading {
+	height: 40px;
+	line-height: 40px;
+	padding-left: 10px;
+	border-bottom: 1px solid #cacaca;
+}
+
+.accordion-heading a {
+	text-decoration: none;
+	color: #428bca;
+}
+
+ul , ol{
+	padding: 10px;
+	margin-left: 10px;
+}
+
+ul  li {
+	list-style: number;
+}
+
+a {
+	font-size: 14px;
+	text-decoration: none;
+	color: #428bca;
+}
+
+.syntaxhighlighter {
+	overflow: hidden !important;
+}
+
+.bold {
+	font-weight: bold;
+}
+
+
+blockquote {
+	padding: 10px 10px 1px 10px;
+	background-color: #EEE;
+	padding: 10px;
+	font-size: 18px;
+	font-style: italic;
+}
+
+@media print {
+	#search , 
+	#searchgap ,
+	.source-url{
+		display: none;
+	}	
+	
+	body {
+		font-size: 13px;
+	}
+    h3 {
+		font-size: 20px;
+	}
+	.syntaxhighlighter a,
+	.syntaxhighlighter div,
+	.syntaxhighlighter code,
+	.syntaxhighlighter table,
+	.syntaxhighlighter table td,
+	.syntaxhighlighter table tr,
+	.syntaxhighlighter table tbody,
+	.syntaxhighlighter table thead,
+	.syntaxhighlighter table caption,
+	.syntaxhighlighter textarea {
+		font-size: 0.8em;
+	}
+}

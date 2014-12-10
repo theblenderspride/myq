@@ -1,0 +1,67 @@
+<!Doctype html>
+<html>
+<head>
+	<title> css qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					ngroute vs ui router?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+					<p>ui-router is a 3rd-party module and is very powerful. It supports everything the normal ngRoute can do as well as many extra functions.</p>
+					Here are some common reason ui-router is chosen over ngRoute:
+					<ul>			
+						<li>ui-router allows for nested views and multiple named views. This is very useful with larger app where you may have pages that inherit from other sections.
+						</li>
+						<li>ui-router allows for you to have strong-type linking between states based on state names. Change the url in one place will update every link to that state when you build your links with ui-sref. Very useful for larger projects where URLs might change.
+						</li>
+						<li>There is also the concept of the decorator which could be used to allow your routes to be dynamically created based on the URL that is trying to be accessed. This could mean that you will not need to specify all of your routes before hand.
+						</li>
+						<li>states allow you to map and access different information about different states and you can easily pass information between states via $stateParams.
+						</li>
+						<li>You can easily determine if you are in a state or parent of a state to adjust UI element (highlighting the navigation of the current state) within your templates via $state provided by ui-router which you can expose via setting it in $rootScope on run.
+						</li>
+					</ul>
+					<p>In essence, ui-router is ngRouter with more features, under the sheets it is quite different. These additional features are very useful for larger applications.</p>
+					
+					<p class="bold">State Manager.</p>
+
+					The simplest form of state
+
+					A state in its simplest form can be added like this (typically within module.config):
+					<pre class="brush: js;">
+					<!-- in index.html -->
+					<body ng-controller="MainCtrl">
+						<section ui-view></section>
+					</body>
+					// in app-states.js (or whatever you want to name it)
+					$stateProvider.state('contacts', {
+					  template: '<h1>My Contacts</h1>'
+					})
+					</pre>
+
+				</div>
+			</div>
+		</article>
+
+	</div>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>

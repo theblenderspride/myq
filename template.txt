@@ -1,0 +1,11 @@
+<article class="accordion-group">
+    <div class="accordion-heading">
+        <a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					different REST methods used in backbone?
+				</a>
+    </div>
+    <div class="accordion-body collapse in" id="backbone-rest-methods">
+        <div class="accordion-inner">
+        </div>
+    </div>
+</article>

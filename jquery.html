@@ -18,6 +18,38 @@
 		</div>
 		
 		<div id="searchgap"></div>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					Custom Events
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+			 	<p>Without custom events, the code will be more meaningful</p>
+				<div class="accordion-inner">
+					<p class="bold">Publish / Subscribe demonstrating custom events With jquery</p>
+					<pre class="brush: js;">
+						$(document).on('testEvent', function(e, eventInfo) { 
+						  subscribers = $('.subscribers-testEvent');
+						  subscribers.trigger('testEventHandler', [eventInfo]);
+						});
+
+						$('#myButton').on('click', function() {
+						  $(document).trigger('testEvent', [1011]);
+						});
+
+						$('#notifier1').on('testEventHandler', function(e, eventInfo) { 
+						  alert('(notifier1)The value of eventInfo is: ' + eventInfo);
+						});
+
+						$('#notifier2').on('testEventHandler', function(e, eventInfo) { 
+						  alert('(notifier2)The value of eventInfo is: ' + eventInfo);
+						});
+					</pre>				
+				</div>
+			</div>
+		</article>
 		
 		<article class="accordion-group">
 			 <div class="accordion-heading">      		

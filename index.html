@@ -550,6 +550,61 @@
 			</div>			
 		</article>
 
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#namespacing" data-toggle="collapse" class="accordion-toggle">
+					Why REST?
+				</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="namespacing">
+				<div class="accordion-inner">            
+					<p>
+						REST is using HTTP verbs GET, POST, PUT, DELETE to respectively get, insert, update, delete resources on a server. 
+					</p>
+					<p>
+						E.g. GET with url: controller/customer/{id} 
+						The alternative is adding methods to a controller such as GetCustomerById(id), InsertCustomer(customer), UpdateCustomer(customer), DeleteCustomer(customer). This is what's known as a RPC approach. E.g. GET with url: controller/GetCustomerById?id={id} 
+						One of the differences is, is that a REST api is kind of predictable. If you know REST and you know the name of the resource you want (e.g. Customer), then you can immediately jump in and use the REST controller with the standard verbs. 
+					</p>
+					<ul>
+						<li>
+							<b>With an RPC approach, you need to know what methods are on your controller</b>, what kind of arguments they take, etc. These signatures can vary from controller to controller, from app to app. 
+						</li>
+						<li>
+							<b>AJAX on the other hand is just an asynchronous way of placing the aforementioned requests, whether as a REST call or a RPC call.</b>
+						</li>
+					</ul>
+
+					<p><strong>REST-JSON has several advantages over SOAP-XML</strong><p>
+					<ul>
+						<li><strong>Size</strong>
+						REST-JSON is a lot smaller and less bloated than SOAP-XML therefore you will be passing much less data over the network, which is particularly important for mobile devices.
+						</li>
+						<li><strong>Efficiency</strong>
+						REST-JSON is also easier to parse the data so therefore easier to extract and convert the data, so therefore requires much less from the CPU from the client.
+						</li>
+						<li><strong>Caching</strong>
+						REST-JSON provides improved response times and server loading due to support from caching
+						</li>
+						<li><strong>Implementation</strong>
+						REST-JSON interfaces are much easier to design and implement.
+						 </li>
+					 </ul>
+
+					<p>For these reasons REST-JSON is generally preferred to SOAP-XML for mobile application which require a web service to retrieve data from a web service, where there is no need to the heavy-weight XML structure.</p>
+
+					<p><strong>SOAP-XML is generally preferred when:</strong></p>
+
+					<p>passing around a lot of text since XML excels and wrapping and marking up text.
+					you require secure, transactional services such as banking services.
+					Due to the strict nature of SOAP-XML any changes in the server code needs to be implemented on any and all clients.
+					</p>
+				</div>
+			</div>			
+		</article>
+
 		</div>
 	<!-- end of container-->
 	

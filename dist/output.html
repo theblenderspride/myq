@@ -1,0 +1,2391 @@
+<!Doctype html>
+<html>
+<head>
+	<title> arrays qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		<div id="search">
+			<input type="text" id="txtSearch" />
+		</div>
+		
+		<div id="searchgap"></div>
+				
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					How to empty an array in JavaScript?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">				
+					<p class="bold">Method 1</p>
+					<p>If you need to keep the original array because you have other references to it that should be updated too, you can clear it without creating a new array by setting its length to zero:
+					</p>
+					
+					<pre class="brush: js;"> 
+						A.length = 0;
+					</pre>
+					<p class="bold">Method 2</p>
+					<p>This solution is not very succinct but it is by far the fastest solution (apart from setting the array to a new array). If you care about performance, consider using this method to clear an array. Benchmarks show that this is at least 10 times faster than setting the length to 0 or using splice().
+					</p>
+					<pre class="brush: js;"> 
+						while(A.length > 0) {
+							A.pop();
+						}
+					</pre>					
+				</div>
+			</div>
+		</article>
+		
+		
+		
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					What is the difference between using the delete operator on the array element as opposed to using the Array.splice method?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">				
+					<p>delete does remove the element, but does not reindex the array or update its length. The deleted element will shown as undefined.
+					</p>					
+					<pre class="brush: js;"> 
+						myArray = ['a', 'b', 'c', 'd']
+					    // ["a", "b", "c", "d"]
+						delete myArray[0]
+					    // true
+					    myArray
+						// [undefined, "b", "c", "d"]
+					    myArray.splice(0, 2)
+					    // [undefined, "b"]
+					    myArray
+					    // ["c", "d"]
+					</pre>									
+				</div>
+			</div>
+		</article>
+		
+		
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					Loop through array in JavaScript?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">				
+					<p class="bold">Use a sequential for loop:</p>
+					<pre class="brush: js;"> 
+						var myStringArray = ["Hello","World"];
+						var arrayLength = myStringArray.length;
+						for (var i = 0; i < arrayLength; i++) {
+							alert(myStringArray[i]);							
+						}
+					</pre>
+					
+					<p><strong>the for...in statement</strong> should be avoided, this is meant to enumerate object properties.</p>
+					<p><strong>It shouldn't be used for array-like objects because:</strong></p>
+					
+					<ul>					
+						<li>The order of iteration is not guaranteed, the array indexes may not visited in the numeric order.</li>
+						<li>Inherited properties are also enumerated.</li>
+					</ul>
+					<p>The for-in statement as I said before is there to enumerate object properties, for example:</p>
+					<pre class="brush: js;"> 
+						var obj = {
+						  "a": 1,
+						  "b": 2,
+						  "c": 3
+						};
+
+						for (var prop in obj) {
+						  if (obj.hasOwnProperty(prop)) { 
+						  // or if (Object.prototype.hasOwnProperty.call(obj,prop)) for safety...
+							alert("prop: " + prop + " value: " + obj[prop])
+						  }
+						}
+					</pre>					
+				</div>
+			</div>
+		</article>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					Remove specific element from an array?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">
+					<p>The splice() method changes the content of an array, removing/adding new elements while removing old elements.
+					</p>				
+					<p>
+					<strong>index</strong> -
+					Index at which to start changing the array. If greater than the length of the array, actual starting index will be set to the length of the array. If negative, will begin that many elements from the end.
+					</p>
+					<p>	
+					<strong>howMany</strong> -
+					An integer indicating the number of old array elements to remove. If howMany is 0, no elements are removed. In this case, you should specify at least one new element. If howMany is greater than the number of elements left in the array starting at index, then all of the elements through the end of the array will be deleted. If no howMany parameter is specified (second syntax above, which is a SpiderMonkey extension), all elements after index are removed.
+					</p>
+					<p>	
+					<strong>element1, ..., elementN</strong> -
+					The elements to add to the array. If you don't specify any elements, splice simply removes elements from the array.
+					</p>
+					<p>	
+					<strong>Returns</strong> -
+					An array containing the removed elements. If only one element is removed, an array of one element is returned. If no elements are removed, an empty array is returned.
+					</p>
+					<pre class="brush: js; highlight: [0]"> 
+						var myFish = ["angel", "clown", "mandarin", "surgeon"];
+						//removes 0 elements from index 2, and inserts "drum"
+						var removed = myFish.splice(2, 0, "drum");
+						//myFish is ["angel", "clown", "drum", "mandarin", "surgeon"]
+						//removed is [], no elements removed
+
+						//removes 1 element from index 3
+						removed = myFish.splice(3, 1);
+						//myFish is ["angel", "clown", "drum", "surgeon"]
+						//removed is ["mandarin"]
+
+						//removes 1 element from index 2, and inserts "trumpet"
+						removed = myFish.splice(2, 1, "trumpet");
+						//myFish is ["angel", "clown", "trumpet", "surgeon"]
+						//removed is ["drum"]
+
+						//removes 2 elements from index 0, and inserts "parrot", "anemone" and "blue"
+						removed = myFish.splice(0, 2, "parrot", "anemone", "blue");
+						//myFish is ["parrot", "anemone", "blue", "trumpet", "surgeon"]
+						//removed is ["angel", "clown"]
+
+						//removes 2 elements from index 3
+						removed = myFish.splice(3, Number.MAX_VALUE);
+						//myFish is ["parrot", "anemone", "blue"]
+						//removed is ["trumpet", "surgeon"]
+					</pre>						
+				</div>
+			</div>
+		</article>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					Appending to array?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">
+					<p>Use push method</p>				
+					<pre class="brush: js; highlight: [8, 11, 14]"> 
+						var arr = [
+							"Hi",
+							"Hello",
+							"Bonjour"
+						];
+						
+						// append new value to the array
+						arr.push("Hola");
+						
+						// To push specified number of arguments			
+						arr.push('second', 'third'); 
+						
+						// To push entire array	
+						Array.prototype.push.apply( arr, ["Hola", "Hask"]);
+					</pre>	
+					<p>Use concat method</p>
+					<pre class="brush: js; highlight: [3]"> 
+						var ar1 = [1, 2, 3];
+						var ar2 = [4, 5, 6];
+						var ar3 = ar1.concat(ar2);
+					</pre>
+				</div>
+			</div>
+		</article>
+			
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					Why does [1,2] + [3,4] = "1,23,4" in JavaScript?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">				
+					<p>JavaScript's + operator has two purposes: adding two numbers, or joining two strings. It doesn't have a specific behaviour for arrays, so it's converting them to strings and then joining them.
+					</p>
+					<p>
+					If you want to join two arrays to produce a new one, use the .concat method instead:
+					</p>
+					<pre class="brush: js;"> 
+					[1, 2].concat([3, 4]) // [1, 2, 3, 4]
+					</pre>
+				</div>
+			</div>
+		</article>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					fastest way to add all the elements of the array?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">				
+					<pre class="brush: js;">
+					var arr = [11,5,7,9];
+					eval( arr.join("+") );
+					</pre>				
+				</div>
+			</div>
+		</article>
+		
+	</div>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>;<!Doctype html>
+<html>
+<head>
+	<title> backbone qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		<div id="search">
+			<input type="text" id="txtSearch" />
+		</div>
+		
+		<div id="searchgap"></div>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					different REST methods used in backbone?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">
+				</div>
+			</div>
+		</article>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					different REST methods used in backbone?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">
+					<p>
+						<strong>The HTTP Protocol</strong>
+					</p>
+					<p>
+						I like examples, so here is an HTTP request to get the HTML for this page:
+					</p>
+					<pre class="brush: js;">
+						GET /questions/18504235/understand-backbone-js-rest-calls HTTP/1.1
+						Host: stackoverflow.com
+					</pre>
+					<p>
+						[Optional] If you have ever played with command line or terminal, try running the command telnet stackoverflow.com 80 and pasting in the above, followed by pressing enter a couple of times. Voila! HTML in all of it's glory.
+					</p>
+					<p>
+						In this example...
+					</p>
+					<ul>
+						<li>GET is the method.</li>
+						<li>/questions/18504235/understand-backbone-js-rest-calls is the path.</li>
+						<li>HTTP/1.1 is the protocol.</li>
+						<li>Host: stackoverflow.com is an example of a header.</li>
+					</ul>
+					<p>
+						Your browser does approximately the same, just with more headers, in order to get the HTML for this page. Cool, huh?
+					</p>
+					<p>
+						Since you work in front end, you've probably seen the form tag many times. Here's an example of one:
+					</p>
+
+					<pre class="brush: js;">
+					<form action="/login" method="post">
+						<input type="text" name="username" />
+						<input type="password" name="password" />
+						<input type="submit" name="submit" value="Log In" />
+					</form>
+					</pre>
+
+					<p>
+						When you submit this form along with appropriate data, your browser sends a request that looks something like this:
+					</p>
+
+					<pre class="brush: js;">
+						POST /login HTTP/1.1
+						Host: stackoverflow.com
+
+						username=testndtv&password=zachrabbitisawesome123&submit=Log%20In
+					</pre>
+
+					<p>
+						There are three differences between the previous example and this one.
+					</p>
+					<ul>
+						<li>The method is now POST.</li>
+						<li>The path is now /login.</li>
+						<li>There is an extra line, called the body.</li>
+					</ul>
+
+					<p>
+						While there are a bunch of other methods, the ones used in RESTful applications are POST, GET, PUT, and DELETE. This tells the server what type of action it's supposed to take with the data, without having to have different paths for everything.
+					</p>
+					<p>
+						<strong>Back to Backbone</strong>
+					</p>
+					</p>
+					<p>
+						So hopefully now you understand a bit more about how HTTP works. But how does this relate to Backbone? Let's find out!
+					</p>
+					<p>
+						Here's a small chunk of code you might find in a Backbone application.
+					</p>
+					<pre class="brush: js;">
+						var BookModel = Backbone.Model.extend({
+							urlRoot: '/books'
+						});
+						var BookCollection = Backbone.Collection.extend({
+							model: BookModel
+							, url: '/books'
+						});
+					</pre>
+					<p>
+						<strong>
+							Create (POST)		
+						</strong>
+					</p>
+					<p>
+						Since we're using a RESTful API, that's all the information Backbone needs to be able to create, read, update, and delete all of our book information! Let's start by making a new book. The following code should suffice:
+					</p>
+					<pre class="brush: js;">
+						var brandNewBook = new BookModel({ title: '1984', author: 'George Orwel' });
+						brandNewBook.save();
+					</pre>
+					<p>
+						Backbone realizes you're trying to create a new book, and knows from the information it's been given to make the following request:
+					</p>
+					<pre class="brush: js;">
+						POST /books HTTP/1.1
+						Host: example.com
+
+						{"title":"1984","author":"George Orwel"}
+					</pre>
+					<p>
+						<strong>
+							Read (GET)
+						</strong>
+					</p>
+					<p>
+						See how easy that was? But we want to get that information back at some point. Let's say we ran new BookCollection().fetch(). Backbone would understand that you're trying to read a collection of books, and it would make the following request:
+					</p>
+					<pre class="brush: js;">
+						GET /books HTTP/1.1
+						Host: example.com
+					</pre>
+					<p>
+						BAM. That easy. But say we only wanted the information for one book. Let's say book #42. Say we ran new BookModel({ id: 42 }).fetch(). Backbone sees you're trying to read a single book:
+					</p>
+					<pre class="brush: js;">
+						GET /books/42 HTTP/1.1
+						Host: example.com
+					</pre>
+					<p>
+						<strong>
+							Update (PUT)
+						</strong>
+					</p>
+
+					<p>
+						Oh darn, I just realized I spelled Mr. Orwell's name wrong. Easy to fix!
+					</p>
+					<pre class="brush: js;">
+						brandNewBook.set('author', 'George Orwell');
+						brandNewBook.save();
+					</pre>
+					<p>
+						Backbone is smart enough to know that despite being called brandNewBook, it's already been saved. So it <strong>updates</strong> the book:
+					</p>
+					<pre class="brush: js;">
+						PUT /books/84 HTTP/1.1
+						Host: example.com
+
+						{"title":"1984","author":"George Orwell"}
+					</pre>
+					<p>
+						<strong>
+							Delete (DELETE)
+						</strong>
+					</p>
+					<p>
+						Finally, you realize that the government is tracking your every move, and you need to bury the fact that you have read 1984. It's probably too late, but it never hurts to try. So you run brandNewBook.destroy(), and Backbone becomes sentient and realizes your danger deletes the book with the following request:
+					</p>
+					<pre class="brush: js;">
+						DELETE /books/84 HTTP/1.1
+						Host: example.com
+					</pre>
+					<p>
+						And it's gone.
+					</p>
+					<p><strong>Other Useful Tidbits</strong></p>
+					<p>
+						While we've talked a lot about what we're sending TO the server, we should probably also take a look at what we're getting back. Let's return to our collection of books. If you remember, we made a GET request to /books. In theory, we should get back something like this:
+					</p>
+					<pre class="brush: js;">
+						[
+							{"id":42,"author":"Douglas Adams","title":"The Hitchhiker's Guide to the Galaxy"}
+							, {"id":3,"author":"J. R. R. Tolkien","title":"The Lord of the Rings: The Fellowship of the Ring"}
+						]
+					</pre>
+					<p>
+						Nothing too scary. And even better, Backbone knows how to handle this out of the box. But what if we changed it a bit? Instead of id being the identifying field, it was bookId?
+					</p>
+					<pre class="brush: js;">
+						[
+							{"bookId":42,"author":"Douglas Adams","title":"The Hitchhiker's Guide to the Galaxy"}
+							, {"bookId":3,"author":"J. R. R. Tolkien","title":"The Lord of the Rings: The Fellowship of the Ring"}
+						]
+					</pre>
+					<p>
+						Backbone gets that every API is a bit different, and it's okay with that. All you have to do is let it know the idAttribute, like so:
+					</p>
+					<pre class="brush: js;">
+						var BookModel = Backbone.Model.extend({
+							urlRoot: '/books'
+							, idAttribute: 'bookId'
+						});
+					</pre>
+					</p>
+						You only have to add that information to the model, since the collection checks the model anyway. So just like that, Backbone understands your API! Even if I don't...
+					</p>
+					<p>
+						The downside of this is that you have to remember to use bookId in certain cases. For example, where we previously used new BookModel({ id: 42 }).fetch() to load the data about a single book, we would now have to use new BookModel({ bookId: 42 }).fetch().
+					</p>
+				</div>
+			</div>			
+		</article>
+	</div>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>;<!Doctype html>
+<html>
+<head>
+	<title> css qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		<div id="search">
+			<input type="text" id="txtSearch" />
+		</div>
+		
+		<div id="searchgap"></div>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					CSS rule to disable text selection highlighting?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+					<pre class="brush: js;">
+						-webkit-touch-callout: none;
+						-webkit-user-select: none;
+						-khtml-user-select: none;
+						-moz-user-select: none;
+						-ms-user-select: none;
+						user-select: none;
+					</pre>				
+				</div>
+			</div>
+		</article>
+
+	</div>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>;<!Doctype html>
+<html>
+<head>
+	<title> html5 qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		<div id="search">
+			<input type="text" id="txtSearch" />
+		</div>
+		
+		<div id="searchgap"></div>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#article-vs-section-vs-div" data-toggle="collapse" class="accordion-toggle">
+					article vs section vs div
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="article-vs-section-vs-div">
+				<div class="accordion-inner">
+					<p class="bold">
+						The difference between &lt;article&gt; and &lt;section&gt;
+					</p>
+					<p>
+						There's been a lot of confusion over the difference (or perceived lack of a difference) between the <span class="bold">&lt;article&gt;</span> and <span class="bold">&lt;section&gt;</span> elements in HTML5. The &lt;article&gt; element is a specialised kind of &lt;section&gt;; it has a more specific semantic meaning than &lt;section> in that it is an independent, self-contained block of related content. We could use &lt;section&gt;, but using &lt;article&gt; gives more semantic meaning to the content.
+					</p>
+					<p>
+						By contrast &lt;section&gt; is only a block of related content, and &lt;div&gt; is only a block of content. Also as mentioned above the pubdate attribute doesn't apply to &lt;section>. To decide which of these three elements is appropriate, choose the first suitable option:
+					</pre>
+					<ul>
+						<li>Would the content would make sense on its own in a feed reader? If so use &lt;article&gt;</li>
+						<li>Is the content related? If so use &lt;section&gt;</li>
+						<li>Finally if there's no semantic relationship use &lt;div&gt;</li>
+					</ul>
+				</div>
+			</div>
+		</article>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#div-not-dead" data-toggle="collapse" class="accordion-toggle">
+					You can still use div
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="div-not-dead">
+				<div class="accordion-inner">
+					<p>
+						Sorry, can you say that again?, I hear you ask. Certainly: you can still use &lt;div&gt;! Despite HTML5 bringing us new elements like &lt;article&gt;, &lt;section&gt;, and &lt;aside&gt;, the &lt;div&gt; element still has its place. Let the HTML5 Doctor tell you why.
+					</p>
+					<p>
+					Status: Unchanged
+					</p>
+					<p>
+					In HTML 4, the <div> element was defined to be a generic element for structuring a page. Although you can allude to the nature of its content by assigning id and class attributes with meaningful names, a <div> has almost no semantic meaning. The HTML5 definitionis basically the same as in HTML 4:
+					</pre>
+					<pre class="brush: js;">
+					The div element has no special meaning at all. It represents its children. It can be used with the class, lang, and title attributes to mark up semantics common to a group of consecutive elements.
+					W3C Specification
+					</pre>
+				</div>
+			</div>
+		</article>
+		
+	</div>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>;<!Doctype html>
+<html>
+<head>
+	<title> my qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		<div id="search">
+			<input type="text" id="txtSearch" />
+		</div>
+		
+		<div id="searchgap"></div>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#disadvantages-of-spa" data-toggle="collapse" class="accordion-toggle">
+					JavaScript Closures?
+				</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="disadvantages-of-spa">
+				<div class="accordion-inner">   
+					<p>
+						Whenever you see the function keyword within another function, the inner function has access to variables in the outer function.
+					</p>
+					<pre class="brush: js;">
+						function foo(x) {
+						  var tmp = 3;
+						  function bar(y) {
+							alert(x + y + (++tmp));
+						  }
+						  bar(10);
+						}
+						foo(2);
+					</pre>
+					<p>
+					This will always alert 16, because bar can access the x which was defined as an argument to foo, and it can also access tmp from foo.
+					</p>
+					<blockquote>
+					That is a closure. A function doesn't have to return in order to be called a closure. Simply accessing variables outside of your immediate lexical scope creates a closure.
+					</blockquote>
+					<p></p>
+					<h4>Common uses of closures</h4>
+					<ul>
+						<li>
+							<p>The most common use is when someone wants to "delay" use of a variable that is increased upon each loop, but because the variable is scoped then each reference to the variable would be after the loop has ended, resulting in the end state of the variable
+							</p>
+							<pre class="brush: js;">
+								for (var i = 0; i < someVar.length; i++) {
+									window.setTimeout(function () { 
+										alert("Value of i was "+i+" when this timer was set" )
+									}, 10000);
+								}
+							</pre>
+							<p>
+							This would result in every alert showing the same value of i, the value it was increased to when the loop ended. The solution is to create a new closure, a separate scope for the variable. This can be done using an instantly executed anonymous function, which receives the variable and stores its state as an argument:
+							</p>
+							<pre class="brush: js;">
+								for (var i = 0; i < someVar.length; i++)
+								(function (i) {
+									window.setTimeout(function () { 
+										alert("Value of i was "+i+" when this timer was set" )
+									}, 10000);
+								})(i); 
+							</pre>
+						</li>
+						<li>
+							<h4>Emulating private methods with closures: </h4>	
+							<pre class="brush: js;">	
+							a = (function () {
+								var privatefunction = function () {
+									alert('hello');
+								}
+
+								return {
+									publicfunction : function () {
+										privatefunction();
+									}
+								}
+							})();
+							</pre>						
+						</li>					
+					</ul>	
+					<h4>Performance considerations</h4>
+					<p>
+					It is unwise to unnecessarily create functions within other functions if closures are not needed for a particular task, as it will negatively affect script performance both in terms of processing speed and memory consumption.
+					</p>
+					<p>
+					For instance, when creating a new object/class, methods should normally be associated to the object's prototype rather than defined into the object constructor. The reason is that whenever the constructor is called, the methods would get reassigned (that is, for every object creation).
+					</p>
+					<p>
+					Consider the following impractical but demonstrative case:
+					</p>
+					<pre class="brush: js;">
+					function MyObject(name, message) {
+					  this.name = name.toString();
+					  this.message = message.toString();
+					  this.getName = function() {
+						return this.name;
+					  };
+
+					  this.getMessage = function() {
+						return this.message;
+					  };
+					}
+					</pre>
+					<p>
+					The previous code does not take advantage of the benefits of closures and thus could instead be formulated:
+					</p>
+					<pre class="brush: js;">
+					function MyObject(name, message) {
+					  this.name = name.toString();
+					  this.message = message.toString();
+					}
+					MyObject.prototype = {
+					  getName: function() {
+						return this.name;
+					  },
+					  getMessage: function() {
+						return this.message;
+					  }
+					};
+					</pre>
+					<p>
+					However, redefining the prototype is not recommended, so the following example is even better because it appends to the existing prototype:
+					</p>
+					<pre class="brush: js;">
+
+					function MyObject(name, message) {
+					  this.name = name.toString();
+					  this.message = message.toString();
+					}
+					MyObject.prototype.getName = function() {
+					  return this.name;
+					};
+					MyObject.prototype.getMessage = function() {
+					  return this.message;
+					};
+					</pre>
+
+				</div>
+			</div>
+		</article>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#disadvantages-of-spa" data-toggle="collapse" class="accordion-toggle">
+					What are the differences between Deferred, Promise and Future in Javascript?
+				</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="disadvantages-of-spa">
+				<div class="accordion-inner">            
+					<blockquote>
+					Rather than directly passing callbacks to functions, something which can lead to tightly coupled interfaces, using promises allows one to separate concerns for code that is synchronous or asynchronous.
+					</blockquote>
+					
+					<p>
+					Personally, I've found deferred especially useful when dealing with e.g. templates that're populated by asynchronous requests, loading scripts that have networks of dependencies, and providing user feedback to form data in a non-blocking manner.
+					</p>
+					
+					<p>Indeed, compare the pure callback form of doing something after loading CodeMirror in JS mode asynchronously (apologies, I've not used jQuery in a while):
+					</p>
+					
+					<pre class="brush: js;">
+						/* assume getScript has signature like: function (path, callback, context) and listens to onload && onreadystatechange */
+						$(function () {
+						   getScript('path/to/CodeMirror', getJSMode);
+
+						   // onreadystate is not reliable for callback args.
+						   function getJSMode() {
+							   getScript('path/to/CodeMirror/mode/javascript/javascript.js', 
+								   ourAwesomeScript);
+						   };
+
+						   function ourAwesomeScript() {
+							   console.log("CodeMirror is awesome, but I'm too impatient.");
+						   };
+						});	
+					</pre>
+					
+					<p>To the promises formulated version (again, apologies, I'm not up to date on jQuery):</p>
+					
+					<pre class="brush: js;">
+						/* Assume getScript returns a promise object */
+						$(function () {
+						   $.when(
+							   getScript('path/to/CodeMirror'),
+							   getScript('path/to/CodeMirror/mode/javascript/javascript.js')
+						   ).then(function () {
+							   console.log("CodeMirror is awesome, but I'm too impatient.");
+						   });
+						});
+					</pre>
+					<blockquote>
+					The point of promises is to give us back functional composition and error bubbling in the async world.
+					</blockquote>
+					<p>In other word, promises are a way that lets us write asynchronous code that is almost as easy to write as if it was synchronous.
+					</p>
+					<p>Consider this example, with promises:
+					</p>
+
+					<pre class="brush: js;">
+						getTweetsFor("domenic") // promise-returning async function
+							.then(function (tweets) {
+								var shortUrls = parseTweetsForUrls(tweets);
+								var mostRecentShortUrl = shortUrls[0];
+								return expandUrlUsingTwitterApi(mostRecentShortUrl); // promise-returning async function
+							})
+							.then(doHttpRequest) // promise-returning async function
+							.then(
+								function (responseBody) {
+									console.log("Most recent link text:", responseBody);
+								},
+								function (error) {
+									console.error("Error with the twitterverse:", error);
+								}
+							);
+					</pre>
+					<p>
+					It works as if you were writing this synchronous code:
+					</p>
+					<pre class="brush: js;">
+						try {
+							var tweets = getTweetsFor("domenic"); // blocking
+							var shortUrls = parseTweetsForUrls(tweets);
+							var mostRecentShortUrl = shortUrls[0];
+							var responseBody = doHttpRequest(expandUrlUsingTwitterApi(mostRecentShortUrl)); // blocking x 2
+							console.log("Most recent link text:", responseBody);
+						} catch (error) {
+							console.error("Error with the twitterverse: ", error);
+						}
+					</pre>
+
+					<blockquote>
+					Regarding Deferred, it's a way to .resolve() or .reject() promises. In the Promises/B spec, it is called .defer(). In jQuery, it's $.Deferred().
+					</blockquote>
+
+				</div>
+			</div>			
+		</article>
+
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#localstorage-cookie" data-toggle="collapse" class="accordion-toggle">
+					local storage vs cookie?
+				</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="localstorage-cookie">
+				<div class="accordion-inner">
+					<p>						
+						<strong>To delete a localStorage item</strong>
+						<pre class="brush: js;">
+							localStorage.removeItem(key);
+						</pre>
+					</p>
+					<p>
+						<strong>What is a cookie?</strong>
+						Quite simply, a cookie is a small text file that is stored by a browser on the user's machine. Cookies are plain text; they contain no  code. A web page or server instructs a browser to store this information and then send it back with each subsequent request based on a set of rules. Web servers can then use this information to identify individual users. Most sites requiring a login will typically set a cookie once your credentials have been verified, and you are then free to navigate to all parts of the site so long as that cookie is present and validated. Once again, the cookie just contains data and isn't harmful in and of itself.
+					</p>
+					<p>
+					Cookies and local storage really serve difference purposes. Cookies are primarily for reading server-side, local storage can only be read client-side. So the question is, in your app, who needs this data — the client or the server?
+					</p>
+					<p>
+						If it's your client (your JavaScript), then by all means switch. You're wasting bandwidth by sending all the data in each HTTP header.
+					</p>
+					<p>
+						If it's your server, local storage isn't so useful because you'd have to forward the data along somehow (with Ajax or hidden form fields or something). This might be okay if the server only needs a small subset of the total data for each request.
+					</p>
+					<p>
+						You'll want to leave your session cookie as a cookie either way though.
+					</p>
+					<p>
+					</p>
+					<p>
+						Apart from being an old way of saving data, <strong>Cookies give you a limit of 4096 bytes</strong> (4095, actually) - its per cookie. <strong>Local Storage is as big as 5MB per domain</strong>
+					</p>
+					<p>
+						<strong>localStorage</strong> is implementation of Storage Interface - stores data with no expiration date, and gets cleared only through JavaScript, or clearing the Browser Cache / Locally Stored Data - unlike cookie expiry
+					</p>
+				</div>
+			</div>			
+		</article>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#pub-sub-pattern" data-toggle="collapse" class="accordion-toggle">
+					Publish/Subscribe pattern (in JS/jQuery)?
+				</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="namespacing">
+				<div class="pub-sub-pattern">            
+					<p>
+						It's all about loose coupling and single responsibility, which goes hand to hand with MV* (MVC/MVP/MVVM) patterns in JavaScript which are very modern in the last few years.
+					</p>										
+					<p>
+						So that you don't have to hardcode method / function calls, you just publish the event without caring who listens. This makes the publisher independent from subscriber, reducing dependency (or coupling, whatever term you prefer) between 2 different parts of the application.
+					</p>					
+					<p>
+						Here are some disadvantages of coupling as mentioned by wikipedia
+					</p>					
+					<p>
+						Tightly coupled systems tend to exhibit the following developmental characteristics, which are often seen as disadvantages:
+					</p>					
+					<ul>
+						<li>
+							A change in one module usually forces a ripple effect of changes in other modules.		
+						</li>
+						<li>
+							Assembly of modules might require more effort and/or time due to the increased inter-module dependency.
+						</li>
+						<li>
+							A particular module might be harder to reuse and/or test because dependent modules must be included.
+						</li>
+					</ul>
+					<p>
+						<strong>NOTE: Loose coupling</strong> is an <em>Object-oriented principle</em> in which each component of the system knows it's responsibility and don't care about the other components (or at least tries to not care about them as much as possible). Loosing coupling is a good thing because you can easily reuse the different modules. You're not coupled with the interfaces of other modules. Using publish/subscribe you're only coupled with the publish/subscribe interface which is not a big deal – just two methods. So if you decide to reuse a module in different project you can just copy and paste it and it'll probably work or at least you won't need much effort to make it work.
+					</p>
+				</div>
+			</div>			
+		</article>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#namespacing" data-toggle="collapse" class="accordion-toggle">
+					method vs function?
+				</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="namespacing">
+				<div class="accordion-inner">            
+					<p>
+						A function is a piece of code that is called by name. It can be passed data to operate on (ie. the parameters) and can optionally return data (the return value).
+					</p>
+					<p>
+						All data that is passed to a function is explicitly passed.
+					</p>
+					<p>
+						A method is a piece of code that is called by name that is associated with an object. In most respects it is identical to a function except for two key differences.
+					</p>
+					<ul>
+						<li>
+							It is implicitly passed the object for which it was called
+						</li>
+						<li>
+							It is able to operate on data that is contained within the class (remembering that an object is an instance of a class - the class is the definition, the object is an instance of that data)
+						</li>
+					</ul>
+				</div>
+			</div>			
+		</article>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#namespacing" data-toggle="collapse" class="accordion-toggle">
+					What is namespacing?
+				</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="namespacing">
+				<div class="accordion-inner">            
+					<p>
+						JavaScript has a big design flaw, where it is very easy to create global variables that have the potential to interact in negative ways. The practice of namespacing is usually to create an object literal encapsulating your own functions and variables, so as not to collide with those created by other libraries:
+					</p>
+					<pre class="brush: js;"> 
+						var MyApp = {
+							isMobile: true,
+						    foo: function() {
+						    },
+						    bar: function() {
+						    }
+						};					
+					
+						//	Then instead of calling foo() globally, it would always be called as:
+						MyApp.foo();
+						
+						// Likewise, var1 always accessed as:
+						MyApp.isMobile
+					</pre>
+
+				
+				</div>
+			</div>			
+		</article>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#disadvantages-of-spa" data-toggle="collapse" class="accordion-toggle">
+					Dis advantages of Spa?
+				</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="disadvantages-of-spa">
+				<div class="accordion-inner">            
+					<p>
+						The biggest disadvantage is that the client must have JavaScript enabled and be powerful enough to run a fair amount of it. It's also harder to satisfy accessibility concerns or anything else that relies on parsing static HTML (though something knowing your specific API can probably do better than HTML scraping). Finally, it's easier to have significant memory leaks.
+					</p>
+
+					<p>
+						As far as duplicating code or putting business logic on the client - I'm not sure how much of that you have to do. If the model on the client is a View-Model (a model that matches up with the world as the UI sees it, not a business model) then the logic that matches the ViewModel up to the business model can reside on the client, the server, or a bit of both. It depends on how you feel about having your API contain a client-specific facade vs. having the client translate UI inputs into API calls.
+					</p>
+				
+				</div>
+			</div>			
+		</article>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#oop-javascript" data-toggle="collapse" class="accordion-toggle">OOP In JavaScript?</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="oop-javascript">
+				<div class="accordion-inner">            
+					<p>The two important principles with OOP in JavaScript are Object Creation patterns (Encapsulation) and Code Reuse patterns (Inheritance). When building applications, you create many objects, and there are many ways of creating these objects: you can use the very basic object literal pattern, for example:</p>
+					<pre class="brush: js;">
+						var myObj = {name: "Richard", profession: "Developer"};
+				</pre>
+				</div>
+			</div>			
+		</article>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#websockets-and-their-uses" data-toggle="collapse" class="accordion-toggle">Websockets and their uses?</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="websockets-and-their-uses">
+				<div class="accordion-inner">            
+					<h5>
+						WebSockets enables instant data exchange and is supported by all modern browsers. Put it to use immediately in your Web apps
+					</h5>
+
+					<h6>
+					Determining whether to use WebSockets for the job at hand is simple:
+					</h6>
+
+					<ul>
+						<li>
+							Does your app involve multiple users communicating with each other?	
+						</li>
+						<li>
+							Is your app a window into server-side data that's constantly changing?
+						</li>
+					</ul>
+					<p>
+					If you answered yes to either of these questions, consider using WebSockets. If you're still unsure and want some inspiration, here are a few killer use cases.
+					</p>
+					<p>
+						<strong>1. Social feeds</strong>
+					</p>
+					<p>					
+						One of the benefits of social apps is knowing what all your friends are doing when they do it. Sure, it's a little creepy, but we all love it. You don't want to wait minutes to find out a family member won a pie-baking contest or a friend has become engaged. You're online, so your feed should update in real time.
+					</p>
+					<p>
+						<strong>2. Multiplayer games</strong>
+					</p>
+					<p>
+						The Web is quickly coming into its own as a gaming platform. Without having to rely on plug-ins (I'm looking at you, Flash) Web developers are now able to implement and experiment with high-performance gaming in the browser. Whether you're dealing with DOM elements, CSS animations, HTML5 canvas or you're experimenting with WebGL, efficient interaction between players is crucial. I don't want to discover my opponent has moved after I pull the trigger.
+					</p>
+					<p>
+						<strong>3. Collaborative editing/coding</strong>
+					</p>
+					<p>
+						We live in the age of distributed dev teams. Working on a copy of a document used to suffice, but then you had to figure out a way to merge all the edited copies together. Version control systems like Git can help with certain files, but you'll still have to track people down when Git finds a conflict it can't deal with. With a collaborative solution like WebSockets, we can work on the same document and skip all the merges. It's easy to see who is editing what and if you're working on the same portion of a document as someone else.
+					</p>
+					<p>
+						<strong>4. Clickstream data</strong>
+					</p>
+					<p>
+						Being able to analyze how users interact with your website is critical to improving it. The cost of HTTP has forced us to prioritize and collect only the most important data. Then, six months down the line, we realize we should've been collecting a different metric -- one that looked unimportant but would now shed light on a critical decision. With the overhead of HTTP requests out of the way, you can be less restrictive about the kind of data you're sending from the client. Want to track mouse movement in addition to page loads? Just send the data through a WebSocket connection to the back end and persist it in your favorite NoSQL store. (MongoDB is good for logging events like this.) Now you can play back customer interactions to see what was really going on.
+					</p>
+					<p>
+						<strong>5. Financial tickers</strong>
+					</p>
+					<p>
+						The finance world moves fast -- microsecond fast. Our human brains can't keep up with processing data at that speed, so we write algorithms to do it for us. Even if you're not dealing with high-frequency trading, however, stale information can only hurt. When you have a dashboard tracking companies you're interested in, you want to know what they're worth now, not 10 seconds ago. Use WebSockets to stream that data and no one needs to wait.
+					</p>
+					<p>
+						<strong>6. Sports updates</strong>
+					</p>
+					<p>
+						While we're on the topic of silly things people are passionate about, let's talk sports. I'm not a sports guy, but I know what sports guys want. When the Patriots are playing, my brother-in-law surrenders himself to the pace of the game. It's a trancelike state prone to violent, visceral reactions. I don't understand it, but I respect the intensity of the connection, so the last thing I want to do is add latency to his experience. If you're including sports information in your Web app, WebSockets can keep your users up to speed.
+					</p>
+					<p>
+						<strong>7. Multimedia chat</strong>
+					</p>
+					<p>
+						While there's no substitute for holding a meeting in person, videoconferences are about as good as it gets when we can't get everybody in the same room. The videoconference route is plug-in heavy, though, and full of proprietary "goodness." I'm a fan of the open Web, so using WebSockets with getUserMedia API's and the HTML5 audio and video elements is an obvious win. WebRTC, the logical predecessor to the combination I just outlined, looks promising, but the lack of current browser support eliminates it as a candidate.
+					</p>
+					<p>
+						<strong>8. Location-based apps</strong>
+					</p>
+					<p>
+						More and more developers are leveraging the GPS capabilities of mobile devices to make their Web apps location-aware. If you're tracking user locations over time (such as running an app that tracks your progress along a route), you'll be collecting fine-grained data. If you want to update a Web dashboard in real time (say, a track coach monitoring the progress of runners) HTTP is going to be unnecessarily bulky. Leverage the TCP connection a WebSocket uses and let that data fly.
+					</p>
+					<p>
+						<strong>9. Online education</strong>
+					</p>
+					<p>
+						School keeps getting more expensive, while the Internet keeps getting faster and cheaper. Online education can be a great way to learn, especially if you can interact with teachers and other students. WebSockets is the natural choice, allowing for multimedia chat, text chat, and other perks like collaborative drawing on a digital communal chalkboard.
+					</p>
+				</div>
+			</div>			
+		</article>
+		
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#why-spa" data-toggle="collapse" class="accordion-toggle">Why Spa?</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="why-spa">
+				<div class="accordion-inner">            
+					<p>Single page applications are more capable of decreasing load time of pages by storing the functionality once it is loaded the first time, allowing easier data transfer between pages and a more complex user interface instead of trying to control so much from the server. This allows for more interference from an end user, but proper checks on the server eliminate pretty much all of that risk. Most end users won't attempt this, so that does not warrant much if any worry. Also, the processing of data can be moved into generic service handlers which could result in an architecture utilizing the following layers:</p>
+						<ul class="list">
+							<li>Database</li>
+							<li>BL
+
+								<ul class="list">
+									<li>Transport Service</li>
+									<li>Processing Service</li>
+								</ul>
+							</li>
+							<li>User Interface The ajax functionality used allows for a smoother and more controlled user experience (my favorite perk)</li>
+						</ul>
+					
+					<p>And as for handling large components, the benefit is that you have the option to deffer the load time to an ajax process and do so whenever you like, making the initial load faster.</p>
+
+					<p>The process for coding it is a bit different in that using services is pretty much a requirement, but it is very similar to using a master page and controlling what content is loaded from the client.</p>
+
+					<p>As for best practices, there are quite a few optimizations that could and should be made to a design implementation, such as storing information as it comes, loading in script, html and js files through ajax only when needed, and using data loaded on one page in another if it can be instead of reloading for each new "page".</p>
+
+					<p>There is all sorts of information on this, and all sorts of libraries to use, but I would suggest using your own code as much as possible for the basic functionality(including the libraries you would typically use) and enhance from there.</p>
+
+					<p>As a side note, I would suggest looking up concepts for designing for one web, such as media queries for adjusting content..</p>
+
+					<p>I believe that this is the direction most websites should be moving in considering the number of devices that users utilize today, and the abilities and limitations of each.</p>
+				</div>
+			</div>			
+		</article>
+
+		</div>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>;<!Doctype html>
+<html>
+<head>
+	<title> jquery qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		<div id="search">
+			<input type="text" id="txtSearch" />
+		</div>
+		
+		<div id="searchgap"></div>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#jquery-miscellaneous" data-toggle="collapse" class="accordion-toggle">jQuery Miscellaneous?</a>
+			 </div>
+			
+			 <div class="accordion-body collapse" id="jquery-miscellaneous">
+				<div class="accordion-inner">
+					<ul>
+						<li>
+							<strong>$(document).ready equivalent without jQuery?</strong>
+							<p>We have three options:</p>
+							<ul>
+								<li>If script is the last tag of the body, DOM would be ready before script tag executes</li>
+								<li>When DOM is ready, "readyState" will change to "complete"</li>
+								<li>Put everything under 'DOMContentLoaded' event listener</li>
+							</ul>							
+							<p><strong>onreadystatechange</strong></p>
+							<pre class="brush: js;">
+								 document.onreadystatechange = function () {
+									 if (document.readyState == "complete") {
+									 	//document is ready. Do your stuff here
+								     }
+								 }
+							</pre>
+							<p><strong>DOMContentLoaded</strong></p>								
+							<pre class="brush: js;">
+								document.addEventListener('DOMContentLoaded', function(){
+								   console.log('document is ready. I can sleep now'); 
+								 });				
+							</pre>
+						</li>
+						
+						<li>
+							<strong>Preloading images with jQuery?</strong>
+							<pre class="brush: js;">
+								$.fn.preload = function() {
+									this.each(function(){
+										$('<img/>')[0].src = this;
+									});
+								}
+								// Usage:
+								$(['img1.jpg','img2.jpg','img3.jpg']).preload();					
+							</pre>
+						</li>
+
+						<li>
+							<strong>How to change the href for a hyperlink using jQuery?</strong>
+							<pre class="brush: js;">
+								$("a").attr("href", "http://www.google.com/")							
+							</pre>
+						</li>
+						<li>
+							<strong>Scroll to bottom of div?</strong>
+							<pre class="brush: js;">
+								$("#mydiv").scrollTop($("#mydiv")[0].scrollHeight);								
+							</pre>
+						</li>
+						<li>
+							<strong>Using jQuery to center a DIV on the screen</strong>
+							<pre class="brush: js; highlight: [10, 12]">
+								jQuery.fn.center = function () {
+									this.css("position","absolute");
+									this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 2) + 
+																				$(window).scrollTop()) + "px");
+									this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + 
+																				$(window).scrollLeft()) + "px");
+									return this;
+								}	
+								//Now call								
+								$(element).center();		
+
+								//With CSS only								
+								.center {
+								  position: absolute;
+								  left: 50%;
+								  top: 50%;
+								  transform: translate(-50%, -50%); /* Yep! */
+								  width: 48%;
+								  height: 59%;
+								}								
+							</pre>
+						</li>
+						<li>
+							<strong>jQuery scrollTop (Smoothly scroll to an element with jquery)</strong>
+						
+							<p>	 Get the current vertical position of the scroll bar for the first element in the set of matched elements or set the vertical position of the scroll bar for every matched element.
+                            </p>							
+							<pre class="brush: js;">
+								var container = $('div'),
+									scrollTo = $('#row_8');
+
+								container.scrollTop(
+									scrollTo.offset().top - container.offset().top + container.scrollTop()
+								);
+
+								// Or you can animate the scrolling:
+								container.animate({
+									scrollTop: scrollTo.offset().top - container.offset().top + container.scrollTop()
+								});
+							</pre>
+							
+						</li>
+						<li>
+							<strong>How to get the current URL in javascript?</strong>
+							<p>								
+								<pre class="brush: js;">
+									window.location.pathname;								
+								</pre>
+							</p>
+						</li>
+						<li>
+							<strong>Get selected text from drop down list (select box) using jQuery</strong>
+							<p>								
+								<pre class="brush: js; highlight: [2, 4, 6]">
+									// Using plain javascript
+									dropdownid.options[dropdownid.selectedIndex].innerHTML
+									
+									$("#dropdownid option:selected").text();
+									// the fastest using jquery is
+                                    $("#dropdownid").children("option").filter(":selected").text()								
+								</pre>
+							</p>
+						</li>
+						<li>
+							<strong>jQuery multiple class selector?</strong>
+							<p>
+								To select a &lt;div class="a b"&gt;&lt;/div&gt;
+								<pre class="brush: js;">
+	                                // Use									
+									$('.a.b')					
+								</pre>
+								and we don't need that ".length > 0" part.
+							</p>
+						</li>
+						<li>
+							<strong>check the existence of an element in jQuery?</strong>
+							<p>
+								In JavaScript, everything is truthy or falsy and for numbers, 0 means false, everything else true. So you could write:
+								<pre class="brush: js;">
+									if ($(selector).length)							
+								</pre>
+								and we don't need that ".length > 0" part.
+							</p>
+						</li>
+						<li>
+							<strong>which radio is selected via jQuery?</strong>
+							<pre class="brush: js;">
+								$("#myform input[type='radio']:checked").val();
+								( or )
+								$('input[name=radioName]:checked', '#myForm').val()								
+							</pre>
+						</li>
+						<li>
+							<strong>event.preventDefault() vs. return false</strong>
+							<p>
+								<em>return false</em> from within a jQuery event handler is effectively the same as calling both  <em>e.preventDefault</em> and <em>e.stopPropagation</em> on the passed jQuery.Event object.
+							</p>
+							<p>
+								<em>e.preventDefault()</em> will prevent the default event from occuring, <em>e.stopPropagation()</em> will prevent the event from bubbling up and return false will do both. Note that this behaviour differs from normal (non-jQuery) event handlers, in which, notably, return false does not stop the event from bubbling up.	
+							</p>
+						</li>
+						<li>
+							<strong>How do I check a checkbox with jQuery?</strong>
+							<p> In jQuery 1.6+, Use the new .prop() function:								
+							</p>
+							<pre class="brush: js;">
+								$('.myCheckbox').prop('checked', true);
+								$('.myCheckbox').prop('checked', false);
+							</pre>
+							<p>
+							in jQuery 1.5 and below, the .prop() function is not available, so you need to use .attr().
+							</p>
+							<p>
+							To check the checkbox (by setting the value of the checked attribute) do
+							<pre class="brush: js;">$('.myCheckbox').attr('checked','checked');</pre>
+							</p>
+							<p>							
+								and for un-checking (by removing the attribute entirely) do
+							</p>
+							<pre class="brush: js;">
+							$('.myCheckbox').removeAttr('checked');
+							</pre>
+							<p>
+								<strong>If you want to check if a checkbox is checked or not:</strong>
+								<pre class="brush: js;">
+								$('.myCheckbox').is(':checked');
+								</pre>
+							</p>
+							<p>
+								<strong>NOTE: Using only javascript</strong>
+								<pre class="brush: js;">
+									DOMElement.checked  = true; //  to set in javascript
+								</pre>
+							</p>						
+						</li>
+					</ul>
+				</div>
+			<div>
+		</article>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#jquery-utilities" data-toggle="collapse" class="accordion-toggle">jQuery Utilities?</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="jquery-utilities">
+				<div class="accordion-inner">
+					<div>
+						<h2>Type testing functions - </h2>
+						<h5>
+							<em>These are very helpful in optional parameters and also when validating the parameters for functions.</em>
+						</h5>
+						
+						<a class="source-url"  href="http://api.jquery.com/category/utilities/">Utility functions source</a>
+						
+						<ul>
+							<li><strong>isArray(array)</strong> - 
+								<p>$.isArray() returns a Boolean indicating whether the object is a JavaScript array (not an array-like object, such as a jQuery object).
+								</p>
+								<p> Array.isArray works fast, but it isn't supported by all versions of browsers. So you could make an exception for others and use universal method:
+								</p>
+								<pre class="brush: js;">
+									var a = ["A", "AA", "AAA"];
+                                    
+									// javascript version
+									if(Array.isArray){
+										Array.isArray(a) ? alert("a is an array") : alert("a is not an array");
+									} else {
+										(Object.prototype.toString.call(a) === '[object Array]') 
+											? alert("a is an array") : alert("a is not an array");
+									}
+									
+								    // jquery version							
+									if($.isArray(a)) {
+										alert("a is an array!");
+									} else {
+										alert("a is not an array!");
+									}
+								</pre>								
+							</li>
+							<li><strong>isFunction(fun)</strong> - <p>- Determine if the argument passed is a Javascript function object.</p></li>
+							<li>
+								<strong>isEmptyObject(obj)</strong> - <p>Checks to see if an object is empty (contains no enumerable properties).</p>	
+							</li>
+							<li><strong>jQuery.isPlainObject(obj)</strong> - 
+								<p>
+									<strong>Note:</strong> Host objects (or objects used by browser host environments to complete the execution environment of ECMAScript) have a number of inconsistencies which are difficult to robustly feature detect cross-platform. As a result of this, $.isPlainObject() may evaluate inconsistently across browsers in certain instances.
+								</p>
+								<p>
+									An example of this is a test against document.location using $.isPlainObject() as follows:
+								</p>
+								<pre class="brush: js;">
+									console.log( $.isPlainObject( document.location ) );
+								</pre>
+								<p>
+									which throws an invalid pointer exception in IE8. With this in mind, it's important to be aware of any of the gotchas involved in using $.isPlainObject() against older browsers. A couple basic examples that do function correctly cross-browser can be found below.
+								</p>
+								<p>Check to see if an object is a plain object (created using "{}" or "new Object").</p>
+								<pre class="brush: js;">
+									jQuery.isPlainObject({}) // true
+									jQuery.isPlainObject( "test" ) // false
+								</pre>
+							</li>
+							<li><strong>isXmlDoc(doc)</strong>  - <p></p></li>
+							<li><strong>isNumeric(num)</strong>  - 
+								<p>available in jQuery 1.7+</p>
+								<p>The $.isNumeric() method checks whether its argument represents a numeric value. If so, it returns true. Otherwise it returns false. The argument can be of any type.</p>
+							</li>
+							<li><strong>isWindow(obj)</strong> - <p>Determine whether the argument is a window.</p></li>
+						</ul>									
+					</div>   
+
+					<div>
+						<h1>Collection functions - </h1>
+						<h4>
+							These are very helpful in optional parameters and also when validating the parameters  
+						</h4>						
+						<ul>
+							<li><strong>makeArray</strong> - 
+								<p> Convert an array-like object into a true JavaScript array.</p>
+								<pre class="brush: js;">
+									var obj = $( "li" );
+								    var arr = $.makeArray( obj );
+								</pre>
+							</li>
+							<li><strong>inArray</strong> - 
+								<p>- returns index of the element (Search for a specified value within an array and return its index (or -1 if not found))</p>
+								<p>
+									The $.inArray() method is similar to JavaScript's native .indexOf() method in that it returns -1 when it doesn't find a match. If the first element within the array matches value, $.inArray() returns 0.
+								</p>
+							</li>
+							<li><strong>unique</strong> - <p>filters duplicates</p></li>
+							<li><strong>merge</strong>  - <p>merge two arrays</p></li>
+							<li><strong>map</strong> - 
+								<p>Translate all items in an array or object to new array of items.</p>
+								<p> $(selector).map</p>
+								<p> $.map</p>
+								<p>
+									<strong>Example: 								
+									</strong>
+									To simply flatten the array [1, 2, [3, 4], [5, 6], 7] to [1, 2, 3, 4, 5, 6, 7]
+								</p>
+								<pre class="brush: js;">
+									$.map( [1, 2, [3, 4], [5, 6], 7], function(n){
+									   return n;
+									});										
+									// returns [1, 2, 3, 4, 5, 6, 7]
+								</pre>
+							</li>
+							<li><strong>grep</strong>  - 
+								<p>Finds the elements of an array which satisfy a filter function. The original array is not affected.</p>
+								<p>
+							 	only receives the dom object								
+								invert parameter - which performs inverse</p>
+								<pre class="brush: js;">
+									var arr = [ 1, 9, 3, 8, 6, 1, 5, 9, 4, 7, 3, 8, 6, 9, 1 ];
+									arr = jQuery.grep(arr, function( item, index ) {
+									  return ( item !== 5 && index > 4 );
+									});
+									// 1, 9, 4, 7, 3, 8, 6, 9, 1									
+								</pre>
+							</li>
+						</ul>						
+					
+					<div>
+						<ul>
+							<li>
+								<h4>extend Function</h4> 
+								<p>
+									copy members from source object to target object - 
+									Conflicts will cause members to be overwritten
+								</p>
+								<pre class="brush: js;">
+									
+								</pre>
+							</li>
+							<li>
+								<h4>parseJSON Function</h4> 
+								<p>
+									Turns a JSON String into javascript objects, no need to do as jquery ajax functions will convert the result into JSON automatically, but in special cases this is needed.
+								</p>
+								<pre class="brush: js;">
+									var json = '{"fname": "john", "lname": "smith", "age":24}';
+									var jsObj = $.parseJSON(json);
+									console.log( jsObj.fname, jsObj.lname );
+									// output
+									// john smith
+								</pre>
+							</li>
+
+							<li>	
+								<h4>each Function <strong>( $.each() and  $(selector).each())</strong></h4> 
+								<p>									
+									Iterate over a jQuery object, executing a function for each matched.																	
+								</p>
+								<div>
+									<strong>Uses:</strong>
+									<ul>
+										<li>Can be used to iterate over json object.</li>
+										<li>Can be used to iterate over array.</li>
+									</ul>
+								</div>
+								
+								<h5><em>The $.each() function is not the same as $(selector).each(), which is used to iterate, exclusively, over a jQuery object.</em></h5>
+								
+								<pre class="brush: js;"> $.each(".indent", function(index){ </pre>
+		                        <p>
+									doesn't iterate over the elements of $('.indent') but over the ".indent" string whose length is 7 chars.
+								</p>
+
+                                <p>See reference,
+
+								A more detailed explanation based on jQuery source code :
+
+								jQuery first checks if the first parameter, obj (here your string), has a length :
+								</p>
+								<pre class="brush: js;">
+									var ...
+											length = obj.length,
+											isObj = length === undefined || jQuery.isFunction( obj );
+									Your string having a length (and not being a function), isObj is false.
+								</pre>
+								<p>In this case, the following code is executed :</p>
+								<pre class="brush: js;">
+									for ( ; i < length; ) {
+										if ( callback.call( obj[ i ], i, obj[ i++ ] ) === false ) {
+											break;
+										}
+									}
+								</pre>
+								<p>So, given the function f, the following code</p>
+								<pre class="brush: js;">
+									$.each(".indent", f);
+								</pre>
+								<p>is equivalent to</p>
+								<pre class="brush: js;">
+									for (var i=0; i<".indent".length; i++) {
+										var letter = ".indent"[i];
+										f.call(letter, i, letter);
+									}
+								</pre>
+								<p>
+									(you can log the letters using var f = function(i,v){console.log(v)}; or be reminded one of the subtleties of call using var f = function(){console.log(this)};)
+								</p>
+								
+							</li>
+
+							<li>
+								<h4>pushStack</h4> 
+								<p>
+									Adds new array of DOM elements onto the jQuery stack. <strong>(or)</strong> pushStack() creates a new jQuery object that inherits state from a previous jQuery object.</p>
+								<p>								
+									This inherited state allows methods like .end() and .self() to work properly.
+								</p>
+								<p>									
+									When working with jQuery objects, it's important to know that most operations that change what DOM objects are in a jQuery object return a new jQuery object with the change in it rather than modifying the existing jQuery object. It is this design characteristic that allows them to maintain this stack of previously modified jQuery objects.
+								</p>																
+								<p>
+									The main use of pushStack is, in jQuery methods that return a new jQuery object. In that case, you create the new list of elements you want in the new jQuery object and then rather than just turning that into a regular jQuery object and returning it, you call <strong>return this.pushStack(elems)</strong>. This ends up creating a new jQuery object and returning it, but it also links that new object to the previous object so that special commands like <strong>.end()</strong> can work when used in chaining.
+								</p>
+								<p>
+									The jQuery .add() method is a classic example. In pseudo-code, what it does is this:
+								</p>
+								<pre class="brush: js;">
+									add: function(selector, context) {
+										// get the DOM elements that correspond to the new selector (the ones to be added)
+										// get the DOM elements from the current jQuery object with this.get()
+										// merge the two arrays of elements together into one array
+										return this.pushStack(combinedElems);
+									}
+								</pre>
+							</li>
+							<li>
+								<h4>holdReady</h4> 
+									<p>
+									holds the ready function until we tell it can fire it ( Holds or releases the execution of jQuery's ready event.)
+								</p>
+								<p>
+									<strong>Uses:</strong>
+									waiting for a specific asset to load
+								</p>
+								<p>
+									The $.holdReady() method allows the caller to delay jQuery's ready event. This advanced feature would typically be used by dynamic script loaders that want to load additional JavaScript such as jQuery plugins before allowing the ready event to occur, even though the DOM may be ready. This method must be called early in the document, such as in the <head> immediately after the jQuery script tag. Calling this method after the ready event has already fired will have no effect.
+								</p> 
+								<p>
+								To delay the ready event, first call $.holdReady( true ). When the ready event should be released to execute, call $.holdReady( false ). Note that multiple holds can be put on the ready event, one for each $.holdReady( true ) call. The ready event will not actually fire until all holds have been released with a corresponding number of $.holdReady( false ) calls and the normal document ready conditions are met. (See ready for more information.)
+								</p> 
+								<p>
+								Example:
+								Delay the ready event until a custom plugin has loaded.
+								</p>
+								<pre class="brush: js;"> 
+									$.holdReady( true );
+									$.getScript( "myplugin.js", function() {
+									  $.holdReady( false );
+									});
+								</pre>								
+							</li>
+							<li>
+								<h4>getScript</h4> 
+								<p>wrapper for $.ajax so non blocking (Load a JavaScript file from the server using a GET HTTP request, then execute it.)</p>
+								<p>Executes retrieved javascript immediately</p>
+
+								 <pre class="brush: js;"> 
+									$.getScript("script.js", function(data, textStatus) {
+										console.log(textStatus); // success
+									})									;
+								</pre>
+							</li>
+							
+							<li>
+								<h4>jQuery.noConflict</h4> 
+								<p>Releases (Relinquish) jQuery's control of the $ variable.</p>
+								<p>Many JavaScript libraries use $ as a function or variable name, just as jQuery does. In jQuery's case, $ is just an alias for jQuery, so all functionality is available without using $. If you need to use another JavaScript library alongside jQuery, return control of $ back to the other library with a call to $.noConflict(). Old references of $ are saved during jQuery initialization; noConflict() simply restores them.</p>
+								<p>
+								If for some reason two versions of jQuery are loaded (which is not recommended), calling $.noConflict( true ) from the second version will return the globally scoped jQuery variables to those of the first version.
+								</p>
+								<p><strong>Example: </strong> Load two versions of jQuery (not recommended). Then, restore jQuery's globally scoped variables to the first loaded jQuery.</p>
+								 <pre class="brush: js;"> 
+									&lt;!doctype html&gt;
+									&lt;html lang="en"&gt;
+									&lt;head&gt;
+									 &lt;meta charset="utf-8"&gt;
+									  &lt;title&gt;jQuery.noConflict demo&lt;/title &gt;
+									  &lt;script src="//code.jquery.com/jquery-1.10.2.js"&gt; &lt;/script&gt;
+									</head>
+									&lt;body&gt;
+									 
+									&lt;div id="log"&gt;
+									  <h3>Before $.noConflict(true)</h3>
+									&lt;/div&gt;
+									&lt;script src="//code.jquery.com/jquery-1.6.2.js"&gt; &lt;/script&gt;
+									 
+									&lt;script>
+									var $log = $( "#log" );
+									 
+									$log.append( "2nd loaded jQuery version ($): " + $.fn.jquery + "<br>" );
+									 
+									// Restore globally scoped jQuery variables to the first version loaded
+									// (the newer version)
+									 
+									jq162 = jQuery.noConflict( true );
+									 
+									$log.append( "<h3>After $.noConflict(true)</h3>" );
+									$log.append( "1st loaded jQuery version ($): " + $.fn.jquery + "<br>" );
+									$log.append( "2nd loaded jQuery version (jq162): " + jq162.fn.jquery + "<br>" );
+									&lt;/script&gt;
+									&lt;/body&gt;
+									&lt;/html&gt;
+								</pre>
+							</li>
+						</ul>
+					</div>
+
+				</div>
+			</div>			
+		</article>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+</body>
+</html>
+				;<!Doctype html>
+<html>
+<head>
+	<title> MarionetteJS qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		<div id="search">
+			<input type="text" id="txtSearch" />
+		</div>
+		
+		<div id="searchgap"></div>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#why-marionette" data-toggle="collapse" class="accordion-toggle">
+					Why Backbone.Marionette JS?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="why-marionette">
+				<div class="accordion-inner">
+					<p class="bold">Marionette has a few very distinct goals:</p>					
+					<ul>
+						<li>
+							Composite application architecture
+						</li>
+						<li>
+							Enterprise messaging pattern influence
+						</li>
+						<li>
+							Modularization options
+						</li>
+						<li>
+							Incremental use (no all-or-nothing requirement)
+						</li>
+						<li>
+							No server dependency
+						</li>
+						<li>
+							Make it easy to change those defaults
+						</li>
+						<li>
+							Code as configuration / over configuration
+						</li>
+					</ul>
+					
+					<p class="bold">Composite Application Architecture</p>
+					<p>
+						The basic idea is to <strong>"compose"</strong> your application's runtime experience and process out of many smaller, individual pieces that don't necessarily know about each other. They register themselves with the overall composite application system and then they communicate through various means of decoupled messages and calls.
+					</p>
+					<p class="bold">Message Queues / Patterns</p>
+					<p>
+						The same large scale, distributed systems also took advantage of message queuing, enterprise integration patterns (messaging patterns), and service buses to handle the messages. This, more than anything else, had a tremendous influence on my approach to decoupled software development. I began to see single-process, in-memory WinForms applications from this perspective, and soon my server side and web application development took influence from this.
+					</p>
+					<p>
+						This has directly translated itself in to how I look at Backbone application design. I provide an event aggregator in Marionette, for both the high level Application object, and for each module that you create within the application.
+					</p>
+					<p>
+						I think about messages that I can send between my modules: command messages, event messages, and more. I also think about the server side communication as messages with these same patterns. Some of the patterns have made their way in to Marionette already, but some haven't yet.
+					</p>
+					
+					<p class="bold">Modularization</p>
+					<p>
+						Modularization of code is tremendously important. Creating small, well encapsulated packages that have a singular focus with well defined entry and exit points is a must for any system of any significant size and complexity.
+						Marionette provides modularization directly through it's 'module' definitions. But I also recognize that some people like RequireJS and want to use that. So I provide both a standard build and a RequireJS compatible build.
+					</p>
+					<pre class="brush: js;">
+					MyApp = new Backbone.Marionette.Application();
+					MyApp.module("MyModule", function(MyModule, MyApp, Backbone, Marionette, $, _){
+					  // your module code goes here
+					});
+					</pre>
+					
+					<p class="bold">Incremental Use</p>
+					<p>
+						This is one of the core philosophies that I bake in to every part of Marionette that I can: no “all-or-nothing” requirement for use of Marionette.
+						Backbone itself takes a very incremental and modular approach with all of it's building block objects. You are free to choose which ones you want to use, when. I strongly believe in this principle and strive to make sure Marionette works the same way.
+						To that end, the majority of the pieces that I have built in to Marionette are built to stand alone, to work with the core pieces of Backbone, and to work together even better.
+					</p>
+					<p>
+						For example, nearly every Backbone application needs to dynamically show a Backbone view in a particular place on the screen. The apps also need to handle closing old views and cleaning up memory when a new one is put in place. This is where Marionette's 'Region' comes in to play. A region handles the boilerplate code of taking a view, calling render on it, and stuffing the result in to the DOM for you. Then will close that view and clean it up for you, provided your view has a “close” method on it.
+					</p>
+					<pre class="brush: js;">
+						MyApp.addRegions({
+						  someRegion: "#some-div"
+						});
+						MyApp.someRegion.show(new MyView());
+					</pre>
+					<p>
+						But you're not required to use Marionette's views in order to use a region. The only requirement is that you are extending from Backbone.View at some point in the object's prototype chain. If you choose to provide a 'close' method, a 'onShow' method, or others, Marionette's Region will call it for you at the right time.
+					</p>
+
+					<p class="bold">No Server dependency</p>
+					<p>Backbone / Marionette apps can be build on top of a wide variety of server technologies, for example:</p>
+					<ul>
+						<li>
+						ASP.NET MVC
+						</li>
+						<li>
+						Ruby on Rails
+						</li>
+						<li>
+						Ruby / Sinatra
+						</li>
+						<li>
+						NodeJS / ExpressJS
+						</li>
+						<li>
+						PHP / Slim
+						</li>
+						<li>
+						Java
+						</li>
+					</ul>
+					<p>
+						JavaScript is JavaScript, when it comes to running in a browser. Server side JavaScript is awesome, too, but it has zero affect or influence on how I write my browser based JavaScript.
+					</p>
+					<p>
+						Because of the diversity in projects that I built and back-end technologies that my clients use, I cannot and will not lock Marionette in to a single server side technology stack for any reason. I won't provide a boilerplate project. I won't provide a ruby gem or an npm package. I want people to understand that Marionette doesn't require a specific back-end server. It's browser based JavaScript, and the back-end doesn't matter.
+					</p>
+					<p>
+						Of course, I fully support other people providing packages for their language and framework. I list those packages in the Wiki and hope that people continue to build more packages as they see a need. But that is community support, not direct support from Marionette.
+					</p>
+					
+					<p class="bold">Easily Change The Defaults</p>
+					<p>
+						In my effort to reduce boilerplate code and provide sensible defaults (which is an idea that I directly “borrowed” from Tim Branyen's LayoutManager), I recognize the need for other developers to use slightly different implementations than I do.
+					</p>
+					<p>
+						I provide rendering based on inline &lt;script&gt; tags for templates, using Underscore.js templating by default. But you can replace this by changing the <span class="bold">'Renderer'</span> and/or <span class="bold">'TempalteCache'</span> objects in Marionette. These two objects provide the core of the rendering capabilities, and there are wiki pages that show how to change this out for specific templating engines and different ways of loading templates.
+					</p>
+					<p>
+						With v0.9 of Marionette, it gets even easier. For example, if you want to replace the use of in-line template script blocks with pre-compiled templates, you only have to replace one method on the Renderer:
+					</p>
+					<pre class="brush: js;">
+						// use pre-compiled template functions
+						Backbone.Marionette.Renderer.render = function(template, data){
+						  return template(data);
+						};
+					</pre>
+					<p>
+						and now the entire application will use pre-compiled templates that you attach to your view's 'template' attribute.
+						There is a Marionette.Async add-on with v0.9 that allows you to support asynchronously rendering views. I continuously strive to make it as easy as possible to replace the default behaviours in Marionette.
+					</p>					
+				</div>
+			</div>
+		</article>
+		
+	
+		
+	</div>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>;<!Doctype html>
+<html>
+<head>
+	<title> scroll qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		<div id="search">
+			<input type="text" id="txtSearch" />
+		</div>
+		
+		<div id="searchgap"></div>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					How to disable scrolling temporarily?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+					<p>
+						The scroll event cannot be canceled. You can cancel 2 things however: <strong>mouse scroll</strong> and <strong>buttons</strong> associated with scrolling.
+					</p>
+					<pre class="brush: js;">
+						function preventDefault(e) {
+						  e = e || window.event;
+						  if (e.preventDefault)
+							  e.preventDefault();
+						  e.returnValue = false;  
+						}
+
+						function keydown(e) {
+							for (var i = keys.length; i--;) {
+								if (e.keyCode === keys[i]) {
+									preventDefault(e);
+									return;
+								}
+							}
+						}
+
+						function wheel(e) {
+						  preventDefault(e);
+						}
+
+						function disable_scroll() {
+						  if (window.addEventListener) {
+							  window.addEventListener('DOMMouseScroll', wheel, false);
+						  }
+						  window.onmousewheel = document.onmousewheel = wheel;
+						  document.onkeydown = keydown;
+						}
+
+						function enable_scroll() {
+							if (window.removeEventListener) {
+								window.removeEventListener('DOMMouseScroll', wheel, false);
+							}
+							window.onmousewheel = document.onmousewheel = document.onkeydown = null;  
+						}
+					</pre>				
+				</div>
+			</div>
+		</article>
+
+	</div>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>;<!Doctype html>
+<html>
+<head>
+	<title> unit testing qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		<div id="search">
+			<input type="text" id="txtSearch" />
+		</div>
+		
+		<div id="searchgap"></div>
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
+					
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="backbone-rest-methods">
+				<div class="accordion-inner">				
+								
+				</div>
+			</div>
+		</article>
+		
+	</div>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>;<!Doctype html>
+<html>
+<head>
+	<title> my qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		<div id="search">
+			<input type="text" id="txtSearch" />
+		</div>
+		
+		<div id="searchgap"></div>
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#jquery-bind-live-delegate-on" data-toggle="collapse" class="accordion-toggle">Differences Between jQuery .bind() vs .live() vs .delegate() vs .on()??</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="jquery-bind-live-delegate-on">
+				<div class="accordion-inner">            
+					<section class="post-content">
+                <h3>Introduction</h3>
+
+<p>I've seen quite a bit of confusion from developers about what the real differences are between the jQuery <code>.bind()</code>, <code>.live()</code>, <code>.delegate()</code>, and <code>.on()</code> methods and when they should be used.</p>
+
+<blockquote>If you want, you can jump to the <a href="http://www.elijahmanor.com/#tldr">TL;DR</a> section and get a high-level overview what this article is about.</blockquote>
+
+<p>Before we dive into the ins and outs of these methods, let's start with some common HTML markup that we'll be using as we write sample jQuery code.</p>
+
+<script src="https://gist.github.com/elijahmanor/1749717.js?file=_snippet.html"></script><link rel="stylesheet" href="https://gist-assets.github.com/assets/embed-d1006a2c03378524a2bad8f05b286964.css"><div id="gist1749717" class="gist">
+        <div class="gist-file">
+          <div class="gist-data gist-syntax">
+            
+
+
+
+    <div class="file-data">
+      <table cellpadding="0" cellspacing="0" class="lines highlight">
+        <tbody><tr>
+          <td class="line-numbers">
+            <span class="line-number" id="file-_snippet-html-L1" rel="file-_snippet-html-L1">1</span>
+            <span class="line-number" id="file-_snippet-html-L2" rel="file-_snippet-html-L2">2</span>
+            <span class="line-number" id="file-_snippet-html-L3" rel="file-_snippet-html-L3">3</span>
+            <span class="line-number" id="file-_snippet-html-L4" rel="file-_snippet-html-L4">4</span>
+            <span class="line-number" id="file-_snippet-html-L5" rel="file-_snippet-html-L5">5</span>
+            <span class="line-number" id="file-_snippet-html-L6" rel="file-_snippet-html-L6">6</span>
+            <span class="line-number" id="file-_snippet-html-L7" rel="file-_snippet-html-L7">7</span>
+            <span class="line-number" id="file-_snippet-html-L8" rel="file-_snippet-html-L8">8</span>
+            <span class="line-number" id="file-_snippet-html-L9" rel="file-_snippet-html-L9">9</span>
+            <span class="line-number" id="file-_snippet-html-L10" rel="file-_snippet-html-L10">10</span>
+            <span class="line-number" id="file-_snippet-html-L11" rel="file-_snippet-html-L11">11</span>
+          </td>
+          <td class="line-data">
+            <pre class="line-pre"><div class="line" id="file-_snippet-html-LC1"><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">"members"</span> <span class="na">data-role=</span><span class="s">"listview"</span> <span class="na">data-filter=</span><span class="s">"true"</span><span class="nt">&gt;</span></div><div class="line" id="file-_snippet-html-LC2">    <span class="c">&lt;!-- ... more list items ... --&gt;</span></div><div class="line" id="file-_snippet-html-LC3">    <span class="nt">&lt;li&gt;</span></div><div class="line" id="file-_snippet-html-LC4">        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"detail.html?id=10"</span><span class="nt">&gt;</span></div><div class="line" id="file-_snippet-html-LC5">            <span class="nt">&lt;h3&gt;</span>John Resig<span class="nt">&lt;/h3&gt;</span></div><div class="line" id="file-_snippet-html-LC6">            <span class="nt">&lt;p&gt;&lt;strong&gt;</span>jQuery Core Lead<span class="nt">&lt;/strong&gt;&lt;/p&gt;</span></div><div class="line" id="file-_snippet-html-LC7">            <span class="nt">&lt;p&gt;</span>Boston, United States<span class="nt">&lt;/p&gt;</span></div><div class="line" id="file-_snippet-html-LC8">        <span class="nt">&lt;/a&gt;</span></div><div class="line" id="file-_snippet-html-LC9">    <span class="nt">&lt;/li&gt;</span></div><div class="line" id="file-_snippet-html-LC10">    <span class="c">&lt;!-- ... more list items ... --&gt;</span></div><div class="line" id="file-_snippet-html-LC11"><span class="nt">&lt;/ul&gt;</span></div></pre>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+
+          </div>
+          <div class="gist-meta">
+            <a href="https://gist.github.com/elijahmanor/1749717/raw/_snippet.html" style="float:right">view raw</a>
+            <a href="https://gist.github.com/elijahmanor/1749717#file-_snippet-html">_snippet.html</a>
+            hosted with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+</div>
+
+
+<h3>Using the Bind Method</h3>
+
+<p>The <code>.bind()</code> method registers the type of event and an event handler directly to the DOM element in question. This method has been around the longest and in its day it was a nice abstraction around the various cross-browser issues that existed. This method is still very handy when wiring-up event handlers, but there are various performance concerns as are listed below.</p>
+
+<script src="https://gist.github.com/elijahmanor/1749717.js?file=bind.js"></script><link rel="stylesheet" href="https://gist-assets.github.com/assets/embed-d1006a2c03378524a2bad8f05b286964.css"><div id="gist1749717" class="gist">
+        <div class="gist-file">
+          <div class="gist-data gist-syntax">
+            
+
+
+
+    <div class="file-data">
+      <table cellpadding="0" cellspacing="0" class="lines highlight">
+        <tbody><tr>
+          <td class="line-numbers">
+            <span class="line-number" id="file-bind-js-L1" rel="file-bind-js-L1">1</span>
+            <span class="line-number" id="file-bind-js-L2" rel="file-bind-js-L2">2</span>
+            <span class="line-number" id="file-bind-js-L3" rel="file-bind-js-L3">3</span>
+            <span class="line-number" id="file-bind-js-L4" rel="file-bind-js-L4">4</span>
+            <span class="line-number" id="file-bind-js-L5" rel="file-bind-js-L5">5</span>
+            <span class="line-number" id="file-bind-js-L6" rel="file-bind-js-L6">6</span>
+          </td>
+          <td class="line-data">
+            <pre class="line-pre"><div class="line" id="file-bind-js-LC1"><span class="cm">/* The .bind() method attaches the event handler directly to the DOM </span></div><div class="line" id="file-bind-js-LC2"><span class="cm">   element in question ( "#members li a" ). The .click() method is </span></div><div class="line" id="file-bind-js-LC3"><span class="cm">   just a shorthand way to write the .bind() method. */</span></div><div class="line" id="file-bind-js-LC4">&nbsp;</div><div class="line" id="file-bind-js-LC5"><span class="nx">$</span><span class="p">(</span> <span class="s2">"#members li a"</span> <span class="p">).</span><span class="nx">bind</span><span class="p">(</span> <span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">e</span> <span class="p">)</span> <span class="p">{}</span> <span class="p">);</span> </div><div class="line" id="file-bind-js-LC6"><span class="nx">$</span><span class="p">(</span> <span class="s2">"#members li a"</span> <span class="p">).</span><span class="nx">click</span><span class="p">(</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">e</span> <span class="p">)</span> <span class="p">{}</span> <span class="p">);</span> </div></pre>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+
+          </div>
+          <div class="gist-meta">
+            <a href="https://gist.github.com/elijahmanor/1749717/raw/bind.js" style="float:right">view raw</a>
+            <a href="https://gist.github.com/elijahmanor/1749717#file-bind-js">bind.js</a>
+            hosted with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+</div>
+
+
+<p>The <code>.bind()</code> method will attach the event handler to all of the anchors that are matched! That is not good. Not only is that expensive to implicitly iterate over all of those items to attach an event handler, but it is also wasteful since it is the same event handler over and over again.</p>
+
+<p><b>Pros</b></p>
+
+<ul><li>This methods works across various browser implementations.</li><li>It is pretty easy and quick to wire-up event handlers.</li><li>The shorthand methods (<code>.click()</code>, <code>.hover()</code>, etc...) make it even easier to wire-up event handlers.</li><li>For a simple ID selector, using <code>.bind()</code> not only wires-up quickly, but also when the event fires the event handler is invoked almost immediately.</li></ul><br><b>Cons</b><br><ul><li>The method attaches the same event handler to every matched element in the selection.</li><li>It doesn't work for elements added dynamically that matches the same selector.</li><li>There are performance concerns when dealing with a large selection.</li><li>The attachment is done upfront which can have performance issues on page load.</li></ul>
+
+<h3>Using the Live Method</h3>
+
+<p>The <code>.live()</code> method uses the concept of event delegation to perform its so called "magic". The way you call <code>.live()</code> looks just like how you might call <code>.bind()</code>, which is very convenient. However, under the covers this method works much different. The <code>.live</code> method attaches the event handler to the root level document along with the associated selector and event information. By registering this information on the document it allows one event handler to be used for all events that have bubbled (a.k.a. delegated, propagated) up to it. Once an event has bubbled up to the document jQuery looks at the selector/event metadata to determine which handler it should invoke, if any. This extra work has some impact on performance at the point of user interaction, but the initial register process is fairly speedy.</p>
+
+<script src="https://gist.github.com/elijahmanor/1749717.js?file=live.js"></script><link rel="stylesheet" href="https://gist-assets.github.com/assets/embed-d1006a2c03378524a2bad8f05b286964.css"><div id="gist1749717" class="gist">
+        <div class="gist-file">
+          <div class="gist-data gist-syntax">
+            
+
+
+
+    <div class="file-data">
+      <table cellpadding="0" cellspacing="0" class="lines highlight">
+        <tbody><tr>
+          <td class="line-numbers">
+            <span class="line-number" id="file-live-js-L1" rel="file-live-js-L1">1</span>
+            <span class="line-number" id="file-live-js-L2" rel="file-live-js-L2">2</span>
+            <span class="line-number" id="file-live-js-L3" rel="file-live-js-L3">3</span>
+            <span class="line-number" id="file-live-js-L4" rel="file-live-js-L4">4</span>
+            <span class="line-number" id="file-live-js-L5" rel="file-live-js-L5">5</span>
+          </td>
+          <td class="line-data">
+            <pre class="line-pre"><div class="line" id="file-live-js-LC1"><span class="cm">/* The .live() method attaches the event handler to the root level </span></div><div class="line" id="file-live-js-LC2"><span class="cm">   document along with the associated selector and event information </span></div><div class="line" id="file-live-js-LC3"><span class="cm">   ( "#members li a" &amp; "click" ) */</span> </div><div class="line" id="file-live-js-LC4">&nbsp;</div><div class="line" id="file-live-js-LC5"><span class="nx">$</span><span class="p">(</span> <span class="s2">"#members li a"</span> <span class="p">).</span><span class="nx">live</span><span class="p">(</span> <span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">e</span> <span class="p">)</span> <span class="p">{}</span> <span class="p">);</span></div></pre>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+
+          </div>
+          <div class="gist-meta">
+            <a href="https://gist.github.com/elijahmanor/1749717/raw/live.js" style="float:right">view raw</a>
+            <a href="https://gist.github.com/elijahmanor/1749717#file-live-js">live.js</a>
+            hosted with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+</div>
+
+
+<p>The good thing about this code as compared to the <code>.bind()</code> example above is that it is only attaching the event handler once to the document instead of multiple times. This not only is faster, but less wasteful, however, there are many problems with using this method and they are outlined below.<br><br><b>Pros</b><br></p><ul><li>There is only one event handler registered instead of the numerous event handlers that could have been registered with the <code>.bind()</code> method.</li><li>The upgrade path from <code>.bind()</code> to <code>.live()</code> is very small. All you have to do is replace "bind" to "live".</li><li>Elements dynamically added to the DOM that match the selector magically work because the real information was registered on the document.</li><li>You can wire-up event handlers before the document ready event helping you utilize possibly unused time.</li></ul><p></p>
+
+<p><b>Cons</b><br></p><ul><li>This method is deprecated as of jQuery 1.7 and you should start phasing out its use in your code.</li><li>Chaining is not properly supported using this method.</li><li>The selection that is made is basically thrown away since it is only used to register the event handler on the document.</li><li>Using event.stopPropagation() is no longer helpful because the event has already delegated all the way up to the document.</li><li>Since all selector/event information is attached to the document once an event does occur jQuery has match through its large metadata store using the <code>matchesSelector</code> method to determine which event handler to invoke, if any.</li><li>Your events always delegate all the way up to the document. This can affect performance if your DOM is deep.</li></ul><p></p>
+
+<h3>Using the Delegate Method</h3>
+
+<p>The <code>.delegate()</code> method behaves in a similar fashion to the <code>.live()</code> method, but instead of attaching the selector/event information to the document, you can choose where it is anchored. Just like the <code>.live()</code> method, this technique uses event delegation to work correctly.</p>
+
+<blockquote>If you skipped over the explanation of the <code>.live()</code> method you might want to go back up and read it as I described some of the internal logic that happen.</blockquote>
+
+<script src="https://gist.github.com/elijahmanor/1749717.js?file=delegate.js"></script><link rel="stylesheet" href="https://gist-assets.github.com/assets/embed-d1006a2c03378524a2bad8f05b286964.css"><div id="gist1749717" class="gist">
+        <div class="gist-file">
+          <div class="gist-data gist-syntax">
+            
+
+
+
+    <div class="file-data">
+      <table cellpadding="0" cellspacing="0" class="lines highlight">
+        <tbody><tr>
+          <td class="line-numbers">
+            <span class="line-number" id="file-delegate-js-L1" rel="file-delegate-js-L1">1</span>
+            <span class="line-number" id="file-delegate-js-L2" rel="file-delegate-js-L2">2</span>
+            <span class="line-number" id="file-delegate-js-L3" rel="file-delegate-js-L3">3</span>
+            <span class="line-number" id="file-delegate-js-L4" rel="file-delegate-js-L4">4</span>
+            <span class="line-number" id="file-delegate-js-L5" rel="file-delegate-js-L5">5</span>
+            <span class="line-number" id="file-delegate-js-L6" rel="file-delegate-js-L6">6</span>
+            <span class="line-number" id="file-delegate-js-L7" rel="file-delegate-js-L7">7</span>
+          </td>
+          <td class="line-data">
+            <pre class="line-pre"><div class="line" id="file-delegate-js-LC1"><span class="cm">/* The .delegate() method behaves in a similar fashion to the .live() </span></div><div class="line" id="file-delegate-js-LC2"><span class="cm">   method, but instead of attaching the event handler to the document, </span></div><div class="line" id="file-delegate-js-LC3"><span class="cm">   you can choose where it is anchored ( "#members" ). The selector </span></div><div class="line" id="file-delegate-js-LC4"><span class="cm">   and event information ( "li a" &amp; "click" ) will be attached to the </span></div><div class="line" id="file-delegate-js-LC5"><span class="cm">   "#members" element. */</span></div><div class="line" id="file-delegate-js-LC6">&nbsp;</div><div class="line" id="file-delegate-js-LC7"><span class="nx">$</span><span class="p">(</span> <span class="s2">"#members"</span> <span class="p">).</span><span class="nx">delegate</span><span class="p">(</span> <span class="s2">"li a"</span><span class="p">,</span> <span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">e</span> <span class="p">)</span> <span class="p">{}</span> <span class="p">);</span></div></pre>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+
+          </div>
+          <div class="gist-meta">
+            <a href="https://gist.github.com/elijahmanor/1749717/raw/delegate.js" style="float:right">view raw</a>
+            <a href="https://gist.github.com/elijahmanor/1749717#file-delegate-js">delegate.js</a>
+            hosted with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+</div>
+
+
+<p>The <code>.delegate()</code> method is very powerful. The above code will attach the event handler to the unordered list ("#members") along with the selector/event information. This is much more efficient than the <code>.live()</code> method that always attaches the information to the document. In addition a lot of other problematic issues were resolved by introducing the <code>.delegate()</code> method. See the following outline for a detailed list.</p>
+
+<p><b>Pros</b></p>
+
+<ul><li>You have the option of choosing where to attach the selector/event information.</li><li>The selection isn't actually performed up front, but is only used to register onto the root element.</li><li>Chaining is supported correctly.</li><li>jQuery still needs to iterate over the selector/event data to determine a match, but since you can choose where the root is the amount of data to sort through can be much smaller.</li><li>Since this technique uses event delegation, it can work with dynamically added elements to the DOM where the selectors match.</li><li>As long as you delegate against the document you can also wire-up event handlers before the document ready event.</li></ul>
+
+<p><b>Cons</b></p>
+
+<ul><li>Changing from a <code>.bind()</code> to a <code>.delegate()</code> method isn't as straight forward.</li><li>There is still the concern of jQuery having to figure out, using the <code>matchesSelector</code> method, which event handler to invoke based on the selector/event information stored at the root element. However, the metadata stored at the root element should be considerably smaller compared to using the <code>.live()</code> method.</li></ul>
+
+<h3>Using the On Method</h3>
+
+<p>Did you know that the jQuery <code>.bind()</code>, <code>.live()</code>, and <code>.delegate()</code> methods are just one line pass throughs to the new jQuery 1.7 <code>.on()</code> method? The same is true of the <code>.unbind()</code>, <code>.die()</code>, and <code>.undelegate()</code> methods. The following code snippet is taken from the <a href="https://github.com/jquery/jquery/blob/633ca9c1610c49dbb780e565f4f1202e1fe20fae/src/event.js#L956">jQuery 1.7.1 codebase in GitHub</a>...<br></p>
+
+<script src="https://gist.github.com/elijahmanor/1749717.js?file=jquery-1.7.1.js"></script><link rel="stylesheet" href="https://gist-assets.github.com/assets/embed-d1006a2c03378524a2bad8f05b286964.css"><div id="gist1749717" class="gist">
+        <div class="gist-file">
+          <div class="gist-data gist-syntax">
+
+
+    <div class="file-data">
+      <table cellpadding="0" cellspacing="0" class="lines highlight">
+        <tbody><tr>
+          <td class="line-numbers">
+            <span class="line-number" id="file-jquery-1-7-1-js-L1" rel="file-jquery-1-7-1-js-L1">1</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L2" rel="file-jquery-1-7-1-js-L2">2</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L3" rel="file-jquery-1-7-1-js-L3">3</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L4" rel="file-jquery-1-7-1-js-L4">4</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L5" rel="file-jquery-1-7-1-js-L5">5</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L6" rel="file-jquery-1-7-1-js-L6">6</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L7" rel="file-jquery-1-7-1-js-L7">7</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L8" rel="file-jquery-1-7-1-js-L8">8</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L9" rel="file-jquery-1-7-1-js-L9">9</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L10" rel="file-jquery-1-7-1-js-L10">10</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L11" rel="file-jquery-1-7-1-js-L11">11</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L12" rel="file-jquery-1-7-1-js-L12">12</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L13" rel="file-jquery-1-7-1-js-L13">13</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L14" rel="file-jquery-1-7-1-js-L14">14</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L15" rel="file-jquery-1-7-1-js-L15">15</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L16" rel="file-jquery-1-7-1-js-L16">16</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L17" rel="file-jquery-1-7-1-js-L17">17</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L18" rel="file-jquery-1-7-1-js-L18">18</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L19" rel="file-jquery-1-7-1-js-L19">19</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L20" rel="file-jquery-1-7-1-js-L20">20</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L21" rel="file-jquery-1-7-1-js-L21">21</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L22" rel="file-jquery-1-7-1-js-L22">22</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L23" rel="file-jquery-1-7-1-js-L23">23</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L24" rel="file-jquery-1-7-1-js-L24">24</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L25" rel="file-jquery-1-7-1-js-L25">25</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L26" rel="file-jquery-1-7-1-js-L26">26</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L27" rel="file-jquery-1-7-1-js-L27">27</span>
+            <span class="line-number" id="file-jquery-1-7-1-js-L28" rel="file-jquery-1-7-1-js-L28">28</span>
+          </td>
+          <td class="line-data">
+            <pre class="line-pre"><div class="line" id="file-jquery-1-7-1-js-LC1"><span class="c1">// ... more code ...</span></div><div class="line" id="file-jquery-1-7-1-js-LC2">&nbsp;</div><div class="line" id="file-jquery-1-7-1-js-LC3"><span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">types</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">fn</span> <span class="p">)</span> <span class="p">{</span></div><div class="line" id="file-jquery-1-7-1-js-LC4">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="nx">types</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">fn</span> <span class="p">);</span></div><div class="line" id="file-jquery-1-7-1-js-LC5"><span class="p">},</span></div><div class="line" id="file-jquery-1-7-1-js-LC6"><span class="nx">unbind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">types</span><span class="p">,</span> <span class="nx">fn</span> <span class="p">)</span> <span class="p">{</span></div><div class="line" id="file-jquery-1-7-1-js-LC7">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">off</span><span class="p">(</span> <span class="nx">types</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">fn</span> <span class="p">);</span></div><div class="line" id="file-jquery-1-7-1-js-LC8"><span class="p">},</span></div><div class="line" id="file-jquery-1-7-1-js-LC9">&nbsp;</div><div class="line" id="file-jquery-1-7-1-js-LC10"><span class="nx">live</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">types</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">fn</span> <span class="p">)</span> <span class="p">{</span></div><div class="line" id="file-jquery-1-7-1-js-LC11">    <span class="nx">jQuery</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">context</span> <span class="p">).</span><span class="nx">on</span><span class="p">(</span> <span class="nx">types</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">selector</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">fn</span> <span class="p">);</span></div><div class="line" id="file-jquery-1-7-1-js-LC12">    <span class="k">return</span> <span class="k">this</span><span class="p">;</span></div><div class="line" id="file-jquery-1-7-1-js-LC13"><span class="p">},</span></div><div class="line" id="file-jquery-1-7-1-js-LC14"><span class="nx">die</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">types</span><span class="p">,</span> <span class="nx">fn</span> <span class="p">)</span> <span class="p">{</span></div><div class="line" id="file-jquery-1-7-1-js-LC15">    <span class="nx">jQuery</span><span class="p">(</span> <span class="k">this</span><span class="p">.</span><span class="nx">context</span> <span class="p">).</span><span class="nx">off</span><span class="p">(</span> <span class="nx">types</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">selector</span> <span class="o">||</span> <span class="s2">"**"</span><span class="p">,</span> <span class="nx">fn</span> <span class="p">);</span></div><div class="line" id="file-jquery-1-7-1-js-LC16">    <span class="k">return</span> <span class="k">this</span><span class="p">;</span></div><div class="line" id="file-jquery-1-7-1-js-LC17"><span class="p">},</span></div><div class="line" id="file-jquery-1-7-1-js-LC18">&nbsp;</div><div class="line" id="file-jquery-1-7-1-js-LC19"><span class="nx">delegate</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">selector</span><span class="p">,</span> <span class="nx">types</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">fn</span> <span class="p">)</span> <span class="p">{</span></div><div class="line" id="file-jquery-1-7-1-js-LC20">    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="nx">types</span><span class="p">,</span> <span class="nx">selector</span><span class="p">,</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">fn</span> <span class="p">);</span></div><div class="line" id="file-jquery-1-7-1-js-LC21"><span class="p">},</span></div><div class="line" id="file-jquery-1-7-1-js-LC22"><span class="nx">undelegate</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">selector</span><span class="p">,</span> <span class="nx">types</span><span class="p">,</span> <span class="nx">fn</span> <span class="p">)</span> <span class="p">{</span></div><div class="line" id="file-jquery-1-7-1-js-LC23">    <span class="k">return</span> <span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">?</span> </div><div class="line" id="file-jquery-1-7-1-js-LC24">        <span class="k">this</span><span class="p">.</span><span class="nx">off</span><span class="p">(</span> <span class="nx">selector</span><span class="p">,</span> <span class="s2">"**"</span> <span class="p">)</span> <span class="o">:</span> </div><div class="line" id="file-jquery-1-7-1-js-LC25">        <span class="k">this</span><span class="p">.</span><span class="nx">off</span><span class="p">(</span> <span class="nx">types</span><span class="p">,</span> <span class="nx">selector</span><span class="p">,</span> <span class="nx">fn</span> <span class="p">);</span></div><div class="line" id="file-jquery-1-7-1-js-LC26"><span class="p">},</span></div><div class="line" id="file-jquery-1-7-1-js-LC27">&nbsp;</div><div class="line" id="file-jquery-1-7-1-js-LC28"><span class="c1">// ... more code ...</span></div></pre>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+
+          </div>
+          <div class="gist-meta">
+            <a href="https://gist.github.com/elijahmanor/1749717/raw/jquery-1.7.1.js" style="float:right">view raw</a>
+            <a href="https://gist.github.com/elijahmanor/1749717#file-jquery-1-7-1-js">jquery-1.7.1.js</a>
+            hosted with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+</div>
+
+
+<p>With that in mind, the usage of the new <code>.on()</code> method looks something like the following...</p>
+
+<script src="https://gist.github.com/elijahmanor/1749717.js?file=on.js"></script><link rel="stylesheet" href="https://gist-assets.github.com/assets/embed-d1006a2c03378524a2bad8f05b286964.css"><div id="gist1749717" class="gist">
+        <div class="gist-file">
+          <div class="gist-data gist-syntax">
+
+    <div class="file-data">
+      <table cellpadding="0" cellspacing="0" class="lines highlight">
+        <tbody><tr>
+          <td class="line-numbers">
+            <span class="line-number" id="file-on-js-L1" rel="file-on-js-L1">1</span>
+            <span class="line-number" id="file-on-js-L2" rel="file-on-js-L2">2</span>
+            <span class="line-number" id="file-on-js-L3" rel="file-on-js-L3">3</span>
+            <span class="line-number" id="file-on-js-L4" rel="file-on-js-L4">4</span>
+            <span class="line-number" id="file-on-js-L5" rel="file-on-js-L5">5</span>
+            <span class="line-number" id="file-on-js-L6" rel="file-on-js-L6">6</span>
+            <span class="line-number" id="file-on-js-L7" rel="file-on-js-L7">7</span>
+            <span class="line-number" id="file-on-js-L8" rel="file-on-js-L8">8</span>
+            <span class="line-number" id="file-on-js-L9" rel="file-on-js-L9">9</span>
+            <span class="line-number" id="file-on-js-L10" rel="file-on-js-L10">10</span>
+            <span class="line-number" id="file-on-js-L11" rel="file-on-js-L11">11</span>
+            <span class="line-number" id="file-on-js-L12" rel="file-on-js-L12">12</span>
+            <span class="line-number" id="file-on-js-L13" rel="file-on-js-L13">13</span>
+            <span class="line-number" id="file-on-js-L14" rel="file-on-js-L14">14</span>
+          </td>
+          <td class="line-data">
+            <pre class="line-pre"><div class="line" id="file-on-js-LC1"><span class="cm">/* The jQuery .bind(), .live(), and .delegate() methods are just one </span></div><div class="line" id="file-on-js-LC2"><span class="cm">   line pass throughs to the new jQuery 1.7 .on() method */</span></div><div class="line" id="file-on-js-LC3">&nbsp;</div><div class="line" id="file-on-js-LC4"><span class="c1">// Bind</span></div><div class="line" id="file-on-js-LC5"><span class="nx">$</span><span class="p">(</span> <span class="s2">"#members li a"</span> <span class="p">).</span><span class="nx">on</span><span class="p">(</span> <span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">e</span> <span class="p">)</span> <span class="p">{}</span> <span class="p">);</span> </div><div class="line" id="file-on-js-LC6"><span class="nx">$</span><span class="p">(</span> <span class="s2">"#members li a"</span> <span class="p">).</span><span class="nx">bind</span><span class="p">(</span> <span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">e</span> <span class="p">)</span> <span class="p">{}</span> <span class="p">);</span> </div><div class="line" id="file-on-js-LC7">&nbsp;</div><div class="line" id="file-on-js-LC8"><span class="c1">// Live</span></div><div class="line" id="file-on-js-LC9"><span class="nx">$</span><span class="p">(</span> <span class="nb">document</span> <span class="p">).</span><span class="nx">on</span><span class="p">(</span> <span class="s2">"click"</span><span class="p">,</span> <span class="s2">"#members li a"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">e</span> <span class="p">)</span> <span class="p">{}</span> <span class="p">);</span> </div><div class="line" id="file-on-js-LC10"><span class="nx">$</span><span class="p">(</span> <span class="s2">"#members li a"</span> <span class="p">).</span><span class="nx">live</span><span class="p">(</span> <span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">e</span> <span class="p">)</span> <span class="p">{}</span> <span class="p">);</span></div><div class="line" id="file-on-js-LC11">&nbsp;</div><div class="line" id="file-on-js-LC12"><span class="c1">// Delegate</span></div><div class="line" id="file-on-js-LC13"><span class="nx">$</span><span class="p">(</span> <span class="s2">"#members"</span> <span class="p">).</span><span class="nx">on</span><span class="p">(</span> <span class="s2">"click"</span><span class="p">,</span> <span class="s2">"li a"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">e</span> <span class="p">)</span> <span class="p">{}</span> <span class="p">);</span> </div><div class="line" id="file-on-js-LC14"><span class="nx">$</span><span class="p">(</span> <span class="s2">"#members"</span> <span class="p">).</span><span class="nx">delegate</span><span class="p">(</span> <span class="s2">"li a"</span><span class="p">,</span> <span class="s2">"click"</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">e</span> <span class="p">)</span> <span class="p">{}</span> <span class="p">);</span></div></pre>
+          </td>
+        </tr>
+      </tbody></table>
+    </div>
+
+          </div>
+          <div class="gist-meta">
+            <a href="https://gist.github.com/elijahmanor/1749717/raw/on.js" style="float:right">view raw</a>
+            <a href="https://gist.github.com/elijahmanor/1749717#file-on-js">on.js</a>
+            hosted with ❤ by <a href="https://github.com">GitHub</a>
+          </div>
+        </div>
+</div>
+
+
+<p>You'll notice that depending how I call the <code>.on()</code> method changes how it performs. You can consider the <code>.on()</code> method as being "overloaded" with different signatures, which in turn changes how the event binding is wired-up. The <code>.on</code> method bring a lot of consistency to the API and hopefully makes things slightly less confusing.<br><br><b>Pros</b><br></p><ul><li>Brings uniformity to the various event binding methods.</li><li>Simplifies the jQuery code base and removes one level of redirection since the <code>.bind()</code>, <code>.live()</code>, and <code>.delegate()</code> call this method under the covers.</li><li>Still provides all the goodness of the <code>.delegate()</code> method, while still providing support for the <code>.bind()</code> method if you need it.</li></ul><b>Cons</b><br><ul><li>Brings confusion because the behavior changes based on how you call the method.</li></ul><p></p>
+
+<h3>Conclusion (tl;dr)</h3>
+
+<p>If you have been confused about the various different types of event binding methods then don't worry, there has been a lot of history and evolvement in the API over time. There are many people that view these methods as magic, but once you uncover some of how they work it will help you understand how to better ode inside of your projects. <br><br>The biggest take aways from this article are that...<br></p><ul><li>Using the <code>.bind()</code> method is very costly as it attaches the same event handler to every item matched in your selector.</li><li>You should stop using the <code>.live()</code> method as it is deprecated and has a lot of problems with it.</li><li>The <code>.delegate()</code> method gives a lot of "bang for your buck" when dealing with performance and reacting to dynamically added elements.</li><li>That the new <code>.on()</code> method is mostly syntax sugar that can mimic <code>.bind()</code>, <code>.live()</code>, or <code>.delegate()</code> depending on how you call it.</li><li>The new direction is to use the new <code>.on</code> method. Get familiar with the syntax and start using it on all your jQuery 1.7+ projects.</li></ul><p></p>
+
+<p>Were there any pros or cons that you would have added to the above lists? Have you found yourself using the <code>.delegate</code> method more recently? What are you thoughts on the new <code>.on</code> method? Leave your thoughts in the comments. Thanks!</p>
+            </section>
+				</div>
+			</div>			
+		</article>
+		
+
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#webapps-security" data-toggle="collapse" class="accordion-toggle">Webapps Security?</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="webapps-security">
+				<div class="accordion-inner">            
+					<p>
+					Generally, as a developer you can improve code security by: </p>
+					<ul class="list">
+					<li>validating untrusted user input. If you must allow HTML in user responses, make sure to allow a small white list of HTML tags. Any tag that contains attributes should fail validation.
+					</li><li>generally rejecting input if it's not in an expected format. Sanitising the input has it's place, but you need to cover any escape codes that an attacker could use
+					</li><li>always using server-side validation in addition to client side validation. The latter can be by-passed, and thus cannot be relied upon.
+					</li><li>properly encode/escape all output, paying particular attention to HTML and attributes, XML and attributes, URLs, and Javascript (or other script)
+					</li>
+					</ul>
+					
+					<div class="field-item even" property="content:encoded"><p>The <a href="https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project" title="OWASP Top Ten">OWASP Top Ten</a> provides a powerful awareness document for web application security. The OWASP Top Ten represents a broad consensus about what the most critical web application security flaws are. Contributors include security experts from around the world who have shared their expertise to produce this list.</p>
+
+					<p>Below is a summary of the 2010 report - the previous having being in 2007.</p>
+
+					<ol class="hanging"><li><em>Injection including SQL injection</em><p>This occurs when untrusted data is passed in a query to a data process e.g. the famous param=' OR '1'='1 example put in a SQL query. The OWASP project also has some suggestions for protecting yourself against this attack - <a href="https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet" title="SQL Injection prevention cheat sheet">SQL Injection prevention cheat sheet</a>.</p></li>
+
+					<li><em>Cross-site scripting (XSS)</em><p>XSS is the most common web application security flaw. This occurs when an application includes user supplied data in a page sent to the browser, without properly validating or escaping that data. There are 3 variants: 
+					</p><ul>
+					<li>Stored XSS - where the data is already in the application's data store e.g. in forums, CMS </li>
+					<li>Reflected XSS - where data is obtained from a user and displayed to another user</li>
+					<li>DOM-based/local XSS - attacks client side Javascript code and variables</li>
+					</ul>In the first two, the server serves a contaminated page to the client, while for the last the code is injected at the client end using Javascript.
+					<p></p><p>Note that using HTTPS is not a defence against XSS.</p></li>
+
+					<li><em>Broken Authentication and Session Management</em><p>This could be from anonymous attackers wanting to gain access to other people's accounts. Insiders may also try this to mimick another user and thereby cover their tracks. Authentication can be tricky, and leaks or flaws in the authentication can be exploited. This risk can be minimised by having a single set of authentication and session management controls for developers on a project. An example interface can be found at <a href="http://owasp-esapi-java.googlecode.com/svn/trunk_doc/latest/org/owasp/esapi/Authenticator.html" title="ESAPI Authenticator and User APIs">ESAPI Authenticator and User APIs</a>.</p></li>
+
+					<li><em>Insecure Direct Object References</em><p>This is where an authorised person gains access to a prohibited resource simply by changing a reference in a web request e.g. changing some.site?reportid=1 (which is the user is authorised to access) to some.site?reportid=2 (which should be prohibited). This can be mitigated by using indirect references to restricted resources. The user can then only select from an allowed subset.</p></li>
+					<li><em>Cross-site Request Forgery (CSRF)</em><p>A request is made to your site from another site, using forged HTTP requests. Such requests can be submitted via img tags. If the user is authenticated on your site, the attack could make changes to your site in the user's name. The changes should be restricted to only what the user is authorised to do. This risk can be mitigated by using hidden token for each HTTP request, which is validated when a user makes a request. A request is only allowed if the token validates. Such a token should at least be unique per user session - see <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_%28CSRF%29_Prevention_Cheat_Sheet" title="CSRF cheat sheet">CSRF cheat sheet</a>.</p></li>
+					<li><em>Security Misconfiguration</em><p>An attacker exploits default accounts, unused pages, flaws, unprotected resources to gain unauthorised access to or knowledge of the system. This attack could lead to compromising of the entire system. You can reduce this risk by making sure that default accounts are properly configured/disabled, error messages do not unnecessarily give away system configuration information, and system is kept up to date.</p></li>
+					<li><em>Insecure Cryptographic Storage</em><p>This risk is mainly from authorised users of your system, including system administrators. The most common flaw in this area is simply not encrypting data that deserves encryption. When encryption is employed, unsafe key generation and storage, not rotating keys, and weak algorithm usage is common. Use of weak or unsalted hashes to protect passwords is also common. For hashes, SHA-256 is recommended over MD5 or SHA-1 - see <a href="https://www.owasp.org/index.php/Guide_to_Cryptography" title="Guide to Cryptography">Guide to Cryptography</a>.</p></li>
+					<li><em>Failure to Restrict URL Access</em><p>This is when an attacker can be granted access to a privileged page, simply by specifying the url, e.g. an anonymous user getting access to an administrator-only page. Mitigate by making authentication and authorisation role-based. Also allow for a flexible association between roles and permissions. By default, users should be denied access to restricted pages.</p></li>
+					<li><em>Insufficient Transport Layer Protection</em><p>Requests not using SSL/TLS are open to network sniffing by a malicious user, which can lead to exposure of session IDs. This can be mitigated by using SSL/TLS for all requests. However, for performance reasons, it's more common to use SSL/TLS for the authentication stages only. A good practice is to use SSL/TLS for all sensitive pages, including administrative access. Also this <a href="https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet" title="TLS Cheat sheet">TLS cheat sheet</a> recommends not redirecting users from a non-TLS login page to a TLS login page.</p></li>
+
+					<li><em>Unvalidated Redirects and Forwards</em><p>The risk is when a site redirects users based on some parameter in the request. Always verify the target of the redirect is a valid URL or page, and the user is authorised to access that page. If possible, avoid redirects altogether.</p></li>
+					</ol>
+					
+				</div>
+			</div>			
+		</article>
+
+
+	
+	</div>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>
