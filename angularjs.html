@@ -1,7 +1,7 @@
 <!Doctype html>
 <html>
 <head>
-	<title> css qs </title>	
+	<title> Angular qs </title>	
 	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="vendor/shCore.js"></script>
 	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
@@ -17,19 +17,218 @@
 		<article class="accordion-group">
 			 <div class="accordion-heading">      		
 				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
-					CSS rule to disable text selection highlighting?
+					Angular directives - How to declare the various functions?
 				</a>
 			 </div>			
 			 <div class="accordion-body collapse in" id="css-disable-text-selection">
 				<div class="accordion-inner">
+					<h1>Compile, Controller, Pre-link & Post-link</h1>
+					<p>
+						If one is to use all four function, the directive will follow this form:
+					</p>
 					<pre class="brush: js;">
-						-webkit-touch-callout: none;
-						-webkit-user-select: none;
-						-khtml-user-select: none;
-						-moz-user-select: none;
-						-ms-user-select: none;
-						user-select: none;
-					</pre>				
+						myApp.directive( 'myDirective', function () {
+						    return {
+						        restrict: 'EA',
+						        controller: function( $scope, $element, $attrs, $transclude ) {
+						            // Controller code goes here.
+						        },
+						        compile: function compile( tElement, tAttributes, transcludeFn ) {
+						            // Compile code goes here.
+						            return {
+						                pre: function preLink( scope, element, attributes, controller, transcludeFn ) {
+						                    // Pre-link code goes here
+						                },
+						                post: function postLink( scope, element, attributes, controller, transcludeFn ) {
+						                    // Post-link code goes here
+						                }
+						            };
+						        }
+						    };  
+						});
+					</pre>	
+					<p>
+						Notice that compile returns an object containing both the pre-link and post-link functions; in Angular lingo we say the compile function returns a template function.
+					</p>		
+					<h1>
+						Compile, Controller & Post-link
+					</h1>	
+					<p>
+						If <strong>pre-link</strong> isn't necessary, the compile function can simply return the post-link function instead of a definition object, like so:
+					</p>
+					<pre class="brush: js;">
+						myApp.directive( 'myDirective', function () {
+						    return {
+						        restrict: 'EA',
+						        controller: function( $scope, $element, $attrs, $transclude ) {
+						            // Controller code goes here.
+						        },
+						        compile: function compile( tElement, tAttributes, transcludeFn ) {
+						            // Compile code goes here.
+						            return function postLink( scope, element, attributes, controller, transcludeFn ) {
+						                    // Post-link code goes here                 
+						            };
+						        }
+						    };  
+						});
+					</pre>
+					<p>
+						Sometimes, one wishes to add a <strong>compile</strong> method, after the (post) <strong>link</strong> method was defined. For this, one can use:
+					</p>
+					<pre class="brush: js;">
+						myApp.directive( 'myDirective', function () {
+						    return {
+						        restrict: 'EA',
+						        controller: function( $scope, $element, $attrs, $transclude ) {
+						            // Controller code goes here.
+						        },
+						        compile: function compile( tElement, tAttributes, transcludeFn ) {
+						            // Compile code goes here.
+
+						            return this.link;
+						        },
+						        link: function( scope, element, attributes, controller, transcludeFn ) {
+						            // Post-link code goes here
+						        }
+
+						    };  
+						});
+					</pre>
+					<h1>
+						Controller & Post-link
+					</h1>
+					<p>
+						If no compile function is needed, one can skip its declaration altogether and provide the post-link function under the <strong>link</strong> property of the directive's configuration object:
+					</p>
+					<pre class="brush: js;">
+						myApp.directive( 'myDirective', function () {
+						    return {
+						        restrict: 'EA',
+						        controller: function( $scope, $element, $attrs, $transclude ) {
+						            // Controller code goes here.
+						        },
+						        link: function postLink( scope, element, attributes, controller, transcludeFn ) {
+						                // Post-link code goes here                 
+						        },          
+						    };  
+						});
+					</pre>
+					<h1>No controller</h1>
+					<p>
+						In any of the examples above, one can simply remove the <strong>controller</strong> function if not needed. So for instance, if only <strong>post-link</strong> function is needed, one can use:
+					</p>
+				</div>
+			</div>
+		</article>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					In which order the directive functions are executed?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in">
+				<div class="accordion-inner">
+					<h1>For a single directive</h1>
+					<p>
+						Based on the following plunk, consider the following HTML markup:
+					</p>
+					<pre class="brush: js;">
+						<body>
+						    <div log='some-div'></div>
+						</body>
+					</pre>	
+					<p>With the following directive declaration:</p>
+					<pre class="brush: js;">
+						myApp.directive('log', function() {
+						    return {
+						        controller: function( $scope, $element, $attrs, $transclude ) {
+						            console.log( $attrs.log + ' (controller)' );
+						        },
+						        compile: function compile( tElement, tAttributes ) {
+						            console.log( tAttributes.log + ' (compile)'  );
+						            return {
+						                pre: function preLink( scope, element, attributes ) {
+						                    console.log( attributes.log + ' (pre-link)'  );
+						                },
+						                post: function postLink( scope, element, attributes ) {
+						                    console.log( attributes.log + ' (post-link)'  );
+						                }
+						            };
+						         }
+						     };  
+
+						});
+					</pre>		
+					<p>
+						The console output will be:
+					</p>	
+					<pre class="brush: js;">
+						some-div (compile)
+						some-div (controller)
+						some-div (pre-link)
+						some-div (post-link)
+					</pre>
+					<p>We can see that compile is executed first, then controller, then pre-link and finally followed by post-link.</p>
+					<h1>
+						For nested directives
+					</h1>
+					<pre class="brush: js;">
+						Note: The following does not apply to directives that render their children in their link function. Quite a few Angular directives (like ngIf, ngRepeat, or any directive with transclude) do so. These type of directives will natively have their link function called before their child directives compile is called.
+					</pre>
+					<p>The original HTML markup is often made of nested elements, each with its own directive. Like in the following markup (see plunk):</p>
+					<pre class="brush: js;">
+						<body>
+						    <div log='parent'>
+						        <div log='..first-child'></div>
+						        <div log='..second-child'></div>
+						    </div>
+						</body>
+					</pre>
+					<p>
+						The console output will look like this (without the comments):
+					</p>
+					<pre class="brush: js;">
+						// The compile phase
+						parent (compile)
+						..first-child (compile)
+						..second-child (compile)
+
+						// The link phase   
+						parent (controller)
+						parent (pre-link)
+						..first-child (controller)
+						..first-child (pre-link)
+						..first-child (post-link)
+						..second-child (controller)
+						..second-child (pre-link)
+						..second-child (post-link)
+						parent (post-link)
+					</pre>
+					<p>
+						We can distinguish two phases here - the compile phase and the link phase.
+					</p>
+					<h1>The compile phase</h1>
+					<p>
+						When the DOM is loaded Angular starts the compile phase, where it traverses the markup top-down, and calls compile on all directives. Graphically, we could express it like so:
+					</p>
+					<div>
+						<img src="img/compile-phase.png" alt="">
+					</div>
+					<p>It is perhaps important to mention that at this stage, the templates the compile function gets are the source templates (not instance template).</p>
+					<h1>
+						The link phase
+					</h1>
+					<p>
+						DOM instances are often simply the result of a source template being rendered to the DOM, but they may be created by ng-repeat, or introduced on the fly.
+					</p>
+					<p>
+						Whenever a new instance of an element with a directive is rendered to the DOM, the link phase starts.
+					</p>
+					<p>In this phase, Angular calls controller, pre-link, iterates children, and call post-link on all directives, like so:</p>
+					<div>
+						<img src="img/link-phase.png" alt="">
+					</div>
 				</div>
 			</div>
 		</article>
