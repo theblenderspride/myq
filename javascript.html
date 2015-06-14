@@ -14,6 +14,27 @@
 
 	<div id="container">
 		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					typeof !== “undefined” vs. != null
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+					<p>
+						<strong>typeof</strong> allows the identifier to never have been declared before. So it's safer in that regard:
+					</p>
+					<pre class="brush: js;">
+						if(typeof neverDeclared == "undefined") 
+						//no errors
+
+						if(neverDeclared == null) 
+						//throws ReferenceError: neverDeclared is not defined
+					</pre>				
+				</div>
+			</div>
+		</article>
 
 		<article class="accordion-group">
 			 <div class="accordion-heading">      		
