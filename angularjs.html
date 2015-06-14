@@ -234,6 +234,104 @@
 		</article>
 
 	</div>
+
+	<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					What is the difference between a source template and an instance template?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+					<p>The fact that Angular allows DOM manipulation means that the input markup into the compilation process sometimes differ from the output. Particularly, some input markup may be cloned a few times (like with ng-repeat) before being rendered to the DOM.</p>
+					<p>
+						Angular terminology is a bit inconsistent, but it still distinguishes between two types of markups:
+					</p>
+					<ul>
+						<li>
+							<strong>Source template</strong> - the markup to be cloned, if needed. If cloned, this markup will not be rendered to the DOM.
+						</li>
+						<li>
+							<strong>Instance template</strong> - the actual markup to be rendered to the DOM. If cloning is involved, each instance will be a clone.
+						</li>
+					</ul>
+					<p>The following markup demonstrates this:</p>
+					<pre class="brush: js;">
+						<div ng-repeat="i in [0,1,2]">
+						    <my-directive>{{i}}</my-directive>
+						</div>
+					</pre>
+					<p>The source html defines</p>
+					<pre class="brush: js;">
+						    <my-directive>{{i}}</my-directive>
+					</pre>	
+					<p>which serves as the source template</p>			
+					<p>But as it is wrapped within an ng-repeat directive, this source template will be cloned (3 times in our case). These clones are instance template, each will appear in the DOM and be bound to the relevant scope.</p>
+
+				</div>
+			</div>
+		</article>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+				Function nature, do's and dont's
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+					<h1>Compile</h1>
+					<p>Each directive's compile function is only called once, when Angular bootstraps.</p>
+					<p>
+						Officially, this is the place to perform (source) template manipulations that do not involve scope or data binding.
+					</p>
+					<p>
+					Primarily, this is done for optimisation purposes; consider the following markup:
+					</p>
+					<pre class="brush: js;">
+						<tr ng-repeat="raw in raws">
+						    <my-raw></my-raw>
+						</tr>
+					</pre>	
+					<p>
+						The <my-raw> directive will render a particular DOM Markup. So we can either:
+					</p>			
+					<ul>
+						<li>
+							Allow ng-repeat to duplicate the source template (<my-raw>), only then modify the markup of each instance template (outside the compile function).
+						</li>
+						<li>
+							First modify the source template to involve the desired markup (in the compile function), only then allow ng-repeat duplicating it.
+						</li>
+					</ul>
+					<p>
+						If there are 1000 raws, the latter option may be faster than the former one.
+					</p>
+					<h1>Do's</h1>
+					<ul>
+						<li>
+							Manipulate markup so it serves as a template to instances (clones).
+						</li>
+					</ul>
+					<h1>Dont's</h1>
+					<ul>
+						<li>
+							Attach event handlers..
+						</li>
+						<li>
+							Inspect child elements.
+						</li>
+						<li>
+							Setup observations on attributes.
+						</li>
+						<li>
+							Setup watches on the scope.
+						</li>
+					</ul>
+				</div>
+			</div>
+		</article>
+
 	<!-- end of container-->
 	
 	<script type="text/javascript" src="js/App.js"></script>

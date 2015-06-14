@@ -1,7 +1,7 @@
 <!Doctype html>
 <html>
 <head>
-	<title> my qs </title>	
+	<title> javascript </title>	
 	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="vendor/shCore.js"></script>
 	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
@@ -13,11 +13,76 @@
 	<!-- <pre class="brush: js;"> -->
 
 	<div id="container">
-		<div id="search">
-			<input type="text" id="txtSearch" />
-		</div>
 		
-		<div id="searchgap"></div>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					What is the difference between a function expression vs declaration in JavaScript?
+				</a>
+			 </div>		
+
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+			<pre class="brush: js;">
+			 	//Function declaration
+				function foo() { return 5; }
+
+				//Anonymous function expression
+				var foo = function() { return 5; }
+
+				//Named function expression
+				var foo = function foo() { return 5; }
+			 </pre>	
+			 <p>
+			 	They're actually really similar. How you call them is exactly the same, but the difference lies in how the browser loads them into the execution context.
+			 </p>
+			 <p>
+			 	function declarations loads before any code is executed.
+			 </p>
+			 <p>
+			 	While function expressions loads only when the interpreter reaches that line of code.
+			 </p>
+			 <p>
+			 	So if you try to call a function expression before it's loaded, you'll get an error
+			 </p>
+			 <p>
+			 	But if you call a function declaration, it'll always work. Because no code can be called until all declarations are loaded.
+			 </p>
+			 
+			 <h3>ex. Function Declaration</h3>
+			  <pre class="brush: js;">
+			 	alert(foo()); // Alerts 5. Declarations are loaded before any code can run.
+				function foo() { return 5; } 
+			 </pre>
+			 <h3>ex. Anonymous Function Expression</h3>
+			 <pre class="brush: js;">
+			 	alert(foo()); // ERROR! foo wasn't loaded yet
+				var foo = function() { return 5; } 
+			 </pre>
+			
+			<h3>ex. Named Function Expression</h3>
+			<p><strong>It can access the function name, usually used for recursion</strong></p>
+			<p><strong>Below example implements fibonacci series using named function expression and recursion</strong></p>
+			 <pre class="brush: js;">
+					var fib = function fibonacci(n) {
+					    if (n < 2) {
+					        return 1;
+					    } else {
+					        return fibonacci(n - 2) + fibonacci(n - 1);
+					    }
+					};
+					</pre>	
+
+					<h1>To print the first 10 fibonacci numbers</h1>			
+					<pre class="brush: js;">
+						for (var i=1; i<10; i++) {
+							fib(i);
+						}
+			</pre>
+				</div>
+			</div>
+		</article>
 		
 		<article class="accordion-group">
 			 <div class="accordion-heading">      		
