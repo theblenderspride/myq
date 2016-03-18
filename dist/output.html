@@ -1,6 +1,483 @@
 <!Doctype html>
 <html>
 <head>
+	<title> Angular qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					Different types of directive scopes
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+					<h1>Scope : False ( Directive uses its parent scope )</h1>
+					<h1>Scope : True ( Directive gets a new scope )</h1>
+					<p>
+						When scope is set to “true”, AngularJS will create a new scope by inheriting parent scope ( usually controller scope, otherwise the application’s rootScope ). Any changes made to this new scope will not reflect back to the parent scope. However, since the new scope is inherited from the parent scope, any changes made in the Ctrl1 ( the parent scope ) will be reflected in the directive scope.</p>
+					<p>
+						When scope is set to “false”, the controller Ctrl1 and directive are using the same scope object. This means any changes to the controller or directive will be in sync.</p>
+					<h1>Scope : { } ( Directive gets a new isolated scope )</h1>
+					<p>
+						This is the most interesting section. Till now, we saw two situations for directive scope creation. In the third type, we are going to set scope property in DDO to an Object literal. When an object literal is passed to the scope property, things are bit different. This time, there will be a new scope created for the directive, but it will not be inherited from the parent scope. This new scope also known as Isolated scope because it is completely detached from its parent scope.</p>
+					<p>
+						So far, this is the recommended way of setting the scope on DDO while creating custom directives. Why? Because:</p>
+					<p>
+						It’ll make sure that our directive is generic, and placed anywhere inside the application. Parent scope is not going to interfere with the directive scope
+					</p>
+					<h4>There are 3 types of prefixes AngularJS provides used to communicate with parent directive.</h4>
+					<ul>
+						<li>1. "@"   (  Text binding / one-way binding )</li>
+						<li>2. "="   ( Direct model binding / two-way binding )]</li>
+						<li>3. "&"   ( Behaviour binding / Method binding  )</li>
+					</ul>
+				</div>
+			</div>
+		</article>
+
+
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					Summary of Compile, Controller, Pre-link & Post-link
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+				<p>
+				<strong>Reference: </strong>http://www.undefinednull.com/2014/07/07/practical-guide-to-prelink-postlink-and-controller-methods-of-angular-directives/
+				</p>
+					<h1>Post : This is the most commonly used for data binding</h1>
+					<p>
+Safe to attach event handlers to the DOM element
+</p><p> All children directives are linked, so it's safe to access them
+</p><p> Never set any data required by the child directive here. Because child directive’s will be linked already.
+</p>
+
+<h1>Pre :</h1>
+<p> Used rarely. One of the use case is when a child directive requires data from its parent, the parent directive should set it through its pre-link function.
+</p><p> 
+Set data required for its child directives
+</p><p> Safe to attach event handlers to the DOM element
+</p><p> Not safe to access DOM elements belong to child directives. They’re not linked yet.
+</p>
+
+<h1>Controller :</h1>
+<p> Used for defining a proper API to the directive. Using controller, directives can communicate and share data each other.
+</p><p> 
+Set the data required to other directives.
+</p><p> Never access DOM element inside the controller; it’s against Angular’s philosophy and make testing hard.
+</p>
+					
+				</div>
+			</div>
+		</article>
+
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					Angular directives - How to declare the various functions?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+					<h1>Compile, Controller, Pre-link & Post-link</h1>
+					<p>
+						If one is to use all four function, the directive will follow this form:
+					</p>
+					<pre class="brush: js;">
+						myApp.directive( 'myDirective', function () {
+						    return {
+						        restrict: 'EA',
+						        controller: function( $scope, $element, $attrs, $transclude ) {
+						            // Controller code goes here.
+						        },
+						        compile: function compile( tElement, tAttributes, transcludeFn ) {
+						            // Compile code goes here.
+						            return {
+						                pre: function preLink( scope, element, attributes, controller, transcludeFn ) {
+						                    // Pre-link code goes here
+						                },
+						                post: function postLink( scope, element, attributes, controller, transcludeFn ) {
+						                    // Post-link code goes here
+						                }
+						            };
+						        }
+						    };  
+						});
+					</pre>	
+					<p>
+						Notice that compile returns an object containing both the pre-link and post-link functions; in Angular lingo we say the compile function returns a template function.
+					</p>		
+					<h1>
+						Compile, Controller & Post-link
+					</h1>	
+					<p>
+						If <strong>pre-link</strong> isn't necessary, the compile function can simply return the post-link function instead of a definition object, like so:
+					</p>
+					<pre class="brush: js;">
+						myApp.directive( 'myDirective', function () {
+						    return {
+						        restrict: 'EA',
+						        controller: function( $scope, $element, $attrs, $transclude ) {
+						            // Controller code goes here.
+						        },
+						        compile: function compile( tElement, tAttributes, transcludeFn ) {
+						            // Compile code goes here.
+						            return function postLink( scope, element, attributes, controller, transcludeFn ) {
+						                    // Post-link code goes here                 
+						            };
+						        }
+						    };  
+						});
+					</pre>
+					<p>
+						Sometimes, one wishes to add a <strong>compile</strong> method, after the (post) <strong>link</strong> method was defined. For this, one can use:
+					</p>
+					<pre class="brush: js;">
+						myApp.directive( 'myDirective', function () {
+						    return {
+						        restrict: 'EA',
+						        controller: function( $scope, $element, $attrs, $transclude ) {
+						            // Controller code goes here.
+						        },
+						        compile: function compile( tElement, tAttributes, transcludeFn ) {
+						            // Compile code goes here.
+
+						            return this.link;
+						        },
+						        link: function( scope, element, attributes, controller, transcludeFn ) {
+						            // Post-link code goes here
+						        }
+
+						    };  
+						});
+					</pre>
+					<h1>
+						Controller & Post-link
+					</h1>
+					<p>
+						If no compile function is needed, one can skip its declaration altogether and provide the post-link function under the <strong>link</strong> property of the directive's configuration object:
+					</p>
+					<pre class="brush: js;">
+						myApp.directive( 'myDirective', function () {
+						    return {
+						        restrict: 'EA',
+						        controller: function( $scope, $element, $attrs, $transclude ) {
+						            // Controller code goes here.
+						        },
+						        link: function postLink( scope, element, attributes, controller, transcludeFn ) {
+						                // Post-link code goes here                 
+						        },          
+						    };  
+						});
+					</pre>
+					<h1>No controller</h1>
+					<p>
+						In any of the examples above, one can simply remove the <strong>controller</strong> function if not needed. So for instance, if only <strong>post-link</strong> function is needed, one can use:
+					</p>
+				</div>
+			</div>
+		</article>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					In which order the directive functions are executed?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in">
+				<div class="accordion-inner">
+					<h1>For a single directive</h1>
+					<p>
+						Based on the following plunk, consider the following HTML markup:
+					</p>
+					<pre class="brush: js;">
+						<body>
+						    <div log='some-div'></div>
+						</body>
+					</pre>	
+					<p>With the following directive declaration:</p>
+					<pre class="brush: js;">
+						myApp.directive('log', function() {
+						    return {
+						        controller: function( $scope, $element, $attrs, $transclude ) {
+						            console.log( $attrs.log + ' (controller)' );
+						        },
+						        compile: function compile( tElement, tAttributes ) {
+						            console.log( tAttributes.log + ' (compile)'  );
+						            return {
+						                pre: function preLink( scope, element, attributes ) {
+						                    console.log( attributes.log + ' (pre-link)'  );
+						                },
+						                post: function postLink( scope, element, attributes ) {
+						                    console.log( attributes.log + ' (post-link)'  );
+						                }
+						            };
+						         }
+						     };  
+
+						});
+					</pre>		
+					<p>
+						The console output will be:
+					</p>	
+					<pre class="brush: js;">
+						some-div (compile)
+						some-div (controller)
+						some-div (pre-link)
+						some-div (post-link)
+					</pre>
+					<p>We can see that compile is executed first, then controller, then pre-link and finally followed by post-link.</p>
+					<h1>
+						For nested directives
+					</h1>
+					<pre class="brush: js;">
+						Note: The following does not apply to directives that render their children in their link function. Quite a few Angular directives (like ngIf, ngRepeat, or any directive with transclude) do so. These type of directives will natively have their link function called before their child directives compile is called.
+					</pre>
+					<p>The original HTML markup is often made of nested elements, each with its own directive. Like in the following markup (see plunk):</p>
+					<pre class="brush: js;">
+						<body>
+						    <div log='parent'>
+						        <div log='..first-child'></div>
+						        <div log='..second-child'></div>
+						    </div>
+						</body>
+					</pre>
+					<p>
+						The console output will look like this (without the comments):
+					</p>
+					<pre class="brush: js;">
+						// The compile phase
+						parent (compile)
+						..first-child (compile)
+						..second-child (compile)
+
+						// The link phase   
+						parent (controller)
+						parent (pre-link)
+						..first-child (controller)
+						..first-child (pre-link)
+						..first-child (post-link)
+						..second-child (controller)
+						..second-child (pre-link)
+						..second-child (post-link)
+						parent (post-link)
+					</pre>
+					<p>
+						We can distinguish two phases here - the compile phase and the link phase.
+					</p>
+					<h1>The compile phase</h1>
+					<p>
+						When the DOM is loaded Angular starts the compile phase, where it traverses the markup top-down, and calls compile on all directives. Graphically, we could express it like so:
+					</p>
+					<div>
+						<img src="img/compile-phase.png" alt="">
+					</div>
+					<p>It is perhaps important to mention that at this stage, the templates the compile function gets are the source templates (not instance template).</p>
+					<h1>
+						The link phase
+					</h1>
+					<p>
+						DOM instances are often simply the result of a source template being rendered to the DOM, but they may be created by ng-repeat, or introduced on the fly.
+					</p>
+					<p>
+						Whenever a new instance of an element with a directive is rendered to the DOM, the link phase starts.
+					</p>
+					<p>In this phase, Angular calls controller, pre-link, iterates children, and call post-link on all directives, like so:</p>
+					<div>
+						<img src="img/link-phase.png" alt="">
+					</div>
+				</div>
+			</div>
+		</article>
+
+	</div>
+
+	<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					What is the difference between a source template and an instance template?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+					<p>The fact that Angular allows DOM manipulation means that the input markup into the compilation process sometimes differ from the output. Particularly, some input markup may be cloned a few times (like with ng-repeat) before being rendered to the DOM.</p>
+					<p>
+						Angular terminology is a bit inconsistent, but it still distinguishes between two types of markups:
+					</p>
+					<ul>
+						<li>
+							<strong>Source template</strong> - the markup to be cloned, if needed. If cloned, this markup will not be rendered to the DOM.
+						</li>
+						<li>
+							<strong>Instance template</strong> - the actual markup to be rendered to the DOM. If cloning is involved, each instance will be a clone.
+						</li>
+					</ul>
+					<p>The following markup demonstrates this:</p>
+					<pre class="brush: js;">
+						<div ng-repeat="i in [0,1,2]">
+						    <my-directive>{{i}}</my-directive>
+						</div>
+					</pre>
+					<p>The source html defines</p>
+					<pre class="brush: js;">
+						    <my-directive>{{i}}</my-directive>
+					</pre>	
+					<p>which serves as the source template</p>			
+					<p>But as it is wrapped within an ng-repeat directive, this source template will be cloned (3 times in our case). These clones are instance template, each will appear in the DOM and be bound to the relevant scope.</p>
+
+				</div>
+			</div>
+		</article>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+				Function nature, do's and dont's
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+					<h1>Compile</h1>
+					<p>Each directive's compile function is only called once, when Angular bootstraps.</p>
+					<p>
+						Officially, this is the place to perform (source) template manipulations that do not involve scope or data binding.
+					</p>
+					<p>
+					Primarily, this is done for optimisation purposes; consider the following markup:
+					</p>
+					<pre class="brush: js;">
+						<tr ng-repeat="raw in raws">
+						    <my-raw></my-raw>
+						</tr>
+					</pre>	
+					<p>
+						The <my-raw> directive will render a particular DOM Markup. So we can either:
+					</p>			
+					<ul>
+						<li>
+							Allow ng-repeat to duplicate the source template (<my-raw>), only then modify the markup of each instance template (outside the compile function).
+						</li>
+						<li>
+							First modify the source template to involve the desired markup (in the compile function), only then allow ng-repeat duplicating it.
+						</li>
+					</ul>
+					<p>
+						If there are 1000 raws, the latter option may be faster than the former one.
+					</p>
+					<h1>Do's</h1>
+					<ul>
+						<li>
+							Manipulate markup so it serves as a template to instances (clones).
+						</li>
+					</ul>
+					<h1>Dont's</h1>
+					<ul>
+						<li>
+							Attach event handlers..
+						</li>
+						<li>
+							Inspect child elements.
+						</li>
+						<li>
+							Setup observations on attributes.
+						</li>
+						<li>
+							Setup watches on the scope.
+						</li>
+					</ul>
+				</div>
+			</div>
+		</article>
+
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>;<!Doctype html>
+<html>
+<head>
+	<title> css qs </title>	
+	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="vendor/shCore.js"></script>
+	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/shCoreDefault.css"/>
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript">SyntaxHighlighter.all();</script>
+</head>
+<body>
+	<!-- <pre class="brush: js;"> -->
+
+	<div id="container">
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					ngroute vs ui router?
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+					<p>ui-router is a 3rd-party module and is very powerful. It supports everything the normal ngRoute can do as well as many extra functions.</p>
+					Here are some common reason ui-router is chosen over ngRoute:
+					<ul>			
+						<li>ui-router allows for nested views and multiple named views. This is very useful with larger app where you may have pages that inherit from other sections.
+						</li>
+						<li>ui-router allows for you to have strong-type linking between states based on state names. Change the url in one place will update every link to that state when you build your links with ui-sref. Very useful for larger projects where URLs might change.
+						</li>
+						<li>There is also the concept of the decorator which could be used to allow your routes to be dynamically created based on the URL that is trying to be accessed. This could mean that you will not need to specify all of your routes before hand.
+						</li>
+						<li>states allow you to map and access different information about different states and you can easily pass information between states via $stateParams.
+						</li>
+						<li>You can easily determine if you are in a state or parent of a state to adjust UI element (highlighting the navigation of the current state) within your templates via $state provided by ui-router which you can expose via setting it in $rootScope on run.
+						</li>
+					</ul>
+					<p>In essence, ui-router is ngRouter with more features, under the sheets it is quite different. These additional features are very useful for larger applications.</p>
+					
+					<p class="bold">State Manager.</p>
+
+					The simplest form of state
+
+					A state in its simplest form can be added like this (typically within module.config):
+					<pre class="brush: js;">
+					<!-- in index.html -->
+					<body ng-controller="MainCtrl">
+						<section ui-view></section>
+					</body>
+					// in app-states.js (or whatever you want to name it)
+					$stateProvider.state('contacts', {
+					  template: '<h1>My Contacts</h1>'
+					})
+					</pre>
+
+				</div>
+			</div>
+		</article>
+
+	</div>
+	<!-- end of container-->
+	
+	<script type="text/javascript" src="js/App.js"></script>
+	
+</body>
+</html>;<!Doctype html>
+<html>
+<head>
 	<title> arrays qs </title>	
 	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="vendor/shCore.js"></script>
@@ -276,17 +753,7 @@
 		
 		<div id="searchgap"></div>
 		
-		<article class="accordion-group">
-			 <div class="accordion-heading">      		
-				<a href="#backbone-rest-methods" data-toggle="collapse" class="accordion-toggle">
-					different REST methods used in backbone?
-				</a>
-			 </div>			
-			 <div class="accordion-body collapse in" id="backbone-rest-methods">
-				<div class="accordion-inner">
-				</div>
-			</div>
-		</article>
+		
 
 		<article class="accordion-group">
 			 <div class="accordion-heading">      		
@@ -623,7 +1090,7 @@
 </html>;<!Doctype html>
 <html>
 <head>
-	<title> my qs </title>	
+	<title> javascript </title>	
 	<script type="text/javascript" src="vendor/jquery-1.11.0.min.js"></script>
 	<script type="text/javascript" src="vendor/shCore.js"></script>
 	<script type="text/javascript" src="vendor/shBrushJScript.js"></script>
@@ -635,11 +1102,97 @@
 	<!-- <pre class="brush: js;"> -->
 
 	<div id="container">
-		<div id="search">
-			<input type="text" id="txtSearch" />
-		</div>
 		
-		<div id="searchgap"></div>
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					typeof !== “undefined” vs. != null
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+					<p>
+						<strong>typeof</strong> allows the identifier to never have been declared before. So it's safer in that regard:
+					</p>
+					<pre class="brush: js;">
+						if(typeof neverDeclared == "undefined") 
+						//no errors
+
+						if(neverDeclared == null) 
+						//throws ReferenceError: neverDeclared is not defined
+					</pre>				
+				</div>
+			</div>
+		</article>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					What is the difference between a function expression vs declaration in JavaScript?
+				</a>
+			 </div>		
+
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+			<pre class="brush: js;">
+			 	//Function declaration
+				function foo() { return 5; }
+
+				//Anonymous function expression
+				var foo = function() { return 5; }
+
+				//Named function expression
+				var foo = function foo() { return 5; }
+			 </pre>	
+			 <p>
+			 	They're actually really similar. How you call them is exactly the same, but the difference lies in how the browser loads them into the execution context.
+			 </p>
+			 <p>
+			 	function declarations loads before any code is executed.
+			 </p>
+			 <p>
+			 	While function expressions loads only when the interpreter reaches that line of code.
+			 </p>
+			 <p>
+			 	So if you try to call a function expression before it's loaded, you'll get an error
+			 </p>
+			 <p>
+			 	But if you call a function declaration, it'll always work. Because no code can be called until all declarations are loaded.
+			 </p>
+			 
+			 <h3>ex. Function Declaration</h3>
+			  <pre class="brush: js;">
+			 	alert(foo()); // Alerts 5. Declarations are loaded before any code can run.
+				function foo() { return 5; } 
+			 </pre>
+			 <h3>ex. Anonymous Function Expression</h3>
+			 <pre class="brush: js;">
+			 	alert(foo()); // ERROR! foo wasn't loaded yet
+				var foo = function() { return 5; } 
+			 </pre>
+			
+			<h3>ex. Named Function Expression</h3>
+			<p><strong>It can access the function name, usually used for recursion</strong></p>
+			<p><strong>Below example implements fibonacci series using named function expression and recursion</strong></p>
+			 <pre class="brush: js;">
+					var fib = function fibonacci(n) {
+					    if (n < 2) {
+					        return 1;
+					    } else {
+					        return fibonacci(n - 2) + fibonacci(n - 1);
+					    }
+					};
+					</pre>	
+
+					<h1>To print the first 10 fibonacci numbers</h1>			
+					<pre class="brush: js;">
+						for (var i=1; i<10; i++) {
+							fib(i);
+						}
+			</pre>
+				</div>
+			</div>
+		</article>
 		
 		<article class="accordion-group">
 			 <div class="accordion-heading">      		
@@ -1172,6 +1725,61 @@
 			</div>			
 		</article>
 
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#namespacing" data-toggle="collapse" class="accordion-toggle">
+					Why REST?
+				</a>
+			 </div>
+			
+			 <div class="accordion-body collapse in" id="namespacing">
+				<div class="accordion-inner">            
+					<p>
+						REST is using HTTP verbs GET, POST, PUT, DELETE to respectively get, insert, update, delete resources on a server. 
+					</p>
+					<p>
+						E.g. GET with url: controller/customer/{id} 
+						The alternative is adding methods to a controller such as GetCustomerById(id), InsertCustomer(customer), UpdateCustomer(customer), DeleteCustomer(customer). This is what's known as a RPC approach. E.g. GET with url: controller/GetCustomerById?id={id} 
+						One of the differences is, is that a REST api is kind of predictable. If you know REST and you know the name of the resource you want (e.g. Customer), then you can immediately jump in and use the REST controller with the standard verbs. 
+					</p>
+					<ul>
+						<li>
+							<b>With an RPC approach, you need to know what methods are on your controller</b>, what kind of arguments they take, etc. These signatures can vary from controller to controller, from app to app. 
+						</li>
+						<li>
+							<b>AJAX on the other hand is just an asynchronous way of placing the aforementioned requests, whether as a REST call or a RPC call.</b>
+						</li>
+					</ul>
+
+					<p><strong>REST-JSON has several advantages over SOAP-XML</strong><p>
+					<ul>
+						<li><strong>Size</strong>
+						REST-JSON is a lot smaller and less bloated than SOAP-XML therefore you will be passing much less data over the network, which is particularly important for mobile devices.
+						</li>
+						<li><strong>Efficiency</strong>
+						REST-JSON is also easier to parse the data so therefore easier to extract and convert the data, so therefore requires much less from the CPU from the client.
+						</li>
+						<li><strong>Caching</strong>
+						REST-JSON provides improved response times and server loading due to support from caching
+						</li>
+						<li><strong>Implementation</strong>
+						REST-JSON interfaces are much easier to design and implement.
+						 </li>
+					 </ul>
+
+					<p>For these reasons REST-JSON is generally preferred to SOAP-XML for mobile application which require a web service to retrieve data from a web service, where there is no need to the heavy-weight XML structure.</p>
+
+					<p><strong>SOAP-XML is generally preferred when:</strong></p>
+
+					<p>passing around a lot of text since XML excels and wrapping and marking up text.
+					you require secure, transactional services such as banking services.
+					Due to the strict nature of SOAP-XML any changes in the server code needs to be implemented on any and all clients.
+					</p>
+				</div>
+			</div>			
+		</article>
+
 		</div>
 	<!-- end of container-->
 	
@@ -1198,6 +1806,38 @@
 		</div>
 		
 		<div id="searchgap"></div>
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					Custom Events
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+			 	<p>Without custom events, the code will be more meaningful</p>
+				<div class="accordion-inner">
+					<p class="bold">Publish / Subscribe demonstrating custom events With jquery</p>
+					<pre class="brush: js;">
+						$(document).on('testEvent', function(e, eventInfo) { 
+						  subscribers = $('.subscribers-testEvent');
+						  subscribers.trigger('testEventHandler', [eventInfo]);
+						});
+
+						$('#myButton').on('click', function() {
+						  $(document).trigger('testEvent', [1011]);
+						});
+
+						$('#notifier1').on('testEventHandler', function(e, eventInfo) { 
+						  alert('(notifier1)The value of eventInfo is: ' + eventInfo);
+						});
+
+						$('#notifier2').on('testEventHandler', function(e, eventInfo) { 
+						  alert('(notifier2)The value of eventInfo is: ' + eventInfo);
+						});
+					</pre>				
+				</div>
+			</div>
+		</article>
 		
 		<article class="accordion-group">
 			 <div class="accordion-heading">      		
