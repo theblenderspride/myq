@@ -13,6 +13,78 @@
 	<!-- <pre class="brush: js;"> -->
 
 	<div id="container">
+
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					Different types of directive scopes
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+					<h1>Scope : False ( Directive uses its parent scope )</h1>
+					<h1>Scope : True ( Directive gets a new scope )</h1>
+					<p>
+						When scope is set to “true”, AngularJS will create a new scope by inheriting parent scope ( usually controller scope, otherwise the application’s rootScope ). Any changes made to this new scope will not reflect back to the parent scope. However, since the new scope is inherited from the parent scope, any changes made in the Ctrl1 ( the parent scope ) will be reflected in the directive scope.</p>
+					<p>
+						When scope is set to “false”, the controller Ctrl1 and directive are using the same scope object. This means any changes to the controller or directive will be in sync.</p>
+					<h1>Scope : { } ( Directive gets a new isolated scope )</h1>
+					<p>
+						This is the most interesting section. Till now, we saw two situations for directive scope creation. In the third type, we are going to set scope property in DDO to an Object literal. When an object literal is passed to the scope property, things are bit different. This time, there will be a new scope created for the directive, but it will not be inherited from the parent scope. This new scope also known as Isolated scope because it is completely detached from its parent scope.</p>
+					<p>
+						So far, this is the recommended way of setting the scope on DDO while creating custom directives. Why? Because:</p>
+					<p>
+						It’ll make sure that our directive is generic, and placed anywhere inside the application. Parent scope is not going to interfere with the directive scope
+					</p>
+					<h4>There are 3 types of prefixes AngularJS provides used to communicate with parent directive.</h4>
+					<ul>
+						<li>1. "@"   (  Text binding / one-way binding )</li>
+						<li>2. "="   ( Direct model binding / two-way binding )]</li>
+						<li>3. "&"   ( Behaviour binding / Method binding  )</li>
+					</ul>
+				</div>
+			</div>
+		</article>
+
+
+		
+		<article class="accordion-group">
+			 <div class="accordion-heading">      		
+				<a href="#css-disable-text-selection" data-toggle="collapse" class="accordion-toggle">
+					Summary of Compile, Controller, Pre-link & Post-link
+				</a>
+			 </div>			
+			 <div class="accordion-body collapse in" id="css-disable-text-selection">
+				<div class="accordion-inner">
+				<p>
+				<strong>Reference: </strong>http://www.undefinednull.com/2014/07/07/practical-guide-to-prelink-postlink-and-controller-methods-of-angular-directives/
+				</p>
+					<h1>Post : This is the most commonly used for data binding</h1>
+					<p>
+Safe to attach event handlers to the DOM element
+</p><p> All children directives are linked, so it's safe to access them
+</p><p> Never set any data required by the child directive here. Because child directive’s will be linked already.
+</p>
+
+<h1>Pre :</h1>
+<p> Used rarely. One of the use case is when a child directive requires data from its parent, the parent directive should set it through its pre-link function.
+</p><p> 
+Set data required for its child directives
+</p><p> Safe to attach event handlers to the DOM element
+</p><p> Not safe to access DOM elements belong to child directives. They’re not linked yet.
+</p>
+
+<h1>Controller :</h1>
+<p> Used for defining a proper API to the directive. Using controller, directives can communicate and share data each other.
+</p><p> 
+Set the data required to other directives.
+</p><p> Never access DOM element inside the controller; it’s against Angular’s philosophy and make testing hard.
+</p>
+					
+				</div>
+			</div>
+		</article>
+
 		
 		<article class="accordion-group">
 			 <div class="accordion-heading">      		
